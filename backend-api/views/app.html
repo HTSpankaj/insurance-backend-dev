@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Application Form</title>
+        <link rel="stylesheet" href="../public//stylesheets//app.css" />
+
+        <!-- Font Import -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+            rel="stylesheet"
+        />
+
+        <!-- Tailwind Import -->
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style type="text/tailwindcss">
+            @layer utilities {
+                .h4-title {
+                    /* Title/H4 Title */
+                    font-family: 'Montserrat';
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 24px;
+                    line-height: 32px;
+                    letter-spacing: -0.01em;
+                    color: #0e121b;
+                }
+                .h6-title {
+                    /* Title/H6 Title */
+                    font-family: 'Montserrat';
+                    font-style: normal;
+                    font-weight: 600;
+                    font-size: 16px;
+                    line-height: 24px;
+                    letter-spacing: -0.01em;
+                    color: #0e121b;
+                }
+                .s-label {
+                    /* Labels/Label S */
+                    font-family: 'Montserrat';
+                    font-style: normal;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 20px;
+                    letter-spacing: -0.01em;
+                    color: #0e121b;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="main-container">
+            <div class="flex flex-row gap-2 justify-between w-full">
+                <p class="h4-title">Applying for UI UX Designer Position</p>
+                <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        d="M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6"
+                        stroke="#0E121B"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    />
+                </svg>
+            </div>
+            <div class="group-container">
+                <div class="flex flex-col gap-2 justify-between w-full">
+                    <p class="h6-title">Enter Personal Details</p>
+
+                    <div class="inputs-container">
+                        <div class="input-wrapper">
+                            <p class="s-label">First Name <span class="text-red-500">*</span></p>
+                            <input class="common-input-style"/>
+                        </div>
+                        <div class="input-wrapper">
+                            <p class="s-label">Middle Name <span class="text-red-500">*</span></p>
+                            <input class="common-input-style"/>
+                        </div>
+                        <div class="input-wrapper">
+                            <p class="s-label">Last Name <span class="text-red-500">*</span></p>
+                            <input class="common-input-style"/>
+                        </div>
+                        <div class="input-wrapper">
+                            <p class="s-label">Gender <span class="text-red-500">*</span></p>
+                            <input class="common-input-style"/>
+                        </div>
+                        <div class="input-wrapper">
+                            <p class="s-label">Date of Birth <span class="text-red-500">*</span></p>
+                            <input class="common-input-style"/>
+                        </div>
+                        <div class="input-wrapper">
+                            <p class="s-label">Contact No. <span class="text-red-500">*</span></p>
+                            <input class="common-input-style"/>
+                        </div>
+                        <div class="input-wrapper">
+                            <p class="s-label">Email Id <span class="text-red-500">*</span></p>
+                            <input class="common-input-style"/>
+                        </div>
+
+                        <div class="input-wrapper">
+                            <p class="s-label">Current Location <span class="text-red-500">*</span></p>
+                            <input class="common-input-style"/>
+                        </div>
+                        <div class="input-wrapper">
+                            <p class="s-label">Notice Period <span class="text-red-500">*</span></p>
+                            <input class="common-input-style"/>
+                        </div>
+                        <div class="input-wrapper">
+                            <p class="s-label">Expected CTC <span class="text-red-500">*</span></p>
+                            <input class="common-input-style"/>
+                        </div>
+                        <div class="input-wrapper">
+                            <p class="s-label">Enter Expected CTC</p>
+                            <input class="common-input-style"/>
+                        </div>
+                        <div class="input-wrapper">
+                            <p class="s-label">No. of Experience <span class="text-red-500">*</span></p>
+                            <input class="common-input-style"/>
+                        </div>
+                        <div class="input-wrapper">
+                            <p class="s-label">Current CTC <span class="text-red-500">*</span></p>
+                            <input class="common-input-style"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

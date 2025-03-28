@@ -1,0 +1,2558 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Insurance Backend API's",
+    "description": "",
+    "version": "1.0.0"
+  },
+  "host": "",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "bearerAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header",
+      "description": "Enter your bearer token in the format **Bearer &lt;token&gt;**"
+    }
+  },
+  "paths": {
+    "/health-check": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/user/auth/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add User",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": ""
+                },
+                "password": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user/auth/refresh": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user/user-profile": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Get user profile details",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/users/": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Create a new user",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add User data",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "user@example.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "Password123!"
+                },
+                "first_name": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "middle_name": {
+                  "type": "string",
+                  "example": "John"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "Doe"
+                },
+                "contact_number": {
+                  "type": "number",
+                  "example": 1234567890
+                },
+                "role_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {
+                      "type": "string",
+                      "example": "uuid"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "first_name": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "last_name": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "contact_number": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "role_id": {
+                      "type": "string",
+                      "example": "uuid"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Get list of users with pagination",
+        "parameters": [
+          {
+            "name": "page_number",
+            "in": "query",
+            "description": "Page number",
+            "type": "integer",
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of users per page",
+            "type": "integer",
+            "default": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users fetched successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "users": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "user_id": {
+                            "type": "string",
+                            "example": "uuid"
+                          },
+                          "email": {
+                            "type": "string",
+                            "example": "string"
+                          },
+                          "first_name": {
+                            "type": "string",
+                            "example": "string"
+                          },
+                          "last_name": {
+                            "type": "string",
+                            "example": "string"
+                          },
+                          "contact_number": {
+                            "type": "string",
+                            "example": "string"
+                          },
+                          "role_id": {
+                            "type": "string",
+                            "example": "uuid"
+                          }
+                        }
+                      }
+                    },
+                    "total": {
+                      "type": "string",
+                      "example": "integer"
+                    },
+                    "page": {
+                      "type": "string",
+                      "example": "integer"
+                    },
+                    "limit": {
+                      "type": "string",
+                      "example": "integer"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/roles/": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Get user profile details",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "access": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Get user profile details",
+        "parameters": [
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/region/add-region": {
+      "post": {
+        "tags": [
+          "region"
+        ],
+        "description": "Add region",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "North Region"
+                    },
+                    "state": {
+                      "type": "array",
+                      "example": [
+                        "550e8400-e29b-41d4-a716-446655440000",
+                        "550e8400-e29b-41d4-a716-446655440001"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "city": {
+                      "type": "array",
+                      "example": [
+                        "550e8400-e29b-41d4-a716-446655440002",
+                        "550e8400-e29b-41d4-a716-446655440003"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/region/get-region-list-by-company-id/{id}": {
+      "get": {
+        "tags": [
+          "region"
+        ],
+        "description": "Get Region List by Company ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Company ID (UUID)"
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Page number (default: 1)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Number of records per page (default: 10)"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Search term for region name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/category/": {
+      "post": {
+        "tags": [
+          "Category"
+        ],
+        "description": "Create a new category",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "description": "Get categories with pagination",
+        "parameters": [
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/category/active-inactive-category": {
+      "put": {
+        "tags": [
+          "Category"
+        ],
+        "description": "Active/Inactive category.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "category_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "is_active": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/category/get-categories-with-sub-categories": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "description": "Get categories with pagination",
+        "parameters": [
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/category/get-categories-with-product-count": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "description": "Get categories with product count",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/sub-category/": {
+      "post": {
+        "tags": [
+          "SubCategory"
+        ],
+        "description": "Create a new sub-category",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "category_id": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/sub-category/active-inactive-sub-category": {
+      "put": {
+        "tags": [
+          "SubCategory"
+        ],
+        "description": "Active/Inactive subcategory.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sub_category_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "is_active": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/sub-category/get-all-sub-categories": {
+      "get": {
+        "tags": [
+          "SubCategory"
+        ],
+        "description": "Get all sub-categories",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/sub-category/get-sub-categories-by-category/{id}": {
+      "get": {
+        "tags": [
+          "SubCategory"
+        ],
+        "description": "Get sub-categories with pagination",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "category Primary Id (uuid)",
+            "format": "uuid"
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/common/get-state": {
+      "get": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Get state list.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/common/get-state-with-city": {
+      "get": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Get state with city list.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/common/add-state": {
+      "post": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Add state.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add User",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/common/active-inactive-state": {
+      "put": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Active/Inactive state.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add User",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "is_active": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/common/get-city-by-state/{id}": {
+      "get": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Get city list.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "State Primary Id (uuid)",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/common/add-city": {
+      "post": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Add city.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add User",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": ""
+                },
+                "state_id": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/common/active-inactive-city": {
+      "put": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Active/Inactive city.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add User",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "is_active": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/advisor/advisor-registration": {
+      "post": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Register a new advisor",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "join_as",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Role the advisor is joining as"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Full name of the advisor"
+          },
+          {
+            "name": "mobile_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "10-digit mobile number"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Email address"
+          },
+          {
+            "name": "aadhar_card_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "12-digit Aadhar card number"
+          },
+          {
+            "name": "pan_card_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "10-character PAN card number (e.g., ABCDE1234F)"
+          },
+          {
+            "name": "qualification",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Educational qualification"
+          },
+          {
+            "name": "bank_name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Bank name"
+          },
+          {
+            "name": "bank_ifsc_code",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "11-character IFSC code (e.g., HDFC0001234)"
+          },
+          {
+            "name": "bank_branch",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Bank branch"
+          },
+          {
+            "name": "bank_account_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "9-18 digit bank account number"
+          },
+          {
+            "name": "aadhar_card_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Aadhar card file (JPEG or PDF)"
+          },
+          {
+            "name": "pan_card_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "PAN card file (JPEG or PDF)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Advisor registered successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "advisor_id": {
+                      "type": "string",
+                      "example": "uuid"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "aadhar_card_image_url": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "pan_card_image_url": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/advisor/advisor-mobile-send-otp": {
+      "post": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Send otp to advisor mobile number",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "mobile_number": {
+                      "type": "string",
+                      "example": "1234567890"
+                    },
+                    "purpose_for": {
+                      "type": "string",
+                      "example": "registration"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/advisor/advisor-mobile-verify": {
+      "post": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Verify advisor mobile number using OTP",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    },
+                    "otp": {
+                      "type": "number",
+                      "example": 1234
+                    },
+                    "mobile_number": {
+                      "type": "string",
+                      "example": "1234567890"
+                    },
+                    "purpose_for": {
+                      "type": "string",
+                      "example": "registration/login"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/advisor/advisor-email-send-otp": {
+      "post": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Send OTP to advisor email for registration",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "example": "john.doe@example.com"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/advisor/advisor-email-verify": {
+      "post": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Verify advisor email using OTP",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "token": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                    },
+                    "otp": {
+                      "type": "number",
+                      "example": 1234
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "john.doe@example.com"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/advisor/advisor-statistics-number": {
+      "get": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Get statistics of advisors (total, active, inactive, pending)",
+        "responses": {
+          "200": {
+            "description": "Advisor statistics retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "total": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "active": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "inactive": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "pending": {
+                      "type": "string",
+                      "example": "number"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Error retrieving statistics",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/advisor/advisor-list": {
+      "get": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Get paginated list of advisors with filters",
+        "parameters": [
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "integer",
+            "default": 1,
+            "description": "Page number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "default": 10,
+            "description": "Number of records per page"
+          },
+          {
+            "name": "active_status",
+            "in": "query",
+            "type": "string",
+            "enum": [
+              "",
+              "active",
+              "inactive"
+            ],
+            "default": "",
+            "description": "Filter by active status"
+          },
+          {
+            "name": "advisor_onboarding_status",
+            "in": "query",
+            "type": "string",
+            "enum": [
+              "",
+              "pending"
+            ],
+            "default": "",
+            "description": "Filter by onboarding status"
+          },
+          {
+            "name": "join_as",
+            "in": "query",
+            "type": "string",
+            "enum": [
+              "",
+              "advisor",
+              "entrepreneur"
+            ],
+            "default": "",
+            "description": "Filter by join_as role"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "schema",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Advisor list retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "array"
+                    },
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "object"
+                        }
+                      }
+                    }
+                  }
+                },
+                "metadata": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "per_page": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "total_count": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "total_pages": {
+                      "type": "string",
+                      "example": "number"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Error retrieving advisor list",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/advisor/advisor-details/{id}": {
+      "get": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Get advisor details by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Advisor UUID",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Advisor details retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "object"
+                    },
+                    "properties": {
+                      "type": "object",
+                      "properties": {
+                        "advisor_id": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            }
+                          }
+                        },
+                        "join_as": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            }
+                          }
+                        },
+                        "name": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            }
+                          }
+                        },
+                        "mobile_number": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            }
+                          }
+                        },
+                        "email": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            }
+                          }
+                        },
+                        "aadhar_card_number": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            }
+                          }
+                        },
+                        "pan_card_number": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            }
+                          }
+                        },
+                        "qualification": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            }
+                          }
+                        },
+                        "status": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            }
+                          }
+                        },
+                        "aadhar_card_image_url": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            }
+                          }
+                        },
+                        "pan_card_image_url": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "string"
+                            }
+                          }
+                        },
+                        "bank_details": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "object"
+                            },
+                            "properties": {
+                              "type": "object",
+                              "properties": {
+                                "bank_name": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "example": "string"
+                                    }
+                                  }
+                                },
+                                "bank_ifsc_code": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "example": "string"
+                                    }
+                                  }
+                                },
+                                "bank_branch": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "example": "string"
+                                    }
+                                  }
+                                },
+                                "bank_account_number": {
+                                  "type": "object",
+                                  "properties": {
+                                    "type": {
+                                      "type": "string",
+                                      "example": "string"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Error retrieving advisor details",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/advisor/advisor-request-approve": {
+      "put": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Approve an advisor request by setting advisor_onboarding_status_id to 2",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "advisor_id": {
+                      "type": "string",
+                      "example": "550e8400-e29b-41d4-a716-446655440000"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/advisor/advisor-request-reject": {
+      "put": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Reject an advisor request by setting advisor_onboarding_status_id to 3",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "advisor_id": {
+                      "type": "string",
+                      "example": "550e8400-e29b-41d4-a716-446655440000"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/advisor/advisor-request-resubmit": {
+      "put": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Reject an advisor request for re-submission by setting advisor_onboarding_status_id to 3 and adding rejection remark",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "advisor_id": {
+                      "type": "string",
+                      "example": "550e8400-e29b-41d4-a716-446655440000"
+                    },
+                    "reason_type": {
+                      "type": "string",
+                      "example": "Documentation"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "example": "Invalid Aadhar card image"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/company/create-company": {
+      "post": {
+        "tags": [
+          "Company"
+        ],
+        "description": "Create company",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "company_name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Name of the company"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Contact person full name"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Email address"
+          },
+          {
+            "name": "contact_person",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "10-digit contact phone number"
+          },
+          {
+            "name": "irdai_license_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "IRDAI license number"
+          },
+          {
+            "name": "tax_gstin_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "15-character GSTIN number (e.g., 22AAAAA0000A1Z5)"
+          },
+          {
+            "name": "is_publish",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Publish status (true or false)"
+          },
+          {
+            "name": "logo_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Company logo file (PDF, JPEG, or PNG)"
+          },
+          {
+            "name": "irdai_license_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "IRDAI license file (PDF, JPEG, or PNG)"
+          },
+          {
+            "name": "terms_of_agreement_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Terms of agreement file (PDF, JPEG, or PNG)"
+          },
+          {
+            "name": "business_certification_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Business certification file (PDF, JPEG, or PNG)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/company/add-region": {
+      "post": {
+        "tags": [
+          "Company"
+        ],
+        "description": "Add Region",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "example": {
+                  "type": "object",
+                  "properties": {
+                    "title": {
+                      "type": "string",
+                      "example": "North Region"
+                    },
+                    "state": {
+                      "type": "array",
+                      "example": [
+                        "550e8400-e29b-41d4-a716-446655440000",
+                        "550e8400-e29b-41d4-a716-446655440001"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "city": {
+                      "type": "array",
+                      "example": [
+                        "550e8400-e29b-41d4-a716-446655440002",
+                        "550e8400-e29b-41d4-a716-446655440003"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/lead/lead-list": {
+      "get": {
+        "tags": [
+          "leads"
+        ],
+        "description": "Get Lead List",
+        "parameters": [
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Page number (default: 1)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Number of records per page (default: 10)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/lead/add-lead": {
+      "put": {
+        "tags": [
+          "leads"
+        ],
+        "description": "Add Leads",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "Jane Doe"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "jane.doe@example.com"
+                },
+                "contact_number": {
+                  "type": "number",
+                  "example": 9876543210
+                },
+                "dob": {
+                  "type": "string",
+                  "example": "1990-01-01"
+                },
+                "address": {
+                  "type": "string",
+                  "example": "123 Main St"
+                },
+                "city_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "priority": {
+                  "type": "string",
+                  "example": "High"
+                },
+                "additinal_note": {
+                  "type": "string",
+                  "example": "Urgent lead"
+                },
+                "product_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440001"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/lead/lead-statistics-number": {
+      "get": {
+        "tags": [
+          "leads"
+        ],
+        "description": "Get Lead Statistics Number",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/product/add-product": {
+      "post": {
+        "tags": [
+          "Product"
+        ],
+        "description": "Add a new product",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "product_name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Name of the product"
+          },
+          {
+            "name": "sub_category_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "UUID of the subcategory"
+          },
+          {
+            "name": "company_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "UUID of the company"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Description of the product"
+          },
+          {
+            "name": "financial_description",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Financial description of the product"
+          },
+          {
+            "name": "product_brochure_url",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Product brochure file (PDF only)"
+          },
+          {
+            "name": "promotional_video_url",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Promotional video file (MP4, AVI, MPEG)"
+          },
+          {
+            "name": "promotional_image_url",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Promotional image file (JPEG, PNG, GIF)"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "product_name": {
+                  "example": "any"
+                },
+                "sub_category_id": {
+                  "example": "any"
+                },
+                "company_id": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "financial_description": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/product/get-product-list-by-company-id/{id}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "description": "Get Product List by Company ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Company ID (UUID)"
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Page number (default: 1)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Number of records per page (default: 10)"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Search term for product name"
+          },
+          {
+            "name": "category_id",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Category ID (UUID)"
+          },
+          {
+            "name": "sub_category_id",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Sub-Category ID (UUID)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/relationship-manager/add-relationship-manager": {
+      "post": {
+        "tags": [
+          "Relationship-managers"
+        ],
+        "description": "Add a relationship-managers",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "John Doe"
+                },
+                "contact_number": {
+                  "type": "number",
+                  "example": 1234567890
+                },
+                "region": {
+                  "type": "array",
+                  "example": [
+                    "39357ef5-e5b7-47d2-98ad-750e202bb49d",
+                    "e26b14ae-66d0-4ce2-aaa4-fb2b3b82211d"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "category": {
+                  "type": "array",
+                  "example": [
+                    "50f9a13b-d878-454f-a84a-3a1ca0d7a843",
+                    "7ca19a57-fdbc-4756-bcdb-b8f1623f36a9"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/relationship-manager/get-relationship-manager-list-by-company-id/{id}": {
+      "get": {
+        "tags": [
+          "Relationship-managers"
+        ],
+        "description": "Get Relationship Manager List by Company ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Company ID (UUID)"
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Page number (default: 1)"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Number of records per page (default: 10)"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Search term for relationship manager name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}

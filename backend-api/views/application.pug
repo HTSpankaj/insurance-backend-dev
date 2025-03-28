@@ -1,0 +1,117 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Application Form
+  link(rel='stylesheet' href='/stylesheets/application.css')
+  // Font Import
+  link(rel='preconnect' href='https://fonts.googleapis.com')
+  link(rel='preconnect' href='https://fonts.gstatic.com' crossorigin='')
+  link(href='https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap' rel='stylesheet')
+  // Tailwind Import
+  script(src='https://cdn.tailwindcss.com')
+  style(type='text/tailwindcss').
+    @layer utilities {
+    .h4-title {
+    /* Title/H4 Title */
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    letter-spacing: -0.01em;
+    color: #0e121b;
+    }
+    .h6-title {
+    /* Title/H6 Title */
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.01em;
+    color: #0e121b;
+    }
+    .s-label {
+    /* Labels/Label S */
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: -0.01em;
+    color: #0e121b;
+    }
+    }
+.main-container
+  .flex.flex-row.gap-2.justify-between.w-full
+    p.h4-title Applying for UI UX Designer Position
+    svg(width='24' height='24' viewbox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg')
+      path(d='M18 6L12 12M12 12L6 18M12 12L18 18M12 12L6 6' stroke='#0E121B' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round')
+  .group-container
+    .flex.flex-col.gap-2.justify-between.w-full
+      p.h6-title Enter Personal Details
+      .inputs-container
+        .input-wrapper
+          p.s-label
+            | First Name 
+            span.text-red-500 *
+          input.common-input-style
+        .input-wrapper
+          p.s-label
+            | Middle Name 
+            span.text-red-500 *
+          input.common-input-style
+        .input-wrapper
+          p.s-label
+            | Last Name 
+            span.text-red-500 *
+          input.common-input-style
+        .input-wrapper
+          p.s-label
+            | Gender 
+            span.text-red-500 *
+          input.common-input-style
+        .input-wrapper
+          p.s-label
+            | Date of Birth 
+            span.text-red-500 *
+          input.common-input-style
+        .input-wrapper
+          p.s-label
+            | Contact No. 
+            span.text-red-500 *
+          input.common-input-style
+        .input-wrapper
+          p.s-label
+            | Email Id 
+            span.text-red-500 *
+          input.common-input-style
+        .input-wrapper
+          p.s-label
+            | Current Location 
+            span.text-red-500 *
+          input.common-input-style
+        .input-wrapper
+          p.s-label
+            | Notice Period 
+            span.text-red-500 *
+          input.common-input-style
+        .input-wrapper
+          p.s-label
+            | Expected CTC 
+            span.text-red-500 *
+          input.common-input-style
+        .input-wrapper
+          p.s-label Enter Expected CTC
+          input.common-input-style
+        .input-wrapper
+          p.s-label
+            | No. of Experience 
+            span.text-red-500 *
+          input.common-input-style
+        .input-wrapper
+          p.s-label
+            | Current CTC 
+            span.text-red-500 *
+          input.common-input-style
