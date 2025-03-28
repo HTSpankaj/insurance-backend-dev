@@ -4,7 +4,7 @@
     "private": true,
     "scripts": {
         "start": "nodemon ./bin/www",
-        "dev": "SET NODE_ENV=development && nodemon ./bin/www",
+        "dev": "set NODE_ENV=development && nodemon ./bin/www",
         "create-swagger": "node swagger.js",
         "format": "npx prettier . --write",
         "prepare": "cd .. && husky"
