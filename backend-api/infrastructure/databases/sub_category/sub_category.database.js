@@ -32,6 +32,7 @@ class SubCategoryDatabase {
                 .from(tableName)
                 .select("*", { count: "exact" })
                 .eq("category_id", id)
+                .eq("is_delete", false)
                 .order("created_at", { ascending: false })
                 .range(offset, offset + limit - 1);
 
@@ -62,11 +63,45 @@ class SubCategoryDatabase {
         try {
             const { data, error } = await this.db
                 .from("sub_category")
-                .select("*, category:category_id(title)");
+                .select("*, category:category_id(title)")
+                .eq("is_delete", false)
+                .order("created_at", { ascending: false });
             if (error) throw error;
             return data;
         } catch (error) {
             throw new Error(`Failed to fetch sub-categories: ${error.message}`);
+        }
+    }
+
+    async updateSubCategoryDatabase(sub_category_id, category_id, title, description) {
+        try {
+            const { data, error } = await this.db
+                .from(tableName)
+                .update({ title: title, description: description, category_id: category_id })
+                .eq("sub_category_id", sub_category_id)
+                .select()
+                .maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to update category: ${error.message}`);
+        }
+    }
+
+    async deleteSubCategoryDatabase(sub_category_id) {
+        try {
+            const { data, error } = await this.db
+                .from(tableName)
+                .update({ is_delete: true })
+                .eq("sub_category_id", sub_category_id)
+                .select()
+                .maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to delete category: ${error.message}`);
         }
     }
 }

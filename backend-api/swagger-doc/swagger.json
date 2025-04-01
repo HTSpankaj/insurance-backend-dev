@@ -8,7 +8,8 @@
   "host": "",
   "basePath": "/",
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "securityDefinitions": {
     "bearerAuth": {
@@ -634,6 +635,88 @@
         }
       }
     },
+    "/api/category/update-category": {
+      "put": {
+        "tags": [
+          "Category"
+        ],
+        "description": "Update category.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "category_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "title": {
+                  "type": "string",
+                  "example": ""
+                },
+                "description": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/category/delete-category": {
+      "delete": {
+        "tags": [
+          "Category"
+        ],
+        "description": "Delete category.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "category_id": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/category/get-categories-with-sub-categories": {
       "get": {
         "tags": [
@@ -752,6 +835,88 @@
                 "is_active": {
                   "type": "boolean",
                   "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/sub-category/update-sub-category": {
+      "put": {
+        "tags": [
+          "SubCategory"
+        ],
+        "description": "Update sub-category",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sub_category_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "title": {
+                  "type": "string",
+                  "example": ""
+                },
+                "description": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/sub-category/delete-sub-category": {
+      "delete": {
+        "tags": [
+          "SubCategory"
+        ],
+        "description": "Delete sub-category",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "sub_category_id": {
+                  "type": "string",
+                  "example": ""
                 }
               }
             }
@@ -949,6 +1114,80 @@
         }
       }
     },
+    "/api/common/update-state": {
+      "put": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Update state.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add User",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "title": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/common/delete-state": {
+      "delete": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Delete state.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add User",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/common/get-city-by-state/{id}": {
       "get": {
         "tags": [
@@ -1056,172 +1295,78 @@
         }
       }
     },
-    "/api/advisor/advisor-registration": {
-      "post": {
+    "/api/common/upsert-city": {
+      "put": {
         "tags": [
-          "Advisor"
+          "Common"
         ],
-        "description": "Register a new advisor",
-        "consumes": [
-          "multipart/form-data"
-        ],
+        "description": "Upsert city.",
         "parameters": [
           {
-            "name": "join_as",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "description": "Role the advisor is joining as"
+            "name": "body",
+            "in": "body",
+            "description": "In that object you have to pass an array of city objects. Each city object should have the following properties: title, state_id. if id present then it will update the city. else it will create a new city.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "city_array": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "title": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "state_id": {
+                        "type": "string",
+                        "example": ""
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
           },
-          {
-            "name": "name",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "description": "Full name of the advisor"
+          "401": {
+            "description": "Unauthorized"
           },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/common/delete-city": {
+      "delete": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Delete city.",
+        "parameters": [
           {
-            "name": "mobile_number",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "description": "10-digit mobile number"
-          },
-          {
-            "name": "email",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "description": "Email address"
-          },
-          {
-            "name": "aadhar_card_number",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "description": "12-digit Aadhar card number"
-          },
-          {
-            "name": "pan_card_number",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "description": "10-character PAN card number (e.g., ABCDE1234F)"
-          },
-          {
-            "name": "qualification",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "description": "Educational qualification"
-          },
-          {
-            "name": "bank_name",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "description": "Bank name"
-          },
-          {
-            "name": "bank_ifsc_code",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "description": "11-character IFSC code (e.g., HDFC0001234)"
-          },
-          {
-            "name": "bank_branch",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "description": "Bank branch"
-          },
-          {
-            "name": "bank_account_number",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "description": "9-18 digit bank account number"
-          },
-          {
-            "name": "aadhar_card_file",
-            "in": "formData",
-            "type": "file",
-            "required": true,
-            "description": "Aadhar card file (JPEG or PDF)"
-          },
-          {
-            "name": "pan_card_file",
-            "in": "formData",
-            "type": "file",
-            "required": true,
-            "description": "PAN card file (JPEG or PDF)"
+            "name": "body",
+            "in": "body",
+            "description": "delete city by id.",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "Advisor registered successfully",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "advisor_id": {
-                      "type": "string",
-                      "example": "uuid"
-                    },
-                    "name": {
-                      "type": "string",
-                      "example": "string"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "string"
-                    },
-                    "aadhar_card_image_url": {
-                      "type": "string",
-                      "example": "string"
-                    },
-                    "pan_card_image_url": {
-                      "type": "string",
-                      "example": "string"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "error": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "string"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -1245,18 +1390,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
-                  "type": "object",
-                  "properties": {
-                    "mobile_number": {
-                      "type": "string",
-                      "example": "1234567890"
-                    },
-                    "purpose_for": {
-                      "type": "string",
-                      "example": "registration"
-                    }
-                  }
+                "mobile_number": {
+                  "type": "string",
+                  "example": "1234567890"
+                },
+                "purpose_for": {
+                  "type": "string",
+                  "example": "registration"
                 }
               }
             }
@@ -1291,26 +1431,21 @@
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
-                  "type": "object",
-                  "properties": {
-                    "token": {
-                      "type": "string",
-                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                    },
-                    "otp": {
-                      "type": "number",
-                      "example": 1234
-                    },
-                    "mobile_number": {
-                      "type": "string",
-                      "example": "1234567890"
-                    },
-                    "purpose_for": {
-                      "type": "string",
-                      "example": "registration/login"
-                    }
-                  }
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                },
+                "otp": {
+                  "type": "number",
+                  "example": 1234
+                },
+                "mobile_number": {
+                  "type": "string",
+                  "example": "1234567890"
+                },
+                "purpose_for": {
+                  "type": "string",
+                  "example": "registration/login"
                 }
               }
             }
@@ -2155,6 +2290,576 @@
         }
       }
     },
+    "/api/company/company-list": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "description": "Get paginated list of companies with statistics",
+        "parameters": [
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "integer",
+            "default": 1,
+            "description": "Page number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "default": 10,
+            "description": "Number of records per page"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string",
+            "default": "",
+            "description": "Search by company name"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "schema",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "company_display_id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "company_name",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "logo_url",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "total_products",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "converted_leads",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "active_leads",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company list retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "array"
+                    },
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "object"
+                        },
+                        "properties": {
+                          "type": "object",
+                          "properties": {
+                            "company_id": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "company_display_id": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "company_name": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "logo_url": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "total_products": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "integer"
+                                }
+                              }
+                            },
+                            "converted_leads": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "integer"
+                                }
+                              }
+                            },
+                            "active_leads": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "integer"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "metadata": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "per_page": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "total_count": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "total_pages": {
+                      "type": "string",
+                      "example": "number"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Error retrieving company list",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/company/get-converted-lead-list-by-company-id/{id}": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "description": "Get paginated list of converted leads by company ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Company UUID",
+            "example": "90f074fe-16eb-4072-8339-9217330b0905"
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "integer",
+            "default": 1,
+            "description": "Page number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "default": 10,
+            "description": "Number of records per page"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "schema",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "lead_display_id",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "lead_name",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "advisor_name",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "product_name",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "policy_amount",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "commission_amount",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "last_payment_date",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Converted leads retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "array"
+                    },
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "object"
+                        },
+                        "properties": {
+                          "type": "object",
+                          "properties": {
+                            "lead_id": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "lead_display_id": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "lead_name": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "advisor_name": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "product_name": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            },
+                            "policy_amount": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "number"
+                                }
+                              }
+                            },
+                            "commission_amount": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "number"
+                                }
+                              }
+                            },
+                            "last_payment_date": {
+                              "type": "object",
+                              "properties": {
+                                "type": {
+                                  "type": "string",
+                                  "example": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "metadata": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "per_page": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "total_count": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "total_pages": {
+                      "type": "string",
+                      "example": "number"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Error retrieving converted leads",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/company/company-details-by-id-with-statistics/{id}": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "description": "Get company details by ID with statistics",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Company UUID",
+            "example": "90f074fe-16eb-4072-8339-9217330b0905"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Company details retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "company_id": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "company_display_id": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "company_name": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "contact_person": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "logo_url": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "no_of_products": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "converted_leads": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "total_earnings": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "received_earnings": {
+                      "type": "string",
+                      "example": "number"
+                    },
+                    "pending_earnings": {
+                      "type": "string",
+                      "example": "number"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Error retrieving company details",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/lead/lead-list": {
       "get": {
         "tags": [
@@ -2179,7 +2884,88 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "leadname": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "product_name": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "companyname": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "relationship_manager": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "priority": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "status": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "lead_id": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "product_id": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "advisor_id": {
+                        "type": "string",
+                        "example": "string"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "example": "string"
+                      }
+                    }
+                  }
+                },
+                "metadata": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "number",
+                      "example": 1
+                    },
+                    "per_page": {
+                      "type": "number",
+                      "example": 10
+                    },
+                    "total_count": {
+                      "type": "number",
+                      "example": 120
+                    },
+                    "total_pages": {
+                      "type": "number",
+                      "example": 12
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
@@ -2542,6 +3328,231 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/course/create-course": {
+      "post": {
+        "tags": [
+          "Course"
+        ],
+        "description": "Create a new course",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Course title"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Course description"
+          },
+          {
+            "name": "category_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Category UUID"
+          },
+          {
+            "name": "access_for_all_user",
+            "in": "formData",
+            "type": "boolean",
+            "required": true,
+            "description": "Access for all users"
+          },
+          {
+            "name": "access_for_verified_user",
+            "in": "formData",
+            "type": "boolean",
+            "required": true,
+            "description": "Access for verified users"
+          },
+          {
+            "name": "availability_schedule",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "enum": [
+              "Immediate",
+              "Schedule"
+            ],
+            "description": "Availability schedule"
+          },
+          {
+            "name": "schedule_date",
+            "in": "formData",
+            "type": "date",
+            "format": "date",
+            "required": false,
+            "description": "Scheduled release date"
+          },
+          {
+            "name": "status",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "enum": [
+              "Saved As Draft",
+              "Published",
+              "Archived"
+            ],
+            "description": "Course status"
+          },
+          {
+            "name": "course_banner_img_url",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Course banner image (JPEG, PNG)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/course/add-course-module": {
+      "post": {
+        "tags": [
+          "Course Module"
+        ],
+        "description": "Add a new course module",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Module title"
+          },
+          {
+            "name": "file_type",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "enum": [
+              "Video",
+              "PDF",
+              "Image",
+              "Text"
+            ],
+            "description": "Type of file for the module"
+          },
+          {
+            "name": "course_id",
+            "in": "formData",
+            "type": "string",
+            "format": "uuid",
+            "required": true,
+            "description": "UUID of the course this module belongs to"
+          },
+          {
+            "name": "content",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "description": "Optional description/content of the module"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "Optional file to upload (PDF, Video, Image, etc.)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Module created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "example": "12345"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "Module 1"
+                    },
+                    "file_type": {
+                      "type": "string",
+                      "example": "PDF"
+                    },
+                    "course_id": {
+                      "type": "string",
+                      "example": "163ec092-6b68-486e-83a8-a66b119cbc06"
+                    },
+                    "content": {
+                      "type": "string",
+                      "example": "This is a module description"
+                    },
+                    "file_url": {
+                      "type": "string",
+                      "example": "https://supabase.storage.com/bucket/modules/12345/file.pdf"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request - missing required fields or other errors",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Missing required fields"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "401": {
             "description": "Unauthorized"

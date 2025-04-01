@@ -8,10 +8,10 @@ const logInGenerateAndStoreToken = (payload) => {
     delete _payload.password;
 
     try {
-        const accessToken = auth.generateToken(_payload, authConfig.accessTokenExpiry);
-        const refreshToken = auth.generateToken(_payload, authConfig.refreshTokenExpiry);
+        const access_token = auth.generateToken(_payload, authConfig.accessTokenExpiry);
+        const refresh_token = auth.generateToken(_payload, authConfig.refreshTokenExpiry);
 
-        return { accessToken, refreshToken};
+        return { access_token, refresh_token};
     } catch (error) {
         throw error?.message ? error.message : error;
     }
@@ -19,11 +19,11 @@ const logInGenerateAndStoreToken = (payload) => {
 
 const refreshService = async (req) => {
     try {
-        const refreshToken = req.headers.authorization?.split(' ')[1];
-        if (!refreshToken && refreshToken === undefined) {
+        const refresh_token = req.headers.authorization?.split(' ')[1];
+        if (!refresh_token && refresh_token === undefined) {
             return false;
         }
-        const isValidRefreshToken = auth.verifyToken(refreshToken);
+        const isValidRefreshToken = auth.verifyToken(refresh_token);
 
         if (isValidRefreshToken.email) {
             delete isValidRefreshToken.iat;
@@ -44,8 +44,8 @@ const refreshService = async (req) => {
 
 const logOutService = async (res) => {
     res
-        .clearCookie('refreshToken')
-        .clearCookie('accessToken')
+        .clearCookie('refresh_token')
+        .clearCookie('access_token')
     return true;
 }
 

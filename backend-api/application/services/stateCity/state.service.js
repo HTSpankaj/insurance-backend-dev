@@ -49,6 +49,16 @@ class StateService {
         const state = await this.stateDatabase.activeInactiveStateDatabase(id, is_active);
         return state;
     }
+
+    async updateStateService(id, title) {
+        const state = await this.stateDatabase.updateStateDatabase(id, title);
+        return state;
+    }
+
+    async deleteStateService(id) {
+        const state = await this.stateDatabase.deleteStateDatabase(id);
+        return state;
+    }
 }
 
 module.exports = StateService;

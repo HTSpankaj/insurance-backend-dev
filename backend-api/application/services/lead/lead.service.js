@@ -8,14 +8,10 @@ class LeadService {
     async getLeadList(pageNumber, limit) {
         try {
             const offset = (pageNumber - 1) * limit;
-
-            // Fetch paginated data and total count
             const { data, total_count } = await this.leadDatabase.getLeadsWithPagination(
                 offset,
                 limit,
             );
-
-            // Calculate total pages
             const total_pages = Math.ceil(total_count / limit);
 
             return {

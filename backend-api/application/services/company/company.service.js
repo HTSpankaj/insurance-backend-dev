@@ -21,7 +21,7 @@ class CompanyService {
         business_certification_file,
     ) {
         try {
-            // Insert into company table
+            // First, create the company without the logo_url
             const company = await this.companyDatabase.createCompany(
                 company_name,
                 name,
@@ -30,12 +30,13 @@ class CompanyService {
                 irdai_license_number,
                 tax_gstin_number,
                 is_publish,
+                null, // Temporarily set logo_url to null
             );
 
             // Upload files to Supabase bucket under company/<company_id>/document/
             const uploadFile = async (file, fileName) => {
                 const fileExtension = file.mimetype.split("/")[1];
-                const filePath = `/company_id/document/${fileName}-${Date.now()}.${fileExtension}`; // Updated path
+                const filePath = `${company.company_id}/document/${fileName}-${Date.now()}.${fileExtension}`; // Use actual company_id
                 console.log("Uploading file to:", `company/${filePath}`);
                 const { data, error } = await this.storage.uploadFile(filePath, file.buffer);
                 if (error) throw error;
@@ -53,18 +54,22 @@ class CompanyService {
                 "business_certification",
             );
 
+            // Update the company with the logo_url using CompanyDatabase
+            const updatedCompany = await this.companyDatabase.updateCompanyLogo(
+                company.company_id,
+                logo_url,
+            );
+
             // Insert file URLs into company_supporting_document table
             await this.companyDatabase.createSupportingDocuments(
                 company.company_id,
-                logo_url,
                 irdai_license_url,
                 terms_of_agreement_url,
                 business_certification_url,
             );
 
             return {
-                ...company,
-                logo_url,
+                ...updatedCompany,
                 irdai_license_url,
                 terms_of_agreement_url,
                 business_certification_url,
@@ -72,6 +77,81 @@ class CompanyService {
         } catch (error) {
             console.error("Error in createCompany:", error);
             throw new Error(`Failed to create company: ${error.message || JSON.stringify(error)}`);
+        }
+    }
+
+    async getCompanyList(pageNumber, limit, search) {
+        try {
+            const { data, total_count } = await this.companyDatabase.getCompaniesWithStats(
+                pageNumber,
+                limit,
+                search,
+            );
+            const total_pages = Math.ceil(total_count / limit);
+
+            return {
+                data,
+                metadata: {
+                    page: pageNumber,
+                    per_page: limit,
+                    total_count,
+                    total_pages,
+                },
+            };
+        } catch (error) {
+            console.error("Error in getCompanyList:", error);
+            throw new Error(
+                `Failed to fetch company list: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
+    async getConvertedLeadsByCompanyId(companyId, pageNumber, limit) {
+        try {
+            const { data, total_count } = await this.companyDatabase.getConvertedLeadsByCompanyId(
+                companyId,
+                pageNumber,
+                limit,
+            );
+            const total_pages = Math.ceil(total_count / limit);
+
+            return {
+                data,
+                metadata: {
+                    page: pageNumber,
+                    per_page: limit,
+                    total_count,
+                    total_pages,
+                },
+            };
+        } catch (error) {
+            console.error("Error in getConvertedLeadsByCompanyId:", error);
+            throw new Error(
+                `Failed to fetch converted leads: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+    async getCompanyDetailsByIdWithStatistics(companyId) {
+        try {
+            const data = await this.companyDatabase.getCompanyDetailsByIdWithStatistics(companyId);
+            return {
+                company_id: data.company_id, // Add company_id
+                company_display_id: data.company_display_id, // Add company_display_id
+                company_name: data.company_name,
+                contact_person: data.contact_person, // Already cast to TEXT in RPC
+                email: data.email,
+                logo_url: data.logo_url,
+                no_of_products: Number(data.no_of_products) || 0,
+                converted_leads: Number(data.converted_leads) || 0,
+                total_earnings: Number(data.total_earnings) || 0,
+                received_earnings: Number(data.received_earnings) || 0,
+                pending_earnings: Number(data.pending_earnings) || 0,
+            };
+        } catch (error) {
+            console.error("Error in getCompanyDetailsByIdWithStatistics:", error);
+            throw new Error(
+                `Failed to fetch company details: ${error.message || JSON.stringify(error)}`,
+            );
         }
     }
 }

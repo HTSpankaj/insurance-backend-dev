@@ -219,3 +219,230 @@ exports.addRegionController = async (req, res) => {
         });
     }
 };
+
+exports.getCompanyListController = async (req, res) => {
+    /*
+    #swagger.tags = ['Company']
+    #swagger.description = 'Get paginated list of companies with statistics'
+    #swagger.parameters['page_number'] = { 
+      in: 'query', 
+      type: 'integer', 
+      default: 1, 
+      description: 'Page number' 
+    }
+    #swagger.parameters['limit'] = { 
+      in: 'query', 
+      type: 'integer', 
+      default: 10, 
+      description: 'Number of records per page' 
+    }
+    #swagger.parameters['search'] = { 
+      in: 'query', 
+      type: 'string', 
+      default: '', 
+      description: 'Search by company name' 
+    }
+    #swagger.responses[200] = {
+      description: 'Company list retrieved successfully',
+      schema: { 
+        success: true, 
+        data: { 
+          type: 'array', 
+          items: { 
+            type: 'object', 
+            properties: {
+              company_id: { type: 'string' },
+              company_display_id: { type: 'string' },
+              company_name: { type: 'string' },
+              logo_url: { type: 'string' },
+              total_products: { type: 'integer' },
+              converted_leads: { type: 'integer' },
+              active_leads: { type: 'integer' }
+            }
+          }
+        }, 
+        metadata: { 
+          page: 'number', 
+          per_page: 'number', 
+          total_count: 'number', 
+          total_pages: 'number' 
+        } 
+      }
+    }
+    #swagger.responses[400] = {
+      description: 'Error retrieving company list',
+      schema: { success: false, error: { message: 'string' } }
+    }
+    */
+    try {
+        const { page_number = 1, limit = 10, search = "" } = req.query;
+
+        const pageNumber = parseInt(page_number);
+        const perPage = parseInt(limit);
+
+        // Validate inputs
+        if (isNaN(pageNumber) || pageNumber < 1 || isNaN(perPage) || perPage < 1) {
+            throw new Error("Invalid page_number or limit");
+        }
+
+        const result = await companyService.getCompanyList(pageNumber, perPage, search);
+
+        return res.status(200).json({
+            success: true,
+            data: result.data,
+            metadata: result.metadata,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+exports.getConvertedLeadsByCompanyIdController = async (req, res) => {
+    /*
+    #swagger.tags = ['Company']
+    #swagger.description = 'Get paginated list of converted leads by company ID'
+    #swagger.parameters['id'] = { 
+      in: 'path', 
+      type: 'string', 
+      required: true, 
+      description: 'Company UUID', 
+      example: '90f074fe-16eb-4072-8339-9217330b0905' 
+    }
+    #swagger.parameters['page_number'] = { 
+      in: 'query', 
+      type: 'integer', 
+      default: 1, 
+      description: 'Page number' 
+    }
+    #swagger.parameters['limit'] = { 
+      in: 'query', 
+      type: 'integer', 
+      default: 10, 
+      description: 'Number of records per page' 
+    }
+    #swagger.responses[200] = {
+      description: 'Converted leads retrieved successfully',
+      schema: { 
+        success: true, 
+        data: { 
+          type: 'array', 
+          items: { 
+            type: 'object', 
+            properties: {
+              lead_id: { type: 'string' },
+              lead_display_id: { type: 'string' },
+              lead_name: { type: 'string' },
+              advisor_name: { type: 'string' },
+              product_name: { type: 'string' },
+              policy_amount: { type: 'number' },
+              commission_amount: { type: 'number' },
+              last_payment_date: { type: 'string' }
+            }
+          }
+        }, 
+        metadata: { 
+          page: 'number', 
+          per_page: 'number', 
+          total_count: 'number', 
+          total_pages: 'number' 
+        } 
+      }
+    }
+    #swagger.responses[400] = {
+      description: 'Error retrieving converted leads',
+      schema: { success: false, error: { message: 'string' } }
+    }
+    */
+    try {
+        const { id } = req.params;
+        const { page_number = 1, limit = 10 } = req.query;
+
+        const pageNumber = parseInt(page_number);
+        const perPage = parseInt(limit);
+
+        // Validate inputs
+        const uuidRegex =
+            /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+        if (!uuidRegex.test(id)) {
+            throw new Error("Invalid company ID");
+        }
+        if (isNaN(pageNumber) || pageNumber < 1 || isNaN(perPage) || perPage < 1) {
+            throw new Error("Invalid page_number or limit");
+        }
+
+        const result = await companyService.getConvertedLeadsByCompanyId(id, pageNumber, perPage);
+
+        return res.status(200).json({
+            success: true,
+            data: result.data,
+            metadata: result.metadata,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+exports.getCompanyDetailsByIdWithStatisticsController = async (req, res) => {
+    /*
+    #swagger.tags = ['Company']
+    #swagger.description = 'Get company details by ID with statistics'
+    #swagger.parameters['id'] = { 
+      in: 'path', 
+      type: 'string', 
+      required: true, 
+      description: 'Company UUID', 
+      example: '90f074fe-16eb-4072-8339-9217330b0905' 
+    }
+    #swagger.responses[200] = {
+      description: 'Company details retrieved successfully',
+      schema: { 
+        success: true, 
+        data: { 
+          company_id: 'string',
+          company_display_id: 'string',
+          company_name: 'string',
+          contact_person: 'string',
+          email: 'string',
+          logo_url: 'string',
+          no_of_products: 'number',
+          converted_leads: 'number',
+          total_earnings: 'number',
+          received_earnings: 'number',
+          pending_earnings: 'number'
+        }
+      }
+    }
+    #swagger.responses[400] = {
+      description: 'Error retrieving company details',
+      schema: { success: false, error: { message: 'string' } }
+    }
+    */
+    try {
+        const { id } = req.params;
+
+        // Validate company ID
+        const uuidRegex =
+            /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+        if (!uuidRegex.test(id)) {
+            throw new Error("Invalid company ID");
+        }
+
+        const result = await companyService.getCompanyDetailsByIdWithStatistics(id);
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};

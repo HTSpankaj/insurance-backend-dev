@@ -25,7 +25,9 @@ exports.getStateController = async (req, res) => {
             },
         });
     } catch (error) {
-        return res.status(500).json({ success: false, error: error || "Something went wrong!" });
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
     }
 };
 
@@ -48,7 +50,9 @@ exports.getStateWithCityController = async (req, res) => {
             },
         });
     } catch (error) {
-        return res.status(500).json({ success: false, error: error || "Something went wrong!" });
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
     }
 };
 
@@ -75,7 +79,9 @@ exports.addStateController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(500).json({ success: false, error: error || "Something went wrong!" });
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
     }
 };
 
@@ -103,7 +109,68 @@ exports.activeInactiveStateController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(500).json({ success: false, error: error || "Something went wrong!" });
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
+    }
+};
+
+exports.updateStateController = async (req, res) => {
+    /*
+    #swagger.tags = ['Common']
+
+    #swagger.description = 'Update state.'
+    #swagger.parameters['body'] ={
+        in: 'body',
+        description: 'Add User',
+        schema: {
+          "id": "",
+          "title": "",
+        }
+    }
+  */
+
+    try {
+        const { id, title } = req.body;
+        const result = await stateService.updateStateService(id, title);
+        return res.status(200).json({
+            success: true,
+            message: "Update state successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
+    }
+};
+
+exports.deleteStateController = async (req, res) => {
+    /*
+    #swagger.tags = ['Common']
+
+    #swagger.description = 'Delete state.'
+    #swagger.parameters['body'] ={
+        in: 'body',
+        description: 'Add User',
+        schema: {
+          "id": "",
+        }
+    }
+  */
+
+    try {
+        const { id } = req.body;
+        const result = await stateService.deleteStateService(id);
+        return res.status(200).json({
+            success: true,
+            message: "Delete state successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
     }
 };
 
@@ -136,7 +203,9 @@ exports.getCityController = async (req, res) => {
     } catch (error) {
         console.log(error);
 
-        return res.status(500).json({ success: false, error: error || "Something went wrong!" });
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
     }
 };
 
@@ -164,7 +233,9 @@ exports.addCityController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(500).json({ success: false, error: error || "Something went wrong!" });
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
     }
 };
 
@@ -192,6 +263,77 @@ exports.activeInactiveCityController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(500).json({ success: false, error: error || "Something went wrong!" });
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
+    }
+};
+
+exports.upsertCityController = async (req, res) => {
+    /*
+    #swagger.tags = ['Common']
+
+    #swagger.description = 'Upsert city.'
+    #swagger.parameters['body'] ={
+        in: 'body',
+        description: 'In that object you have to pass an array of city objects. Each city object should have the following properties: title, state_id. if id present then it will update the city. else it will create a new city.',
+        schema: {
+          "city_array": [
+            {
+              "id": "",
+              "title": "",
+              "state_id": ""
+            },
+            {
+              "title": "",
+              "state_id": ""
+            }
+          ]
+        }
+    }
+  */
+
+    try {
+        const { city_array } = req.body;
+        const result = await cityService.upsertCityService(city_array);
+        return res.status(201).json({
+            success: true,
+            message: "Upsert city successfully.",
+            data: result,
+        });
+    } catch (error) {
+        console.log(error);
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
+    }
+};
+
+exports.deleteCityController = async (req, res) => {
+    /*
+    #swagger.tags = ['Common']
+
+    #swagger.description = 'Delete city.'
+        #swagger.parameters['body'] ={
+        in: 'body',
+        description: 'delete city by id.',
+        schema: {
+          "id": "",
+        }
+    }
+  */
+
+    try {
+        const { id } = req.params;
+        const result = await cityService.deleteCityService(id);
+        return res.status(200).json({
+            success: true,
+            message: "Delete city successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
     }
 };

@@ -99,3 +99,53 @@ exports.getAllSubCategoriesController = async (req, res) => {
             .json({ success: false, error: { message: error.message || "Something went wrong!" } });
     }
 };
+
+exports.updateSubCategoryController = async (req, res) => {
+    /*
+    #swagger.tags = ['SubCategory']
+    #swagger.description = 'Update sub-category'
+    #swagger.parameters['body'] ={
+        in: 'body',
+        schema: {
+          "sub_category_id": "",
+          "title": "",
+          "description": "",
+        }
+    }
+  */
+    try {
+        const { sub_category_id, title, description } = req.body;
+        const result = await subCategoryService.updateSubCategoryService(
+            sub_category_id,
+            title,
+            description,
+        );
+        return res.status(result.success ? 200 : 400).json(result);
+    } catch (error) {
+        return res
+            .status(500)
+            .json({ success: false, error: { message: error.message || "Something went wrong!" } });
+    }
+};
+
+exports.deleteSubCategoryController = async (req, res) => {
+    /*
+    #swagger.tags = ['SubCategory']
+    #swagger.description = 'Delete sub-category'
+    #swagger.parameters['body'] ={
+        in: 'body',
+        schema: {
+          "sub_category_id": "",
+        }
+    }
+  */
+    try {
+        const { sub_category_id } = req.body;
+        const result = await subCategoryService.deleteSubCategoryService(sub_category_id);
+        return res.status(result.success ? 200 : 400).json(result);
+    } catch (error) {
+        return res
+            .status(500)
+            .json({ success: false, error: { message: error.message || "Something went wrong!" } });
+    }
+};

@@ -8,9 +8,9 @@ const generateToken = (payload, tokenExperiyTime) => {
     return jwt.sign(payload, secretKey, options);
 };
 
-const verifyToken = accessToken => {
+const verifyToken = access_token => {
     try {
-        const decoded = jwt.verify(accessToken, secretKey);
+        const decoded = jwt.verify(access_token, secretKey);
         return decoded;
     } catch (error) {
         return null;

@@ -134,6 +134,44 @@ class CategoryService {
             };
         }
     }
+
+    async updateCategoryService(category_id, title, description) {
+        try {
+            const category = await this.categoryDatabase.updateCategoryDatabase(
+                category_id,
+                title,
+                description,
+            );
+            return {
+                success: true,
+                data: category,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                error: {
+                    message: error.message,
+                },
+            };
+        }
+    }
+
+    async deleteCategoryService(category_id) {
+        try {
+            const category = await this.categoryDatabase.deleteCategoryDatabase(category_id);
+            return {
+                success: true,
+                data: category,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                error: {
+                    message: error.message,
+                },
+            };
+        }
+    }
 }
 
 module.exports = CategoryService;

@@ -19,12 +19,34 @@ exports.getLeadListController = async (req, res) => {
       required: false, 
       description: 'Number of records per page (default: 10)' 
     }
+    #swagger.responses[200] = {
+        schema: {
+            success: true,
+            data: [{
+                leadname: 'string',
+                product_name: 'string',
+                companyname: 'string',
+                relationship_manager: 'string',
+                priority: 'string',
+                status: 'string',
+                lead_id: 'string',
+                product_id: 'string',
+                advisor_id: 'string',
+                created_at: 'string'
+            }],
+            metadata: {
+                page: 1,
+                per_page: 10,
+                total_count: 120,
+                total_pages: 12
+            }
+        }
+    }
     */
     try {
         const pageNumber = parseInt(req.query.page_number) || 1;
         const limit = parseInt(req.query.limit) || 10;
 
-        // Validation
         if (pageNumber < 1) {
             throw new Error("page_number must be a positive integer");
         }

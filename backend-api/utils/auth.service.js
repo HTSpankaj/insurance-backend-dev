@@ -5,18 +5,18 @@ const cookieOptions = { httpOnly: true, secure: true }; //* fot Server Host
 
 const logInGenerateAndStoreToken = (payload, res) => {
     try {
-        const accessToken = auth.generateToken(
+        const access_token = auth.generateToken(
             payload,
             authConfig.accessTokenExpiry
         );
-        const refreshToken = auth.generateToken(
+        const refresh_token = auth.generateToken(
             payload,
             authConfig.refreshTokenExpiry
         );
 
-        res.cookie('accessToken', accessToken, cookieOptions).cookie(
-            'refreshToken',
-            refreshToken,
+        res.cookie('access_token', access_token, cookieOptions).cookie(
+            'refresh_token',
+            refresh_token,
             cookieOptions
         );
 
@@ -28,11 +28,11 @@ const logInGenerateAndStoreToken = (payload, res) => {
 
 const refreshService = async (req, res) => {
     try {
-        const refreshToken = req.cookies.refreshToken;
-        if (!refreshToken && refreshToken === undefined) {
+        const refresh_token = req.cookies.refresh_token;
+        if (!refresh_token && refresh_token === undefined) {
             return false;
         }
-        const isValidRefreshToken = auth.verifyToken(refreshToken);
+        const isValidRefreshToken = auth.verifyToken(refresh_token);
 
         if (isValidRefreshToken.email) {
             delete isValidRefreshToken.iat;
@@ -43,7 +43,7 @@ const refreshService = async (req, res) => {
                 authConfig.accessTokenExpiry
             );
 
-            res.cookie('accessToken', newAccessToken, cookieOptions);
+            res.cookie('access_token', newAccessToken, cookieOptions);
             return true;
         } else {
             const _error = { message: 'Invalid refresh token' };
@@ -56,7 +56,7 @@ const refreshService = async (req, res) => {
 };
 
 const logOutService = async (res) => {
-    res.clearCookie('refreshToken').clearCookie('accessToken');
+    res.clearCookie('refresh_token').clearCookie('access_token');
     return true;
 };
 

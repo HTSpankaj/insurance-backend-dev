@@ -7,11 +7,12 @@ class LeadDatabase {
         this.db = supabaseInstance;
     }
 
+    // lead.database.js
     async getLeadsWithPagination(offset, limit) {
         try {
             // Fetch total count
             const { count, error: countError } = await this.db
-                .from(leadProductRelationTableName)
+                .from("lead_product_relation")
                 .select("*", { count: "exact", head: true });
 
             if (countError) {
@@ -19,11 +20,31 @@ class LeadDatabase {
                 throw countError;
             }
 
-            // Fetch paginated data
+            // Fetch paginated data with corrected joins
             const { data, error } = await this.db
-                .from(leadProductRelationTableName)
-                .select("*")
-                .order("created_at", { ascending: false }) // Order by created_at descending
+                .from("lead_product_relation")
+                .select(
+                    `
+                lead:lead_id (
+                    name
+                ),
+                product:product_id (
+                    product_name,
+                    company:company_id (
+                        company_name
+                    )
+                ),
+                relationship_managers:advisor_id (
+                    name
+                ),
+                lead_status:lead_status_id (
+                    title
+                ),
+                priority,
+                created_at
+            `,
+                )
+                .order("created_at", { ascending: false })
                 .range(offset, offset + limit - 1);
 
             if (error) {
@@ -31,9 +52,23 @@ class LeadDatabase {
                 throw error;
             }
 
-            console.log("Fetched leads:", data);
+            // Transform the data to flatten the structure
+            const transformedData = data.map(item => ({
+                leadname: item.lead?.name,
+                product_name: item.product?.product_name,
+                companyname: item.product?.company?.company_name,
+                relationship_manager: item.relationship_managers?.name, // Use 'name' directly
+                priority: item.priority,
+                status: item.lead_status?.title,
+                lead_id: item.lead_id,
+                product_id: item.product_id,
+                advisor_id: item.advisor_id,
+                created_at: item.created_at,
+            }));
+
+            console.log("Fetched leads:", transformedData);
             return {
-                data: data || [],
+                data: transformedData || [],
                 total_count: count || 0,
             };
         } catch (error) {

@@ -24,6 +24,16 @@ class CityService {
         const city = await this.cityDatabase.activeInactiveCityDatabase(id, is_active);
         return city;
     }
+
+    async upsertCityService(city_array) {
+        const city = await this.cityDatabase.upsertCityDatabase(city_array);
+        return city;
+    }
+
+    async deleteCityService(id) {
+        const city = await this.cityDatabase.deleteCityDatabase(id);
+        return city;
+    }
 }
 
 module.exports = CityService;

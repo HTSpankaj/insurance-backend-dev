@@ -93,6 +93,46 @@ class SubCategoryService {
             };
         }
     }
+
+    async updateSubCategoryService(sub_category_id, category_id, title, description) {
+        try {
+            const subCategory = await this.subCategoryDatabase.updateSubCategoryDatabase(
+                sub_category_id,
+                category_id,
+                title,
+                description,
+            );
+            return {
+                success: true,
+                data: subCategory,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                error: {
+                    message: error.message,
+                },
+            };
+        }
+    }
+
+    async deleteSubCategoryService(sub_category_id) {
+        try {
+            const subCategory =
+                await this.subCategoryDatabase.deleteSubCategoryDatabase(sub_category_id);
+            return {
+                success: true,
+                data: subCategory,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                error: {
+                    message: error.message,
+                },
+            };
+        }
+    }
 }
 
 module.exports = SubCategoryService;

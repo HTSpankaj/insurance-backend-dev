@@ -245,7 +245,8 @@ class AdvisorDatabase {
             if (joinAs === "Advisor" || joinAs === "Entrepreneur") {
                 query = query.eq("join_as", joinAs);
             }
-
+            // Add ORDER BY created_at (descending order, newest first)
+            query = query.order("created_at", { ascending: false });
             // Get paginated data
             const { data, error } = await query.range(from, to);
             if (error) throw error;

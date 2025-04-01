@@ -55,6 +55,7 @@ class CategoryDatabase {
             const { data, error, count } = await this.db
                 .from(tableName)
                 .select("*", { count: "exact" })
+                .eq("is_delete", false)
                 .order("created_at", { ascending: false })
                 .range(offset, offset + limit - 1);
 
@@ -71,6 +72,7 @@ class CategoryDatabase {
             const { data, error, count } = await this.db
                 .from(tableName)
                 .select("*, sub_category(*)", { count: "exact" })
+                .eq("is_delete", false)
                 .order("created_at", { ascending: false })
                 .range(offset, offset + limit - 1);
 
@@ -107,6 +109,38 @@ class CategoryDatabase {
             return data;
         } catch (error) {
             throw new Error(`Failed to update category: ${error.message}`);
+        }
+    }
+
+    async updateCategoryDatabase(category_id, title, description) {
+        try {
+            const { data, error } = await this.db
+                .from(tableName)
+                .update({ title: title, description: description })
+                .eq("category_id", category_id)
+                .select()
+                .maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to update category: ${error.message}`);
+        }
+    }
+
+    async deleteCategoryDatabase(category_id) {
+        try {
+            const { data, error } = await this.db
+                .from(tableName)
+                .update({ is_delete: true })
+                .eq("category_id", category_id)
+                .select()
+                .maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to delete category: ${error.message}`);
         }
     }
 }

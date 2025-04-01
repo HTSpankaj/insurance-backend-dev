@@ -14,7 +14,8 @@ class StateDatabase {
         try {
             const { data, error, count } = await this.db
                 .from(tableName)
-                .select("*", { count: "exact" });
+                .select("*", { count: "exact" })
+                .order("created_at", { ascending: false });
 
             if (error) throw error;
             return { data, total: count };
@@ -27,7 +28,8 @@ class StateDatabase {
         try {
             const { data, error, count } = await this.db
                 .from(tableName)
-                .select("*, city(*)", { count: "exact" });
+                .select("*, city(*)", { count: "exact" })
+                .order("created_at", { ascending: false });
 
             if (error) throw error;
             return { data, total: count };
@@ -56,6 +58,38 @@ class StateDatabase {
             const { data, error } = await this.db
                 .from(tableName)
                 .update({ is_active })
+                .eq("id", id)
+                .select()
+                .maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to update state: ${error.message}`);
+        }
+    }
+
+    async deleteStateDatabase(id) {
+        try {
+            const { data, error } = await this.db
+                .from(tableName)
+                .update({ is_delete: true })
+                .eq("id", id)
+                .select()
+                .maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to delete state: ${error.message}`);
+        }
+    }
+
+    async updateStateDatabase(id, title) {
+        try {
+            const { data, error } = await this.db
+                .from(tableName)
+                .update({ title })
                 .eq("id", id)
                 .select()
                 .maybeSingle();
