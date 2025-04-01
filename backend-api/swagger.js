@@ -7,6 +7,7 @@ const docOptions = {
   },
   host: "",
   basePath: "/",
+  schemes: ["http", "https"],
   securityDefinitions: {
     bearerAuth: {
       type: "apiKey",
