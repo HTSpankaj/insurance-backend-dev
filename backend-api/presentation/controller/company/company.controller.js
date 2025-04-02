@@ -170,13 +170,12 @@ exports.addRegionController = async (req, res) => {
   #swagger.description = 'Add Region'
   #swagger.parameters['body'] = {
     in: 'body',
-    schema: {
-      example: {
+    schema:  {
         title: 'North Region',
         state: ['550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001'],
         city: ['550e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440003']
       }
-    }
+    
   }
   */
     try {

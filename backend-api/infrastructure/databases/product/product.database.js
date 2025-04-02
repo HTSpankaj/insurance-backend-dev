@@ -107,6 +107,27 @@ class ProductDatabase {
             throw new Error(`Failed to fetch products: ${error.message || JSON.stringify(error)}`);
         }
     }
+
+    async getProductByDisplayIdCompanyId(product_display_id, company_id) {
+        const { data, error } = await this.db
+            .from(productTableName)
+            .select("*")
+            .eq("product_display_id", product_display_id)
+            .eq("company_id", company_id)
+            .maybeSingle();
+
+        if (data) {
+            return {
+                success: true,
+                data,
+            };
+        } else {
+            return {
+                success: false,
+                error,
+            };
+        }
+    }
 }
 
 module.exports = ProductDatabase;

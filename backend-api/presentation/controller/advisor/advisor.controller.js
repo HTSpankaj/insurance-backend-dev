@@ -162,10 +162,9 @@ exports.sendAdvisorEmailOtpController = async (req, res) => {
       #swagger.parameters['body'] = {
       in: 'body',
       schema: {
-        example: {
           email: 'john.doe@example.com'
         }
-      }
+     
     }
     */
     try {
@@ -193,13 +192,12 @@ exports.verifyAdvisorEmailController = async (req, res) => {
       #swagger.description = 'Verify advisor email using OTP'
       #swagger.parameters['body'] = {
       in: 'body',
-      schema: {
-        example: {
+      schema:  {
           token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
           otp: 1234,
           email: 'john.doe@example.com'
         }
-      }
+      
     }
     */
     try {
@@ -400,10 +398,9 @@ exports.approveAdvisorRequestController = async (req, res) => {
       #swagger.parameters['body'] = {
       in: 'body',
       schema: {
-        example: {
           advisor_id: '550e8400-e29b-41d4-a716-446655440000'
         }
-      }
+      
     }
     */
     try {
@@ -439,11 +436,10 @@ exports.rejectAdvisorRequestController = async (req, res) => {
       #swagger.description = 'Reject an advisor request by setting advisor_onboarding_status_id to 3'
       #swagger.parameters['body'] = {
       in: 'body',
-      schema: {
-        example: {
+      schema:  {
           advisor_id: '550e8400-e29b-41d4-a716-446655440000'
         }
-      }
+      
     }
     */
     try {
@@ -480,13 +476,12 @@ exports.resubmitAdvisorRequestController = async (req, res) => {
       #swagger.security = [{ "bearerAuth": [] }]
       #swagger.parameters['body'] = {
       in: 'body',
-      schema: {
-        example: {
+      schema:  {
           advisor_id: '550e8400-e29b-41d4-a716-446655440000',
           reason_type: 'Documentation',
           reason: 'Invalid Aadhar card image'
         }
-      }
+      
     }
     */
     try {

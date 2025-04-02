@@ -1,23 +1,17 @@
-const auth = require('../middleware/auth');
-const { authConfig } = require('../configs/auth.config');
+const auth = require("../middleware/auth");
+const { authConfig } = require("../configs/auth.config");
 // const cookieOptions = { httpOnly: true, secure: true } //* fot Local Host
 const cookieOptions = { httpOnly: true, secure: true }; //* fot Server Host
 
 const logInGenerateAndStoreToken = (payload, res) => {
     try {
-        const access_token = auth.generateToken(
-            payload,
-            authConfig.accessTokenExpiry
-        );
-        const refresh_token = auth.generateToken(
-            payload,
-            authConfig.refreshTokenExpiry
-        );
+        const access_token = auth.generateToken(payload, authConfig.accessTokenExpiry);
+        const refresh_token = auth.generateToken(payload, authConfig.refreshTokenExpiry);
 
-        res.cookie('access_token', access_token, cookieOptions).cookie(
-            'refresh_token',
+        res.cookie("access_token", access_token, cookieOptions).cookie(
+            "refresh_token",
             refresh_token,
-            cookieOptions
+            cookieOptions,
         );
 
         return true;
@@ -40,23 +34,23 @@ const refreshService = async (req, res) => {
 
             const newAccessToken = auth.generateToken(
                 isValidRefreshToken,
-                authConfig.accessTokenExpiry
+                authConfig.accessTokenExpiry,
             );
 
-            res.cookie('access_token', newAccessToken, cookieOptions);
+            res.cookie("access_token", newAccessToken, cookieOptions);
             return true;
         } else {
-            const _error = { message: 'Invalid refresh token' };
+            const _error = { message: "Invalid refresh token" };
             throw _error;
         }
     } catch (error) {
-        const _error = error ? error : { message: 'Internal Server Error' };
+        const _error = error ? error : { message: "Internal Server Error" };
         throw _error;
     }
 };
 
-const logOutService = async (res) => {
-    res.clearCookie('refresh_token').clearCookie('access_token');
+const logOutService = async res => {
+    res.clearCookie("refresh_token").clearCookie("access_token");
     return true;
 };
 

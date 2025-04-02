@@ -3,6 +3,10 @@ const supportingDocTableName = "company_supporting_document";
 const { SupabaseClient } = require("@supabase/supabase-js");
 
 class CompanyDatabase {
+    /**
+     * Constructor for initializing the UsersDatabase
+     * @param {SupabaseClient} supabaseInstance - The supabase instance
+     */
     constructor(supabaseInstance) {
         this.db = supabaseInstance;
     }
@@ -276,6 +280,25 @@ class CompanyDatabase {
             throw new Error(
                 `Failed to fetch company details: ${error.message || JSON.stringify(error)}`,
             );
+        }
+    }
+
+    async getCompanyByDisplayId(company_display_id) {
+        const { data, error } = await this.db
+            .from(companyTableName)
+            .select("*")
+            .eq("company_display_id", company_display_id)
+            .maybeSingle();
+        if (data) {
+            return {
+                success: true,
+                data,
+            };
+        } else {
+            return {
+                success: false,
+                error,
+            };
         }
     }
 }

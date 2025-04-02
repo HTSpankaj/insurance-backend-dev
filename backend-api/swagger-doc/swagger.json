@@ -428,33 +428,28 @@
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                      "type": "string",
-                      "example": "North Region"
-                    },
-                    "state": {
-                      "type": "array",
-                      "example": [
-                        "550e8400-e29b-41d4-a716-446655440000",
-                        "550e8400-e29b-41d4-a716-446655440001"
-                      ],
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "city": {
-                      "type": "array",
-                      "example": [
-                        "550e8400-e29b-41d4-a716-446655440002",
-                        "550e8400-e29b-41d4-a716-446655440003"
-                      ],
-                      "items": {
-                        "type": "string"
-                      }
-                    }
+                "title": {
+                  "type": "string",
+                  "example": "North Region"
+                },
+                "state": {
+                  "type": "array",
+                  "example": [
+                    "550e8400-e29b-41d4-a716-446655440000",
+                    "550e8400-e29b-41d4-a716-446655440001"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "city": {
+                  "type": "array",
+                  "example": [
+                    "550e8400-e29b-41d4-a716-446655440002",
+                    "550e8400-e29b-41d4-a716-446655440003"
+                  ],
+                  "items": {
+                    "type": "string"
                   }
                 }
               }
@@ -1477,14 +1472,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
-                  "type": "object",
-                  "properties": {
-                    "email": {
-                      "type": "string",
-                      "example": "john.doe@example.com"
-                    }
-                  }
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
                 }
               }
             }
@@ -1516,22 +1506,17 @@
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
-                  "type": "object",
-                  "properties": {
-                    "token": {
-                      "type": "string",
-                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
-                    },
-                    "otp": {
-                      "type": "number",
-                      "example": 1234
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "john.doe@example.com"
-                    }
-                  }
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                },
+                "otp": {
+                  "type": "number",
+                  "example": 1234
+                },
+                "email": {
+                  "type": "string",
+                  "example": "john.doe@example.com"
                 }
               }
             }
@@ -2013,14 +1998,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
-                  "type": "object",
-                  "properties": {
-                    "advisor_id": {
-                      "type": "string",
-                      "example": "550e8400-e29b-41d4-a716-446655440000"
-                    }
-                  }
+                "advisor_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
                 }
               }
             }
@@ -2052,14 +2032,9 @@
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
-                  "type": "object",
-                  "properties": {
-                    "advisor_id": {
-                      "type": "string",
-                      "example": "550e8400-e29b-41d4-a716-446655440000"
-                    }
-                  }
+                "advisor_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
                 }
               }
             }
@@ -2091,22 +2066,17 @@
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
-                  "type": "object",
-                  "properties": {
-                    "advisor_id": {
-                      "type": "string",
-                      "example": "550e8400-e29b-41d4-a716-446655440000"
-                    },
-                    "reason_type": {
-                      "type": "string",
-                      "example": "Documentation"
-                    },
-                    "reason": {
-                      "type": "string",
-                      "example": "Invalid Aadhar card image"
-                    }
-                  }
+                "advisor_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "reason_type": {
+                  "type": "string",
+                  "example": "Documentation"
+                },
+                "reason": {
+                  "type": "string",
+                  "example": "Invalid Aadhar card image"
                 }
               }
             }
@@ -2244,33 +2214,28 @@
             "schema": {
               "type": "object",
               "properties": {
-                "example": {
-                  "type": "object",
-                  "properties": {
-                    "title": {
-                      "type": "string",
-                      "example": "North Region"
-                    },
-                    "state": {
-                      "type": "array",
-                      "example": [
-                        "550e8400-e29b-41d4-a716-446655440000",
-                        "550e8400-e29b-41d4-a716-446655440001"
-                      ],
-                      "items": {
-                        "type": "string"
-                      }
-                    },
-                    "city": {
-                      "type": "array",
-                      "example": [
-                        "550e8400-e29b-41d4-a716-446655440002",
-                        "550e8400-e29b-41d4-a716-446655440003"
-                      ],
-                      "items": {
-                        "type": "string"
-                      }
-                    }
+                "title": {
+                  "type": "string",
+                  "example": "North Region"
+                },
+                "state": {
+                  "type": "array",
+                  "example": [
+                    "550e8400-e29b-41d4-a716-446655440000",
+                    "550e8400-e29b-41d4-a716-446655440001"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "city": {
+                  "type": "array",
+                  "example": [
+                    "550e8400-e29b-41d4-a716-446655440002",
+                    "550e8400-e29b-41d4-a716-446655440003"
+                  ],
+                  "items": {
+                    "type": "string"
                   }
                 }
               }
@@ -3556,6 +3521,101 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/issuance/before-issuance/excel-data": {
+      "post": {
+        "tags": [
+          "Issuance"
+        ],
+        "description": "add before issuance excel data",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "add before issuance excel data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "lead_id": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "lead_name": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "product_id": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "product_name": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "company_name": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "company_id": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "lead_close_date": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "start_date_policy": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "end_date_policy": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "policy_amount": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "payout_type": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "commission_amount": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "file_name": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "row_number": {
+                        "type": "string",
+                        "example": ""
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

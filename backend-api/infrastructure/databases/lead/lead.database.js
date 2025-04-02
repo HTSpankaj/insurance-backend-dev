@@ -251,6 +251,25 @@ class LeadDatabase {
             );
         }
     }
+
+    async getLeadByDisplayId(lead_display_id) {
+        const { data, error } = await this.db
+            .from(leadTableName)
+            .select("*")
+            .eq("lead_display_id", lead_display_id)
+            .maybeSingle();
+        if (data) {
+            return {
+                success: true,
+                data,
+            };
+        } else {
+            return {
+                success: false,
+                error,
+            };
+        }
+    }
 }
 
 module.exports = LeadDatabase;
