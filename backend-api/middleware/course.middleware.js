@@ -17,7 +17,7 @@ const uploadCourseFiles = multer({
     fileFilter,
     limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
 }).fields([
-    { name: "course_banner_img_url", maxCount: 1 }, // Image file for course banner
+    { name: "course_banner_img_file", maxCount: 1 }, // Image file for course banner
     // { name: "logo_file", maxCount: 1 } // Another optional file field
 ]);
 

@@ -25,12 +25,12 @@ const { authenticateToken } = require("../../../middleware/auth");
 const router = express.Router();
 
 //!~~~~~~~~~~~~~~~~~~~ Request send from Advisor app ~~~~~~~~~~~~~~~~~~~
-// router.post(
-//     "/advisor-registration",
-//     upload,
-//     advisorRegistrationValidateInput,
-//     createAdvisorController,
-// );
+router.post(
+    "/advisor-registration",
+    upload,
+    advisorRegistrationValidateInput,
+    createAdvisorController,
+);
 router.post("/advisor-mobile-send-otp", advisorOtpValidateInput, sendAdvisorOtpController);
 router.post("/advisor-mobile-verify", advisorVerifyValidateInput, verifyAdvisorMobileController);
 router.post("/advisor-email-send-otp", advisorEmailOtpValidateInput, sendAdvisorEmailOtpController);

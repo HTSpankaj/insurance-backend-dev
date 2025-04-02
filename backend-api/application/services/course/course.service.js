@@ -20,10 +20,10 @@ class CourseService {
     ) {
         try {
             // Insert into course table
-            const course = await this.courseDatabase.createCourse(
+            let createCourseResponse = await this.courseDatabase.createCourse(
                 title,
                 description,
-                // category_id,
+                category_id,
                 access_for_all_user,
                 access_for_verified_user,
                 availability_schedule,
@@ -31,27 +31,28 @@ class CourseService {
                 status,
             );
 
-            if (!course || !course.id) {
+            if (!createCourseResponse || !createCourseResponse.id) {
                 throw new Error("Course creation failed");
             }
 
-            let banner_url = null;
+        
+            if (course_banner_img_file) {
+                const fileExtension = course_banner_img_file.mimetype.split("/")[1];
+                const filePath = `courses/${createCourseResponse.id}/banner.${fileExtension}`;
+    
+                console.log("Uploading file to:", filePath);
+                const uploadFileResponse = await this.storage.uploadFile(
+                    filePath,
+                    course_banner_img_file.buffer,
+                    course_banner_img_file.mimetype,
+                );
+                if (uploadFileResponse) {
+                    const banner_url = await this.storage.getPublicUrl(uploadFileResponse?.path);
+                    createCourseResponse = await this.courseDatabase.updateCourseBanner(createCourseResponse?.id, banner_url);
+                }
+            }
 
-            const fileExtension = course_banner_img_file.mimetype.split("/")[1];
-            const filePath = `courses/${course.id}/banner.${fileExtension}`;
-
-            console.log("Uploading file to:", filePath);
-            const { data, error } = await this.storage.uploadFile(
-                filePath,
-                course_banner_img_file.buffer,
-            );
-            if (error) throw error;
-
-            banner_url = this.storage.getPublicUrl(filePath);
-
-            await this.courseDatabase.updateCourseBanner(course?.category_id, banner_url);
-
-            return { ...course, banner_url };
+            return  createCourseResponse ;
         } catch (error) {
             console.error("Error in createCourse:", error);
             throw new Error(`Failed to create course: ${error.message}`);

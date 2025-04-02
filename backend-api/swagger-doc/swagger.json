@@ -1372,6 +1372,182 @@
         }
       }
     },
+    "/api/advisor/advisor-registration": {
+      "post": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Register a new advisor",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "join_as",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Role the advisor is joining as"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Full name of the advisor"
+          },
+          {
+            "name": "mobile_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "10-digit mobile number"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Email address"
+          },
+          {
+            "name": "aadhar_card_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "12-digit Aadhar card number"
+          },
+          {
+            "name": "pan_card_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "10-character PAN card number (e.g., ABCDE1234F)"
+          },
+          {
+            "name": "qualification",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Educational qualification"
+          },
+          {
+            "name": "bank_name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Bank name"
+          },
+          {
+            "name": "bank_ifsc_code",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "11-character IFSC code (e.g., HDFC0001234)"
+          },
+          {
+            "name": "bank_branch",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Bank branch"
+          },
+          {
+            "name": "bank_account_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "9-18 digit bank account number"
+          },
+          {
+            "name": "aadhar_card_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Aadhar card file (JPEG or PDF)"
+          },
+          {
+            "name": "pan_card_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "PAN card file (JPEG or PDF)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Advisor registered successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "advisor_id": {
+                      "type": "string",
+                      "example": "uuid"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "aadhar_card_image_url": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "pan_card_image_url": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/advisor/advisor-mobile-send-otp": {
       "post": {
         "tags": [
@@ -3377,7 +3553,7 @@
             "description": "Course status"
           },
           {
-            "name": "course_banner_img_url",
+            "name": "course_banner_img_file",
             "in": "formData",
             "type": "file",
             "required": true,
@@ -3390,134 +3566,6 @@
           },
           "400": {
             "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
-          }
-        }
-      }
-    },
-    "/api/course/add-course-module": {
-      "post": {
-        "tags": [
-          "Course Module"
-        ],
-        "description": "Add a new course module",
-        "consumes": [
-          "multipart/form-data"
-        ],
-        "parameters": [
-          {
-            "name": "title",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "description": "Module title"
-          },
-          {
-            "name": "file_type",
-            "in": "formData",
-            "type": "string",
-            "required": true,
-            "enum": [
-              "Video",
-              "PDF",
-              "Image",
-              "Text"
-            ],
-            "description": "Type of file for the module"
-          },
-          {
-            "name": "course_id",
-            "in": "formData",
-            "type": "string",
-            "format": "uuid",
-            "required": true,
-            "description": "UUID of the course this module belongs to"
-          },
-          {
-            "name": "content",
-            "in": "formData",
-            "type": "string",
-            "required": false,
-            "description": "Optional description/content of the module"
-          },
-          {
-            "name": "file",
-            "in": "formData",
-            "type": "file",
-            "required": false,
-            "description": "Optional file to upload (PDF, Video, Image, etc.)"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Module created successfully",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "12345"
-                    },
-                    "title": {
-                      "type": "string",
-                      "example": "Module 1"
-                    },
-                    "file_type": {
-                      "type": "string",
-                      "example": "PDF"
-                    },
-                    "course_id": {
-                      "type": "string",
-                      "example": "163ec092-6b68-486e-83a8-a66b119cbc06"
-                    },
-                    "content": {
-                      "type": "string",
-                      "example": "This is a module description"
-                    },
-                    "file_url": {
-                      "type": "string",
-                      "example": "https://supabase.storage.com/bucket/modules/12345/file.pdf"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request - missing required fields or other errors",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "error": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Missing required fields"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
           },
           "401": {
             "description": "Unauthorized"
@@ -3561,10 +3609,6 @@
                         "example": ""
                       },
                       "company_name": {
-                        "type": "string",
-                        "example": ""
-                      },
-                      "company_id": {
                         "type": "string",
                         "example": ""
                       },

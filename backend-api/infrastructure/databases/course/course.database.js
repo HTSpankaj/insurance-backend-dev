@@ -1,6 +1,12 @@
+const { SupabaseClient } = require("@supabase/supabase-js");
+
 const courseTableName = "course";
 
 class CourseDatabase {
+     /**
+     * Constructor for initializing the UsersDatabase
+     * @param {SupabaseClient} supabaseInstance - The supabase instance
+     */
     constructor(supabaseInstance) {
         this.db = supabaseInstance;
     }
@@ -8,6 +14,7 @@ class CourseDatabase {
     async createCourse(
         title,
         description,
+        category_id,
         access_for_all_user,
         access_for_verified_user,
         availability_schedule,
@@ -20,6 +27,7 @@ class CourseDatabase {
                 .insert({
                     title,
                     description,
+                    category_id,
                     access_for_all_user,
                     access_for_verified_user,
                     availability_schedule,
@@ -37,14 +45,14 @@ class CourseDatabase {
         }
     }
 
-    async updateCourseBanner(category_id, course_banner_img_url) {
+    async updateCourseBanner(course_id, course_banner_img_url) {
         try {
             const { data, error } = await this.db
                 .from(courseTableName)
-                .insert({
-                    category_id,
-                    course_banner_img_url,
+                .update({
+                    course_banner_img_url:course_banner_img_url+"?"+Date.now(),
                 })
+                .eq("id", course_id)
                 .select()
                 .maybeSingle();
 

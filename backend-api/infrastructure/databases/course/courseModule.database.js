@@ -1,27 +1,14 @@
+const { SupabaseClient } = require("@supabase/supabase-js");
+
 const courseTableName = "course_module";
 
 class CourseModuleDatabase {
+     /**
+     * Constructor for initializing the UsersDatabase
+     * @param {SupabaseClient} supabaseInstance - The supabase instance
+     */
     constructor(supabaseInstance) {
         this.db = supabaseInstance;
-    }
-
-    async createModule(title, file_type, course_id, content) {
-        const { data, error } = await this.db
-            .from(courseTableName)
-            .insert([{ title, file_type, course_id, content }])
-            .select()
-            .single();
-
-        if (error) throw error;
-        return data;
-    }
-
-    async updateModuleFile(moduleId, file_url) {
-        const { error } = await this.db
-            .from(courseTableName)
-            .update({ file_url })
-            .eq("id", moduleId);
-        if (error) throw error;
     }
 }
 
