@@ -868,6 +868,10 @@
                   "type": "string",
                   "example": ""
                 },
+                "category_id": {
+                  "type": "string",
+                  "example": ""
+                },
                 "title": {
                   "type": "string",
                   "example": ""

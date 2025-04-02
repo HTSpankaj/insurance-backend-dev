@@ -9,7 +9,7 @@ const {
 const upload = require("../../../middleware/multer.middleware");
 const router = express.Router();
 
-router.post("/create-company", createCompanyController);
+router.post("/create-company",upload, createCompanyController);
 router.post("/add-region", addRegionController);
 router.get("/company-list", getCompanyListController);
 router.get("/get-converted-lead-list-by-company-id/:id", getConvertedLeadsByCompanyIdController);
