@@ -3,7 +3,7 @@ const { SupabaseClient } = require("@supabase/supabase-js");
 const courseTableName = "course";
 
 class CourseDatabase {
-     /**
+    /**
      * Constructor for initializing the UsersDatabase
      * @param {SupabaseClient} supabaseInstance - The supabase instance
      */
@@ -50,7 +50,7 @@ class CourseDatabase {
             const { data, error } = await this.db
                 .from(courseTableName)
                 .update({
-                    course_banner_img_url:course_banner_img_url+"?"+Date.now(),
+                    course_banner_img_url: course_banner_img_url + "?" + Date.now(),
                 })
                 .eq("id", course_id)
                 .select()

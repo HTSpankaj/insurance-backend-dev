@@ -1,6 +1,6 @@
 const express = require("express");
 const {
-    createCourseController
+    createCourseController,
 } = require("../../../presentation/controller/course/createCourse.controller");
 const uploadCourseBanner = require("../../../middleware/course.middleware");
 const { createCourseValidator } = require("../../../validator/course/course.validator");

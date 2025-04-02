@@ -16,8 +16,12 @@ class LeadService {
 
             return {
                 data,
-                total_count,
-                total_pages,
+                metadata: {
+                    page: pageNumber,
+                    per_page: limit,
+                    total_count,
+                    total_pages,
+                },
             };
         } catch (error) {
             console.error("Error in getLeadList:", error);

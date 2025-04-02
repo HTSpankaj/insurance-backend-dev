@@ -35,11 +35,10 @@ class CourseService {
                 throw new Error("Course creation failed");
             }
 
-        
             if (course_banner_img_file) {
                 const fileExtension = course_banner_img_file.mimetype.split("/")[1];
                 const filePath = `courses/${createCourseResponse.id}/banner.${fileExtension}`;
-    
+
                 console.log("Uploading file to:", filePath);
                 const uploadFileResponse = await this.storage.uploadFile(
                     filePath,
@@ -48,11 +47,14 @@ class CourseService {
                 );
                 if (uploadFileResponse) {
                     const banner_url = await this.storage.getPublicUrl(uploadFileResponse?.path);
-                    createCourseResponse = await this.courseDatabase.updateCourseBanner(createCourseResponse?.id, banner_url);
+                    createCourseResponse = await this.courseDatabase.updateCourseBanner(
+                        createCourseResponse?.id,
+                        banner_url,
+                    );
                 }
             }
 
-            return  createCourseResponse ;
+            return createCourseResponse;
         } catch (error) {
             console.error("Error in createCourse:", error);
             throw new Error(`Failed to create course: ${error.message}`);

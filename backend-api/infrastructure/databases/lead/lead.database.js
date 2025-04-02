@@ -25,24 +25,26 @@ class LeadDatabase {
                 .from("lead_product_relation")
                 .select(
                     `
-                lead:lead_id (
-                    name
-                ),
-                product:product_id (
-                    product_name,
-                    company:company_id (
-                        company_name
-                    )
-                ),
-                relationship_managers:advisor_id (
-                    name
-                ),
-                lead_status:lead_status_id (
-                    title
-                ),
-                priority,
-                created_at
-            `,
+                    lead_id,
+                    lead:lead_id (
+                        name,
+                        contact_number
+                    ),
+                    product:product_id (
+                        product_name,
+                        company:company_id (
+                            company_name
+                        )
+                    ),
+                    relationship_managers:advisor_id (
+                        name
+                    ),
+                    lead_status:lead_status_id (
+                        title
+                    ),
+                    priority,
+                    created_at
+                `,
                 )
                 .order("created_at", { ascending: false })
                 .range(offset, offset + limit - 1);
@@ -54,16 +56,14 @@ class LeadDatabase {
 
             // Transform the data to flatten the structure
             const transformedData = data.map(item => ({
-                leadname: item.lead?.name,
-                product_name: item.product?.product_name,
-                companyname: item.product?.company?.company_name,
-                relationship_manager: item.relationship_managers?.name, // Use 'name' directly
-                priority: item.priority,
-                status: item.lead_status?.title,
                 lead_id: item.lead_id,
-                product_id: item.product_id,
-                advisor_id: item.advisor_id,
-                created_at: item.created_at,
+                leadname: item.lead?.name || null,
+                contact_number: item.lead?.contact_number || null,
+                product_name: item.product?.product_name || null,
+                companyname: item.product?.company?.company_name || null,
+                relationship_manager: item.relationship_managers?.name || null,
+                priority: item.priority || null,
+                status: item.lead_status?.title || null,
             }));
 
             console.log("Fetched leads:", transformedData);

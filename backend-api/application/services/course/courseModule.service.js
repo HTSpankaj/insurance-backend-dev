@@ -6,7 +6,6 @@ class CourseModuleService {
         this.courseModuleDatabase = new CourseModuleDatabase(supabaseInstance);
         this.storage = new BucketNameStorage(supabaseInstance, "courses"); // Bucket named 'course-modules'
     }
-
 }
 
 module.exports = CourseModuleService;
