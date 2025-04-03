@@ -120,3 +120,76 @@ exports.deleteCourseController = async (req, res) => {
         });
     }
 };
+
+exports.getCourseListController = async (req, res) => {
+    /*
+    #swagger.tags = ['Course']
+    #swagger.description = 'Get a paginated list of courses with optional filters'
+    #swagger.method = 'get'
+    #swagger.parameters['page_number'] = { in: 'query', type: 'integer', required: false, description: 'Page number (default: 1)', example: 1 }
+    #swagger.parameters['limit'] = { in: 'query', type: 'integer', required: false, description: 'Number of courses per page (default: 10)', example: 10 }
+    #swagger.parameters['status'] = { in: 'query', type: 'string', required: false, description: 'Filter by course status', enum: ['', 'Saved As Draft', 'Published', 'Archived'], example: 'Published' }
+    #swagger.parameters['category_id'] = { in: 'query', type: 'string', required: false, description: 'Filter by category UUID', example: '4236213c-4b43-4c80-b1fb-dc40aaee1f50' }
+    #swagger.parameters['search'] = { in: 'query', type: 'string', required: false, description: 'Search term for course title', example: 'backend' }
+    #swagger.responses[200] = {
+        description: 'Course list retrieved successfully',
+        schema: { success: true, data: { type: 'array' }, metadata: { page: 'integer', per_page: 'integer', total_count: 'integer', total_pages: 'integer' } }
+    }
+    #swagger.responses[400] = {
+        description: 'Invalid input',
+        schema: { success: false, error: { message: 'string' } }
+    }
+    */
+    try {
+        const {
+            page_number = 1,
+            limit = 10,
+            status = "",
+            category_id = "",
+            search = "",
+        } = req.query;
+
+        const pageNumber = parseInt(page_number, 10);
+        const pageLimit = parseInt(limit, 10);
+        if (isNaN(pageNumber) || pageNumber < 1) {
+            throw new Error("Page number must be a positive integer");
+        }
+        if (isNaN(pageLimit) || pageLimit < 1) {
+            throw new Error("Limit must be a positive integer");
+        }
+        if (status && !["", "Saved As Draft", "Published", "Archived"].includes(status)) {
+            throw new Error("Status must be one of: '', 'Saved As Draft', 'Published', 'Archived'");
+        }
+        const uuidRegex =
+            /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+        if (category_id && category_id !== "" && !uuidRegex.test(category_id)) {
+            throw new Error("Category ID must be a valid UUID");
+        }
+
+        const { courses, totalCount } = await courseService.getCourseList({
+            pageNumber,
+            limit: pageLimit,
+            status,
+            categoryId: category_id,
+            search,
+        });
+
+        const totalPages = Math.ceil(totalCount / pageLimit);
+
+        return res.status(200).json({
+            success: true,
+            data: courses,
+            metadata: {
+                page: pageNumber,
+                per_page: pageLimit,
+                total_count: totalCount,
+                total_pages: totalPages,
+            },
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};

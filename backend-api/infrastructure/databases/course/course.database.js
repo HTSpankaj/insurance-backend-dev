@@ -92,6 +92,44 @@ class CourseDatabase {
             throw new Error(`Failed to delete course: ${error.message || JSON.stringify(error)}`);
         }
     }
+
+    async getCourseList({ pageNumber, limit, status, categoryId, search }) {
+        try {
+            let query = this.db
+                .from(courseTableName) // Fix: Use courseTableName
+                .select("title, status, is_delete, category_id, created_at", { count: "exact" })
+                .eq("is_delete", false)
+                .order("created_at", { ascending: false });
+
+            if (status && status !== "") {
+                query = query.eq("status", status);
+            }
+            if (categoryId && categoryId !== "") {
+                query = query.eq("category_id", categoryId);
+            }
+            if (search && search.trim() !== "") {
+                query = query.ilike("title", `%${search}%`);
+            }
+
+            const from = (pageNumber - 1) * limit;
+            const to = from + limit - 1;
+            query = query.range(from, to);
+
+            const { data, error, count } = await query;
+
+            if (error) {
+                console.error("Supabase error in getCourseList:", error);
+                throw error;
+            }
+
+            return { data, totalCount: count };
+        } catch (error) {
+            console.error("Error in getCourseList:", error);
+            throw new Error(
+                `Failed to fetch course list: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 }
 
 module.exports = CourseDatabase;

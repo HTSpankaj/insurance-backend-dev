@@ -70,5 +70,27 @@ class CourseService {
             throw new Error(`Failed to delete course: ${error.message || JSON.stringify(error)}`);
         }
     }
+
+    async getCourseList({ pageNumber, limit, status, categoryId, search }) {
+        try {
+            const { data, totalCount } = await this.courseDatabase.getCourseList({
+                pageNumber,
+                limit,
+                status,
+                categoryId,
+                search,
+            });
+
+            return {
+                courses: data,
+                totalCount,
+            };
+        } catch (error) {
+            console.error("Error in getCourseList:", error);
+            throw new Error(
+                `Failed to fetch course list: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 }
 module.exports = CourseService;

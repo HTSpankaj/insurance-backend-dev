@@ -3607,6 +3607,151 @@
         }
       }
     },
+    "/api/course/course-list": {
+      "get": {
+        "tags": [
+          "Course"
+        ],
+        "description": "Get a paginated list of courses with optional filters",
+        "parameters": [
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Page number (default: 1)",
+            "example": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Number of courses per page (default: 10)",
+            "example": 10
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Filter by course status",
+            "enum": [
+              "",
+              "Saved As Draft",
+              "Published",
+              "Archived"
+            ],
+            "example": "Published"
+          },
+          {
+            "name": "category_id",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Filter by category UUID",
+            "example": "4236213c-4b43-4c80-b1fb-dc40aaee1f50"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Search term for course title",
+            "example": "backend"
+          },
+          {
+            "name": "description",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "schema",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "metadata",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Course list retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "array"
+                    }
+                  }
+                },
+                "metadata": {
+                  "type": "object",
+                  "properties": {
+                    "page": {
+                      "type": "string",
+                      "example": "integer"
+                    },
+                    "per_page": {
+                      "type": "string",
+                      "example": "integer"
+                    },
+                    "total_count": {
+                      "type": "string",
+                      "example": "integer"
+                    },
+                    "total_pages": {
+                      "type": "string",
+                      "example": "integer"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/issuance/before-issuance/excel-data": {
       "post": {
         "tags": [
