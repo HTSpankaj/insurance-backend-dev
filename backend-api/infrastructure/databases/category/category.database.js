@@ -49,15 +49,21 @@ class CategoryDatabase {
         }
     }
 
-    async getCategories(pageNumber, limit) {
+    async getCategories(pageNumber, limit, is_all) {
         try {
             const offset = (pageNumber - 1) * limit;
-            const { data, error, count } = await this.db
-                .from(tableName)
-                .select("*", { count: "exact" })
-                .eq("is_delete", false)
-                .order("created_at", { ascending: false })
-                .range(offset, offset + limit - 1);
+            let query = this.db
+            .from(tableName)
+            .select("*", { count: "exact" })
+            .eq("is_delete", false)
+            .order("created_at", { ascending: false })
+            
+            if (!is_all) {
+                query = query.range(offset, offset + limit - 1);
+                
+            }
+            
+            const { data, error, count } = await query;
 
             if (error) throw error;
             return { data, total: count };

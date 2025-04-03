@@ -62,14 +62,10 @@ class LeadService {
                     additional_note,
                 );
             if (createLeadProductRelationResponse) {
-                const leadProductCompanyId =
-                    createLeadProductRelationResponse?.product_id?.company_id?.company_id;
-                const leadProductCategoryId =
-                    createLeadProductRelationResponse?.product_id?.sub_category_id?.category_id
-                        ?.category_id;
+                const leadProductCompanyId = createLeadProductRelationResponse?.product_id?.company_id?.company_id;
+                const leadProductCategoryId = createLeadProductRelationResponse?.product_id?.sub_category_id?.category_id?.category_id;
                 const leadCityId = createLeadProductRelationResponse?.lead_id?.city_id?.id;
-                const leadStateId =
-                    createLeadProductRelationResponse?.lead_id?.city_id?.id?.state_id?.id;
+                const leadStateId = createLeadProductRelationResponse?.lead_id?.city_id?.id?.state_id?.id;
 
                 // relationship_manager eq=company_id
                 // relationship_manager_category_relations = category_id

@@ -48,18 +48,22 @@ class CategoryService {
         }
     }
 
-    async getCategories(pageNumber, limit) {
+    async getCategories(pageNumber, limit, is_all) {
         try {
-            const { data, total } = await this.categoryDatabase.getCategories(pageNumber, limit);
+            const { data, total } = await this.categoryDatabase.getCategories(pageNumber, limit, is_all);
             return {
                 success: true,
-                data: {
-                    categories: data,
-                    total,
-                    page: pageNumber,
-                    limit,
+                data,
+                metadata: {
+                    total_count: total,
+                    ...(!is_all ? {
+                        page: pageNumber,
+                        per_page: limit,
+                        // total_pages
+                    }:{}),
                 },
             };
+            
         } catch (error) {
             return {
                 success: false,

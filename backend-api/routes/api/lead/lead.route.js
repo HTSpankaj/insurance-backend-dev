@@ -10,7 +10,7 @@ const { authenticateToken, advisorAuthenticateToken } = require("../../../middle
 const router = express.Router();
 
 router.get("/lead-list", getLeadListController);
-router.put("/add-lead", advisorAuthenticateToken, addLeadController);
+router.post("/add-lead", advisorAuthenticateToken, addLeadController);
 router.get("/lead-statistics-number", authenticateToken, getLeadStatisticsNumberController);
 
 module.exports = router;

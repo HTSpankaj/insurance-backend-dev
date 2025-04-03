@@ -563,14 +563,25 @@
         "description": "Get categories with pagination",
         "parameters": [
           {
+            "name": "is_all",
+            "in": "query",
+            "description": "Get all categories",
+            "required": false,
+            "type": "boolean"
+          },
+          {
             "name": "page_number",
             "in": "query",
-            "type": "string"
+            "description": "Page number (default: 1)",
+            "required": false,
+            "type": "integer"
           },
           {
             "name": "limit",
             "in": "query",
-            "type": "string"
+            "description": "Number of records per page (default: 10)",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -975,14 +986,25 @@
             "format": "uuid"
           },
           {
+            "name": "is_all",
+            "in": "query",
+            "description": "Get all sub-categories",
+            "required": false,
+            "type": "boolean"
+          },
+          {
             "name": "page_number",
             "in": "query",
-            "type": "string"
+            "description": "Page number (default: 1)",
+            "required": false,
+            "type": "integer"
           },
           {
             "name": "limit",
             "in": "query",
-            "type": "string"
+            "description": "Number of records per page (default: 10)",
+            "required": false,
+            "type": "integer"
           }
         ],
         "responses": {
@@ -3119,7 +3141,7 @@
       }
     },
     "/api/lead/add-lead": {
-      "put": {
+      "post": {
         "tags": [
           "leads"
         ],
