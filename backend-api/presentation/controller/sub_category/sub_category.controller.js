@@ -115,12 +115,12 @@ exports.updateSubCategoryController = async (req, res) => {
     }
   */
     try {
-        const { sub_category_id,category_id, title, description } = req.body;
+        const { sub_category_id, category_id, title, description } = req.body;
         const result = await subCategoryService.updateSubCategoryService(
             sub_category_id,
             category_id,
             title,
-            description
+            description,
         );
         return res.status(result.success ? 200 : 400).json(result);
     } catch (error) {

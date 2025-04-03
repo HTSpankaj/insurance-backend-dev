@@ -20,6 +20,7 @@ const issuanceRouter = require("./issuance/index.route");
 var commonRouter = require("./common/index.route");
 const advisorRoute = require("./advisor/advisor.route"); // New advisor route
 const regionRouter = require("./region/region.route");
+const coursemoduleRoutes = require("./course/coursemodule.routes");
 
 // Import authentication middleware
 const { authenticateToken } = require("../../middleware/auth");
@@ -50,5 +51,6 @@ router.use("/relationship-manager", relationshipManagerRouter);
 router.use("/course", courseRouter);
 
 router.use("/issuance", authenticateToken, issuanceRouter);
+router.use("/api/course", coursemoduleRoutes);
 
 module.exports = router;

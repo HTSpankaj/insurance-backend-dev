@@ -28,8 +28,8 @@ class LeadDatabase {
                     lead_id,
                     lead:lead_id (
                         name,
-                        contact_number
-                    ),
+                        lead_display_id                   
+                         ),
                     product:product_id (
                         product_name,
                         company:company_id (
@@ -58,7 +58,7 @@ class LeadDatabase {
             const transformedData = data.map(item => ({
                 lead_id: item.lead_id,
                 leadname: item.lead?.name || null,
-                contact_number: item.lead?.contact_number || null,
+                lead_display_id: item.lead?.lead_display_id || null,
                 product_name: item.product?.product_name || null,
                 companyname: item.product?.company?.company_name || null,
                 relationship_manager: item.relationship_managers?.name || null,
@@ -131,7 +131,15 @@ class LeadDatabase {
                     additinal_note: additional_note,
                     lead_status_id: 1,
                 })
-                .select()
+                .select(
+                    `*, 
+                    product_id(
+                        product_name, company_id(company_id, company_name),
+                        sub_category_id(sub_category_id, title, category_id(category_id, title))
+                    )
+                    lead_id(lead_id, name, email, contact_number, city_id(id, title, state_id(id, title)))
+                `,
+                )
                 .maybeSingle();
 
             if (error) {

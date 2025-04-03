@@ -13,13 +13,15 @@ const {
     resubmitAdvisorRequestController,
 } = require("../../../presentation/controller/advisor/advisor.controller");
 const upload = require("../../../middleware/multer.middleware");
+
 const {
     advisorRegistrationValidateInput,
     advisorOtpValidateInput,
     advisorVerifyValidateInput,
     advisorEmailOtpValidateInput,
     advisorEmailVerifyValidateInput,
-} = require("../../../middleware/validation.middleware");
+} = require("../../../validator/advisor/advisor.validator");
+
 const { authenticateToken } = require("../../../middleware/auth");
 
 const router = express.Router();

@@ -53,13 +53,27 @@ class LeadService {
             );
 
             // Insert into lead_product_relation table
-            await this.leadDatabase.createLeadProductRelation(
-                lead.lead_id,
-                product_id,
-                advisor_id,
-                priority,
-                additional_note,
-            );
+            const createLeadProductRelationResponse =
+                await this.leadDatabase.createLeadProductRelation(
+                    lead.lead_id,
+                    product_id,
+                    advisor_id,
+                    priority,
+                    additional_note,
+                );
+            if (createLeadProductRelationResponse) {
+                const leadProductCompanyId =
+                    createLeadProductRelationResponse?.product_id?.company_id?.company_id;
+                const leadProductCategoryId =
+                    createLeadProductRelationResponse?.product_id?.sub_category_id?.category_id
+                        ?.category_id;
+                const leadCityId = createLeadProductRelationResponse?.lead_id?.city_id?.id;
+                const leadStateId =
+                    createLeadProductRelationResponse?.lead_id?.city_id?.id?.state_id?.id;
+
+                // relationship_manager eq=company_id
+                // relationship_manager_category_relations = category_id
+            }
 
             return {
                 lead_id: lead.lead_id,

@@ -60,6 +60,15 @@ class CourseService {
             throw new Error(`Failed to create course: ${error.message}`);
         }
     }
-}
 
+    async deleteCourse(courseId) {
+        try {
+            const deletedCourse = await this.courseDatabase.deleteCourse(courseId);
+            return deletedCourse;
+        } catch (error) {
+            console.error("Error in deleteCourse:", error);
+            throw new Error(`Failed to delete course: ${error.message || JSON.stringify(error)}`);
+        }
+    }
+}
 module.exports = CourseService;

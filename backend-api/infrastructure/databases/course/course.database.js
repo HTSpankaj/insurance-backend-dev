@@ -41,7 +41,7 @@ class CourseDatabase {
             return data;
         } catch (error) {
             console.error("Error in createCourse:", error);
-            throw new Error("Failed to create course");
+            throw new Error(`Failed to create course: ${error.message || JSON.stringify(error)}`);
         }
     }
 
@@ -57,11 +57,39 @@ class CourseDatabase {
                 .maybeSingle();
 
             if (error) throw error;
+            if (!data) throw new Error("Course not found");
 
             return data;
         } catch (error) {
             console.error("Error in updateCourseBanner:", error);
-            throw new Error("Failed to update course banner URL");
+            throw new Error(
+                `Failed to update course banner URL: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
+    async deleteCourse(courseId) {
+        try {
+            const { data, error } = await this.db
+                .from(courseTableName)
+                .update({ is_delete: true })
+                .eq("id", courseId)
+                .select()
+                .maybeSingle();
+
+            if (error) {
+                console.error("Supabase error in deleteCourse:", error);
+                throw error;
+            }
+
+            if (!data) {
+                throw new Error("Course not found");
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in deleteCourse:", error);
+            throw new Error(`Failed to delete course: ${error.message || JSON.stringify(error)}`);
         }
     }
 }
