@@ -1844,12 +1844,8 @@
             "name": "advisor_onboarding_status",
             "in": "query",
             "type": "string",
-            "enum": [
-              "",
-              "pending"
-            ],
-            "default": "",
-            "description": "Filter by onboarding status"
+            "default": "Pending,Approved,Re-Submitted,Rejected",
+            "description": "Filter by onboarding status send by comma separated string."
           },
           {
             "name": "join_as",

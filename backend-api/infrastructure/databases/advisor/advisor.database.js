@@ -2,10 +2,19 @@ const tableName = "advisors";
 const bankTableName = "bank_details";
 const { SupabaseClient } = require("@supabase/supabase-js");
 
+const onboardingStatusString = [
+    { title: "Pending", id: 1},
+    { title: "Approved", id: 2},
+    { title: "Re-Submitted", id: 3},
+    { title: "Rejected", id: 4},
+]
 class AdvisorDatabase {
+    /**
+     * Constructor for initializing the SubCategoryService
+     * @param {SupabaseClient} supabaseInstance - The Supabase instance
+     */
     constructor(supabaseInstance) {
         this.db = supabaseInstance;
-        console.log("Supabase instance:", !!supabaseInstance);
     }
 
     async createAdvisor(
@@ -228,7 +237,7 @@ class AdvisorDatabase {
     }
 
     // New getAdvisorsWithPagination method
-    async getAdvisorsWithPagination(page, perPage, activeStatus, onboardingStatus, joinAs) {
+    async getAdvisorsWithPagination(page, perPage, activeStatus, onboardingStatus = [], joinAs) {
         try {
             const from = (page - 1) * perPage;
             const to = from + perPage - 1;
@@ -239,8 +248,11 @@ class AdvisorDatabase {
             if (activeStatus === "Active" || activeStatus === "Inactive") {
                 query = query.eq("advisor_status", activeStatus);
             }
-            if (onboardingStatus === "pending") {
-                query = query.eq("advisor_onboarding_status_id", 1);
+            if (onboardingStatus?.length > 0) {
+                const _onboardingStatus = onboardingStatus.filter(f => onboardingStatusString.some(s => s.title === f)).map((m) => onboardingStatusString.find(f => f.title === m).id);
+                query = query.in("advisor_onboarding_status_id", _onboardingStatus);
+                console.log(_onboardingStatus);
+                
             }
             if (joinAs === "Advisor" || joinAs === "Entrepreneur") {
                 query = query.eq("join_as", joinAs);
@@ -265,8 +277,8 @@ class AdvisorDatabase {
             const { count, countError } = await countQuery;
             if (countError) throw countError;
 
-            console.log("Advisors fetched:", data);
-            console.log("Total count:", count);
+            // console.log("Advisors fetched:", data);
+            // console.log("Total count:", count);
             return { advisors: data || [], totalCount: count || 0 };
         } catch (error) {
             console.error("Error in getAdvisorsWithPagination:", error);

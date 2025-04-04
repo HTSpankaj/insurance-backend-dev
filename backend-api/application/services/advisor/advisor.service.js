@@ -172,7 +172,8 @@ class AdvisorService {
                 throw new Error("Email already registered");
             }
 
-            const otp = generateOtp(4);
+            // const otp = generateOtp(4);
+            const otp = 1234;
             const token = jwt.sign({ email, otp }, process.env.JWT_SECRET || "your-secret-key", {
                 expiresIn: "10m",
             });

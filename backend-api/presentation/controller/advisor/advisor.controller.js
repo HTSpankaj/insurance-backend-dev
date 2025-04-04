@@ -262,7 +262,7 @@ exports.getAdvisorListController = async (req, res) => {
       #swagger.parameters['page_number'] = { in: 'query', type: 'integer', default: 1, description: 'Page number' }
       #swagger.parameters['limit'] = { in: 'query', type: 'integer', default: 10, description: 'Number of records per page' }
       #swagger.parameters['active_status'] = { in: 'query', type: 'string', enum: ['', 'active', 'inactive'], default: '', description: 'Filter by active status' }
-      #swagger.parameters['advisor_onboarding_status'] = { in: 'query', type: 'string', enum: ['', 'pending'], default: '', description: 'Filter by onboarding status' }
+      #swagger.parameters['advisor_onboarding_status'] = { in: 'query', type: 'string', default: 'Pending,Approved,Re-Submitted,Rejected', description: 'Filter by onboarding status send by comma separated string.' }
       #swagger.parameters['join_as'] = { in: 'query', type: 'string', enum: ['', 'advisor', 'entrepreneur'], default: '', description: 'Filter by join_as role' }
       #swagger.responses[200] = {
         description: 'Advisor list retrieved successfully',
@@ -283,7 +283,7 @@ exports.getAdvisorListController = async (req, res) => {
       }
     */
     try {
-        const {
+        let {
             page_number = 1,
             limit = 10,
             active_status = "",
@@ -292,6 +292,10 @@ exports.getAdvisorListController = async (req, res) => {
         } = req.query;
         const page = parseInt(page_number);
         const perPage = parseInt(limit);
+
+        if (advisor_onboarding_status) {
+            advisor_onboarding_status = advisor_onboarding_status.split(",");
+        }
 
         if (isNaN(page) || page < 1 || isNaN(perPage) || perPage < 1) {
             throw new Error("Invalid page_number or limit");
