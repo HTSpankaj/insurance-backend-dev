@@ -44,11 +44,13 @@ class SubCategoryService {
                 data,
                 metadata: {
                     total_count: total,
-                    ...(!is_all ? {
-                        page: pageNumber,
-                        per_page: limit,
-                        // total_pages
-                    }:{}),
+                    ...(!is_all
+                        ? {
+                              page: pageNumber,
+                              per_page: limit,
+                              // total_pages
+                          }
+                        : {}),
                 },
             };
         } catch (error) {
@@ -81,12 +83,26 @@ class SubCategoryService {
         }
     }
 
-    async getAllSubCategoriesService() {
+    async getAllSubCategoriesService(pageNumber, limit, is_all) {
         try {
-            const subCategories = await this.subCategoryDatabase.getAllSubCategoriesDatabase();
+            const { data, total } = await this.subCategoryDatabase.getAllSubCategoriesDatabase(
+                pageNumber,
+                limit,
+                is_all,
+            );
             return {
                 success: true,
-                data: subCategories,
+                data,
+                metadata: {
+                    total_count: total,
+                    ...(!is_all
+                        ? {
+                              page: pageNumber,
+                              per_page: limit,
+                              total_pages: Math.ceil(total / limit),
+                          }
+                        : {}),
+                },
             };
         } catch (error) {
             return {

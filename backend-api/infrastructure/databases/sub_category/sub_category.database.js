@@ -28,7 +28,7 @@ class SubCategoryDatabase {
     async getSubCategories(id, pageNumber, limit, is_all) {
         try {
             const offset = (pageNumber - 1) * limit;
-            
+
             let query = this.db
                 .from(tableName)
                 .select("*", { count: "exact" })
@@ -36,11 +36,11 @@ class SubCategoryDatabase {
                 .eq("is_delete", false)
                 .order("created_at", { ascending: false });
 
-                if (!is_all) {
-                    query = query.range(offset, offset + limit - 1);
-                }
+            if (!is_all) {
+                query = query.range(offset, offset + limit - 1);
+            }
 
-                const { data, error, count } = await query;
+            const { data, error, count } = await query;
             if (error) throw error;
             return { data, total: count };
         } catch (error) {
@@ -64,15 +64,22 @@ class SubCategoryDatabase {
         }
     }
 
-    async getAllSubCategoriesDatabase() {
+    async getAllSubCategoriesDatabase(pageNumber, limit, is_all) {
         try {
-            const { data, error } = await this.db
+            const offset = (pageNumber - 1) * limit;
+            let query = this.db
                 .from("sub_category")
-                .select("*, category:category_id(title)")
+                .select("*, category:category_id(title)", { count: "exact" })
                 .eq("is_delete", false)
                 .order("created_at", { ascending: false });
+
+            if (!is_all && pageNumber && limit) {
+                query = query.range(offset, offset + limit - 1);
+            }
+
+            const { data, error, count } = await query;
             if (error) throw error;
-            return data;
+            return { data, total: count };
         } catch (error) {
             throw new Error(`Failed to fetch sub-categories: ${error.message}`);
         }

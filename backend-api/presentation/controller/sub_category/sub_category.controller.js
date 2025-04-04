@@ -67,7 +67,7 @@ exports.getSubCategoriesController = async (req, res) => {
         const id = req.params.id;
         const pageNumber = parseInt(req.query.page_number) || 1;
         const limit = parseInt(req.query.limit) || 10;
-        const is_all = req?.query?.is_all == 'true';
+        const is_all = req?.query?.is_all == "true";
 
         const result = await subCategoryService.getSubCategories(id, pageNumber, limit, is_all);
         return res.status(result.success ? 200 : 400).json(result);
@@ -109,9 +109,34 @@ exports.getAllSubCategoriesController = async (req, res) => {
     /*
     #swagger.tags = ['SubCategory']
     #swagger.description = 'Get all sub-categories'
+    #swagger.parameters['is_all'] = {
+        in: 'query',
+        description: 'Get all categories',
+        required: false,
+        type: 'boolean'
+    }
+    #swagger.parameters['page_number'] = {
+        in: 'query',
+        description: 'Page number (default: 1)',
+        required: false,
+        type: 'integer'
+    }
+    #swagger.parameters['limit'] = {
+        in: 'query',
+        description: 'Number of records per page (default: 10)',
+        required: false,
+        type: 'integer'
+    }
   */
     try {
-        const result = await subCategoryService.getAllSubCategoriesService();
+        const pageNumber = parseInt(req.query.page_number) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const is_all = req?.query?.is_all == "true";
+        const result = await subCategoryService.getAllSubCategoriesService(
+            pageNumber,
+            limit,
+            is_all,
+        );
         return res.status(result.success ? 200 : 400).json(result);
     } catch (error) {
         return res

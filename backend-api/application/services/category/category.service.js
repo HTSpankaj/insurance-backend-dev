@@ -50,20 +50,25 @@ class CategoryService {
 
     async getCategories(pageNumber, limit, is_all) {
         try {
-            const { data, total } = await this.categoryDatabase.getCategories(pageNumber, limit, is_all);
+            const { data, total } = await this.categoryDatabase.getCategories(
+                pageNumber,
+                limit,
+                is_all,
+            );
             return {
                 success: true,
                 data,
                 metadata: {
                     total_count: total,
-                    ...(!is_all ? {
-                        page: pageNumber,
-                        per_page: limit,
-                        // total_pages
-                    }:{}),
+                    ...(!is_all
+                        ? {
+                              page: pageNumber,
+                              per_page: limit,
+                              // total_pages
+                          }
+                        : {}),
                 },
             };
-            
         } catch (error) {
             return {
                 success: false,
@@ -99,14 +104,25 @@ class CategoryService {
         }
     }
 
-    async getCategoryListWithProductCounts() {
+    async getCategoryListWithProductCounts(pageNumber, limit, is_all) {
         try {
-            const { data, total } = await this.categoryDatabase.getCategoryListWithProductCounts();
+            const { data, total } = await this.categoryDatabase.getCategoryListWithProductCounts(
+                pageNumber,
+                limit,
+                is_all,
+            );
             return {
                 success: true,
-                data: {
-                    categories: data,
-                    total,
+                data,
+                metadata: {
+                    total_count: total,
+                    ...(!is_all
+                        ? {
+                              page: pageNumber,
+                              per_page: limit,
+                              total_pages: Math.ceil(total / limit),
+                          }
+                        : {}),
                 },
             };
         } catch (error) {

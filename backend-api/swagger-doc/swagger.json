@@ -763,6 +763,29 @@
           "Category"
         ],
         "description": "Get categories with product count",
+        "parameters": [
+          {
+            "name": "is_all",
+            "in": "query",
+            "description": "Get all categories",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "description": "Page number (default: 1)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of records per page (default: 10)",
+            "required": false,
+            "type": "integer"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -954,6 +977,29 @@
           "SubCategory"
         ],
         "description": "Get all sub-categories",
+        "parameters": [
+          {
+            "name": "is_all",
+            "in": "query",
+            "description": "Get all categories",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "description": "Page number (default: 1)",
+            "required": false,
+            "type": "integer"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of records per page (default: 10)",
+            "required": false,
+            "type": "integer"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"

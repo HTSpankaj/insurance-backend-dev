@@ -4,7 +4,8 @@ const LeadProductRelationshipManagerRelationDatabase = require("../../../infrast
 class LeadService {
     constructor(supabaseInstance) {
         this.leadDatabase = new LeadDatabase(supabaseInstance);
-        this.leadProductRelationshipManagerRelationDatabase = new LeadProductRelationshipManagerRelationDatabase(supabaseInstance);
+        this.leadProductRelationshipManagerRelationDatabase =
+            new LeadProductRelationshipManagerRelationDatabase(supabaseInstance);
     }
 
     async getLeadList(pageNumber, limit) {
@@ -64,23 +65,30 @@ class LeadService {
                     additional_note,
                 );
             if (createLeadProductRelationResponse) {
-                const leadProductCompanyId = createLeadProductRelationResponse?.product_id?.company_id?.company_id;
-                const leadProductCategoryId = createLeadProductRelationResponse?.product_id?.sub_category_id?.category_id?.category_id;
+                const leadProductCompanyId =
+                    createLeadProductRelationResponse?.product_id?.company_id?.company_id;
+                const leadProductCategoryId =
+                    createLeadProductRelationResponse?.product_id?.sub_category_id?.category_id
+                        ?.category_id;
                 const leadCityId = createLeadProductRelationResponse?.lead_id?.city_id?.id;
-                const leadStateId = createLeadProductRelationResponse?.lead_id?.city_id?.id?.state_id?.id;
+                const leadStateId =
+                    createLeadProductRelationResponse?.lead_id?.city_id?.id?.state_id?.id;
 
-                const leadProductRelationshipManagerRelationDatabaseResponse = await this.leadProductRelationshipManagerRelationDatabase.autoAssignRelationshipManagerToLead(
-                    createLeadProductRelationResponse.lead_product_id,
-                    leadProductCompanyId,
-                    leadProductCategoryId,
-                    leadCityId,
-                    leadStateId
-                )
-                console.log("leadProductRelationshipManagerRelationDatabaseResponse", leadProductRelationshipManagerRelationDatabaseResponse);
+                const leadProductRelationshipManagerRelationDatabaseResponse =
+                    await this.leadProductRelationshipManagerRelationDatabase.autoAssignRelationshipManagerToLead(
+                        createLeadProductRelationResponse.lead_product_id,
+                        leadProductCompanyId,
+                        leadProductCategoryId,
+                        leadCityId,
+                        leadStateId,
+                    );
+                console.log(
+                    "leadProductRelationshipManagerRelationDatabaseResponse",
+                    leadProductRelationshipManagerRelationDatabaseResponse,
+                );
 
                 // Todo: Send whatsapp message to Relationship Manager
                 if (leadProductRelationshipManagerRelationDatabaseResponse) {
-                    
                 }
             }
 

@@ -3,11 +3,11 @@ const bankTableName = "bank_details";
 const { SupabaseClient } = require("@supabase/supabase-js");
 
 const onboardingStatusString = [
-    { title: "Pending", id: 1},
-    { title: "Approved", id: 2},
-    { title: "Re-Submitted", id: 3},
-    { title: "Rejected", id: 4},
-]
+    { title: "Pending", id: 1 },
+    { title: "Approved", id: 2 },
+    { title: "Re-Submitted", id: 3 },
+    { title: "Rejected", id: 4 },
+];
 class AdvisorDatabase {
     /**
      * Constructor for initializing the SubCategoryService
@@ -249,10 +249,11 @@ class AdvisorDatabase {
                 query = query.eq("advisor_status", activeStatus);
             }
             if (onboardingStatus?.length > 0) {
-                const _onboardingStatus = onboardingStatus.filter(f => onboardingStatusString.some(s => s.title === f)).map((m) => onboardingStatusString.find(f => f.title === m).id);
+                const _onboardingStatus = onboardingStatus
+                    .filter(f => onboardingStatusString.some(s => s.title === f))
+                    .map(m => onboardingStatusString.find(f => f.title === m).id);
                 query = query.in("advisor_onboarding_status_id", _onboardingStatus);
                 console.log(_onboardingStatus);
-                
             }
             if (joinAs === "Advisor" || joinAs === "Entrepreneur") {
                 query = query.eq("join_as", joinAs);

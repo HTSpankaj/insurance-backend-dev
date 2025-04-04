@@ -53,16 +53,15 @@ class CategoryDatabase {
         try {
             const offset = (pageNumber - 1) * limit;
             let query = this.db
-            .from(tableName)
-            .select("*", { count: "exact" })
-            .eq("is_delete", false)
-            .order("created_at", { ascending: false })
-            
+                .from(tableName)
+                .select("*", { count: "exact" })
+                .eq("is_delete", false)
+                .order("created_at", { ascending: false });
+
             if (!is_all) {
                 query = query.range(offset, offset + limit - 1);
-                
             }
-            
+
             const { data, error, count } = await query;
 
             if (error) throw error;
@@ -89,11 +88,16 @@ class CategoryDatabase {
         }
     }
 
-    async getCategoryListWithProductCounts() {
+    async getCategoryListWithProductCounts(pageNumber, limit, is_all) {
         try {
-            const { data, error, count } = await this.db
-                .rpc("get_category_list_with_counts", {})
-                .select("*", { count: "exact" });
+            const offset = (pageNumber - 1) * limit;
+            let query = this.db.rpc("get_category_list_with_counts", {}, { count: "exact" });
+
+            if (!is_all && !isNaN(pageNumber) && !isNaN(limit)) {
+                query = query.range(offset, offset + limit - 1);
+            }
+
+            const { data, error, count } = await query;
 
             if (error) throw error;
             return { data, total: count };
