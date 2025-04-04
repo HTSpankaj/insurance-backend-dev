@@ -324,7 +324,7 @@ exports.deleteCityController = async (req, res) => {
   */
 
     try {
-        const { id } = req.params;
+        const { id } = req.body;
         const result = await cityService.deleteCityService(id);
         return res.status(200).json({
             success: true,

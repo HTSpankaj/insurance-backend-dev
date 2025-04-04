@@ -1,8 +1,10 @@
 const LeadDatabase = require("../../../infrastructure/databases/lead/lead.database");
+const LeadProductRelationshipManagerRelationDatabase = require("../../../infrastructure/databases/relationship-manager/lead_product_relationship_manager_relation.database");
 
 class LeadService {
     constructor(supabaseInstance) {
         this.leadDatabase = new LeadDatabase(supabaseInstance);
+        this.leadProductRelationshipManagerRelationDatabase = new LeadProductRelationshipManagerRelationDatabase(supabaseInstance);
     }
 
     async getLeadList(pageNumber, limit) {
@@ -67,8 +69,19 @@ class LeadService {
                 const leadCityId = createLeadProductRelationResponse?.lead_id?.city_id?.id;
                 const leadStateId = createLeadProductRelationResponse?.lead_id?.city_id?.id?.state_id?.id;
 
-                // relationship_manager eq=company_id
-                // relationship_manager_category_relations = category_id
+                const leadProductRelationshipManagerRelationDatabaseResponse = await this.leadProductRelationshipManagerRelationDatabase.autoAssignRelationshipManagerToLead(
+                    createLeadProductRelationResponse.lead_product_id,
+                    leadProductCompanyId,
+                    leadProductCategoryId,
+                    leadCityId,
+                    leadStateId
+                )
+                console.log("leadProductRelationshipManagerRelationDatabaseResponse", leadProductRelationshipManagerRelationDatabaseResponse);
+
+                // Todo: Send whatsapp message to Relationship Manager
+                if (leadProductRelationshipManagerRelationDatabaseResponse) {
+                    
+                }
             }
 
             return {
