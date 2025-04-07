@@ -4009,7 +4009,7 @@
         }
       }
     },
-    "/api/issuance/before-issuance/excel-data": {
+    "/api/issuance/before-issuance/insert-excel-data": {
       "post": {
         "tags": [
           "Issuance"
@@ -4069,6 +4069,105 @@
                         "example": ""
                       },
                       "commission_amount": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "file_name": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "row_number": {
+                        "type": "string",
+                        "example": ""
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/issuance/after-issuance/insert-excel-data": {
+      "post": {
+        "tags": [
+          "Issuance"
+        ],
+        "description": "add after issuance excel data",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "add after issuance excel data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "lead_id": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "lead_name": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "product_id": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "product_name": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "company_name": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "lead_close_date": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "start_date_policy": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "end_date_policy": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "policy_amount": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "payout_type": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "commission_amount": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "commission_transaction_number": {
+                        "type": "number",
+                        "example": 2
+                      },
+                      "commission_start_date": {
                         "type": "string",
                         "example": ""
                       },

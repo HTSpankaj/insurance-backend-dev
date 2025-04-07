@@ -1,7 +1,7 @@
-const BeforeIssuanceExcelDataService = require("../../../application/services/issuance/before_issuance_excel_data.service.js");
+const AfterIssuanceExcelDataService = require("../../../application/services/issuance/after_issuance_excel_data.service.js");
 const { supabaseInstance } = require("../../../supabase-db/index.js");
 
-const beforeIssuanceExcelDataService = new BeforeIssuanceExcelDataService(supabaseInstance);
+const afterIssuanceExcelDataService = new AfterIssuanceExcelDataService(supabaseInstance);
 
 exports.afterIssuanceExcelDataController = async (req, res) => {
     /*
@@ -40,14 +40,13 @@ exports.afterIssuanceExcelDataController = async (req, res) => {
         const { data } = req.body;
         const transaction_created_by_user_id = res.locals.tokenData?.user_id;
 
-        const result =
-            await beforeIssuanceExcelDataService.addBeforeIssuanceExcelDataInBulkDatabase(
-                data,
-                transaction_created_by_user_id,
-            );
+        const result = await afterIssuanceExcelDataService.addAfterIssuanceExcelDataInBulkDatabase(
+            data,
+            transaction_created_by_user_id,
+        );
         return res.status(201).json({
             success: true,
-            message: "Add before issuance excel data successfully.",
+            message: "Add after issuance excel data successfully.",
             data: result,
         });
     } catch (error) {

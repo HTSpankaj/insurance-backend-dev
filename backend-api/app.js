@@ -10,6 +10,9 @@ var indexRouter = require("./routes/index");
 
 const dynamicCors = require("./configs/cors.config");
 
+// Schedule job
+require("./scheduler/InvoiceCreation.scheduler");
+
 var app = express();
 
 // view engine setup
