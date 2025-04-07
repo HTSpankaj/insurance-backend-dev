@@ -1,6 +1,6 @@
 const { body } = require("express-validator");
 
-const { validateClientParamentesAndSendResponse } = require("../validator");
+const { validateClientParametersAndSendResponse } = require("../validator");
 const advisorRegistrationValidateInput = [
     body("join_as").notEmpty().withMessage("Join_as is required"),
     body("name")
@@ -41,7 +41,7 @@ const advisorRegistrationValidateInput = [
         .withMessage("Bank account number is required")
         .matches(/^\d{9,18}$/)
         .withMessage("Bank account number must be 9-18 digits"),
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 const advisorOtpValidateInput = [
@@ -55,7 +55,7 @@ const advisorOtpValidateInput = [
         .withMessage("Purpose_for is required")
         .isIn(["registration", "login"])
         .withMessage('Purpose_for must be "registration" or "login"'),
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 const advisorVerifyValidateInput = [
@@ -77,7 +77,7 @@ const advisorVerifyValidateInput = [
         .withMessage("Purpose_for is required")
         .isIn(["registration", "login"])
         .withMessage('Purpose_for must be "registration" or "login"'),
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 const advisorEmailOtpValidateInput = [
@@ -86,7 +86,7 @@ const advisorEmailOtpValidateInput = [
         .withMessage("Email is required")
         .isEmail()
         .withMessage("Please enter a valid email address"),
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 const advisorEmailVerifyValidateInput = [
@@ -103,7 +103,7 @@ const advisorEmailVerifyValidateInput = [
         .withMessage("Email is required")
         .isEmail()
         .withMessage("Please enter a valid email address"),
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 module.exports = {

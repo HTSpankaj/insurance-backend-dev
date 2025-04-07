@@ -350,6 +350,90 @@
         }
       }
     },
+    "/api/users/{user_id}": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Update Users",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "first_name": {
+                  "type": "string",
+                  "example": "Johs"
+                },
+                "middle_name": {
+                  "type": "string",
+                  "example": "Jony"
+                },
+                "last_name": {
+                  "type": "string",
+                  "example": "patel"
+                },
+                "contact_number": {
+                  "type": "number",
+                  "example": 1234567894
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Delete User",
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/roles/": {
       "post": {
         "tags": [
@@ -400,6 +484,115 @@
             "name": "limit",
             "in": "query",
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/roles/{role_id}": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Update roles",
+        "parameters": [
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Super Admin"
+                },
+                "access": {
+                  "type": "object",
+                  "properties": {
+                    "level": {
+                      "type": "number",
+                      "example": 3
+                    },
+                    "modules": {
+                      "type": "array",
+                      "example": [
+                        "datas",
+                        "analytics",
+                        "dashboards"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "permissions": {
+                      "type": "array",
+                      "example": [
+                        "ready",
+                        "analyzing",
+                        "reporting"
+                      ],
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Delete role",
+        "parameters": [
+          {
+            "name": "role_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "role_id": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -3903,6 +4096,63 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/config/advisor-access/update-config": {
+      "put": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Update advisor access config",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 1
+                },
+                "access": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/config/advisor-access/get-config": {
+      "get": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Get advisor access config",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }

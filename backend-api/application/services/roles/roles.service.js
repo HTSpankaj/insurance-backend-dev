@@ -48,6 +48,42 @@ class RolesService {
             };
         }
     }
+
+    // New method to update a role
+    async updateRole(role_id, title, access) {
+        try {
+            const role = await this.rolesDatabase.updateRole(role_id, title, access);
+            return {
+                success: true,
+                data: role,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                error: {
+                    message: error.message,
+                },
+            };
+        }
+    }
+
+    // New method to soft-delete a role
+    async deleteRole(role_id) {
+        try {
+            const role = await this.rolesDatabase.deleteRole(role_id);
+            return {
+                success: true,
+                data: role,
+            };
+        } catch (error) {
+            return {
+                success: false,
+                error: {
+                    message: error.message,
+                },
+            };
+        }
+    }
 }
 
 module.exports = RolesService;

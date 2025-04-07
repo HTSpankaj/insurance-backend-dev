@@ -1,5 +1,5 @@
 const { body, param, query } = require("express-validator");
-const { validateClientParamentesAndSendResponse } = require("../validator");
+const { validateClientParametersAndSendResponse } = require("../validator");
 
 const getUsersValidation = [
     query("page").default(1).toInt(),
@@ -9,7 +9,7 @@ const getUsersValidation = [
         .toBoolean()
         .isBoolean({ strict: true })
         .withMessage("is_all must be either true or false"),
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 const loginValidateInput = [
     body("email")
@@ -24,7 +24,7 @@ const loginValidateInput = [
         .withMessage(
             "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character",
         ),
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 const getUserByIdValidation = [
@@ -33,7 +33,7 @@ const getUserByIdValidation = [
         .withMessage("User id is required")
         .isUUID()
         .withMessage("Invalid user id format"),
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 const addUserValidation = [
@@ -78,7 +78,7 @@ const addUserValidation = [
         .withMessage("Role id is required")
         .isUUID()
         .withMessage("Invalid role id format"),
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 const updateUserValidation = [
@@ -113,7 +113,7 @@ const updateUserValidation = [
         .withMessage("Role id is required")
         .isUUID()
         .withMessage("Invalid role id format"),
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 const deleteUserValidation = [
@@ -122,7 +122,7 @@ const deleteUserValidation = [
         .withMessage("User id is required")
         .isUUID()
         .withMessage("Invalid user id format"),
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 const activeDeactiveUserValidation = [
@@ -137,7 +137,7 @@ const activeDeactiveUserValidation = [
         .withMessage("is_active is required")
         .isBoolean({ strict: true })
         .withMessage("is_active must be either true or false"),
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 module.exports = {

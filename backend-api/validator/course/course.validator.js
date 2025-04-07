@@ -1,5 +1,5 @@
 const { body } = require("express-validator");
-const { validateClientParamentesAndSendResponse } = require("../validator");
+const { validateClientParametersAndSendResponse } = require("../validator");
 
 const createCourseValidator = [
     body("title").isString().notEmpty().withMessage("Title is required"),
@@ -30,7 +30,7 @@ const createCourseValidator = [
         .isIn(["Saved As Draft", "Published", "Archived"])
         .withMessage('status must be either "Saved As Draft", "Published", or "Archived"'),
 
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 module.exports = { createCourseValidator };

@@ -105,3 +105,103 @@ exports.getUsersController = async (req, res) => {
             .json({ success: false, error: { message: error.message || "Something went wrong!" } });
     }
 };
+
+exports.updateUserController = async (req, res) => {
+    /*
+    #swagger.tags = ['Users']
+    #swagger.description = 'Update Users'
+    #swagger.parameters['body'] ={
+        in: 'body',
+        schema: {
+         
+           "first_name": "Johs",
+           "middle_name": "Jony",
+           "last_name": "patel",
+           "contact_number": 1234567894,
+ 
+        }
+    }
+  */
+    try {
+        const { user_id } = req.params;
+        const { first_name, middle_name, last_name, contact_number } = req.body;
+
+        // Validation
+        const uuidRegex =
+            /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+        if (!user_id || !uuidRegex.test(user_id)) {
+            throw new Error("User ID must be a valid UUID");
+        }
+        if (first_name && typeof first_name !== "string")
+            throw new Error("First name must be a string");
+        if (middle_name && typeof middle_name !== "string")
+            throw new Error("Middle name must be a string");
+        if (last_name && typeof last_name !== "string")
+            throw new Error("Last name must be a string");
+        if (
+            contact_number &&
+            (typeof contact_number !== "number" || !Number.isInteger(contact_number))
+        ) {
+            throw new Error("Contact number must be an integer");
+        }
+
+        const result = await userService.updateUser(
+            user_id,
+            first_name,
+            middle_name,
+            last_name,
+            contact_number,
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "User updated successfully",
+            data: result,
+        });
+    } catch (error) {
+        console.error("Error in updateUserController:", error);
+        const status = error.message === "User not found" ? 404 : 400;
+        return res.status(status).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+exports.deleteUserController = async (req, res) => {
+    /*
+    #swagger.tags = ['Users']
+    #swagger.description = 'Delete User'
+    #swagger.parameters['body'] ={
+        in: 'body',
+        schema: {
+          "user_id": "",
+        }
+    }
+  */
+
+    try {
+        const { user_id } = req.params;
+
+        // Validation
+        const uuidRegex =
+            /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+        if (!user_id || !uuidRegex.test(user_id)) {
+            throw new Error("User ID must be a valid UUID");
+        }
+
+        const result = await userService.deleteUser(user_id);
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        console.error("Error in deleteUserController:", error);
+        const status = error.message === "User not found" ? 404 : 400;
+        return res.status(status).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};

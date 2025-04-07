@@ -81,6 +81,32 @@ class UserService {
             throw new Error(error.message || "Failed to fetch users");
         }
     }
+    // New method to update user
+    async updateUser(user_id, first_name, middle_name, last_name, contact_number) {
+        try {
+            const updatedUser = await this.usersDatabase.updateUser(
+                user_id,
+                first_name,
+                middle_name,
+                last_name,
+                contact_number,
+            );
+            delete updatedUser.password; // Remove password from response
+            return updatedUser;
+        } catch (error) {
+            throw new Error(error.message || "Failed to update user");
+        }
+    }
+    // New method to soft-delete a user
+    async deleteUser(user_id) {
+        try {
+            const deletedUser = await this.usersDatabase.deleteUser(user_id);
+            delete deletedUser.password; // Remove password from response
+            return deletedUser;
+        } catch (error) {
+            throw new Error(error.message || "Failed to delete user");
+        }
+    }
 }
 //---------------------------------------
 

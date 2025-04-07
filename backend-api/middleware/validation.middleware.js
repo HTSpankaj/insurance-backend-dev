@@ -74,7 +74,7 @@ const advisorRegistrationValidateInput = [
         next();
     },
 
-    // validateClientParamentesAndSendResponse
+    // validateClientParametersAndSendResponse
 ];
 
 const advisorOtpValidateInput = [

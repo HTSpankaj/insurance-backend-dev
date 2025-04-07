@@ -1,5 +1,5 @@
 const { body } = require("express-validator");
-const { validateClientParamentesAndSendResponse } = require("../validator");
+const { validateClientParametersAndSendResponse } = require("../validator");
 
 const beforeIssuanceExcelDataValidator = [
     body("data").isArray({ min: 1, max: 20 }).withMessage("Data must be a non-empty array"),
@@ -45,7 +45,7 @@ const beforeIssuanceExcelDataValidator = [
         .isInt({ min: 1 })
         .withMessage("row_number must be a positive integer"),
 
-    validateClientParamentesAndSendResponse,
+    validateClientParametersAndSendResponse,
 ];
 
 module.exports = { beforeIssuanceExcelDataValidator };
