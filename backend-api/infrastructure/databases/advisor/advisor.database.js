@@ -291,7 +291,7 @@ class AdvisorDatabase {
         try {
             const { data, error } = await this.db
                 .from(tableName)
-                .select("*")
+                .select("*, bank_details(*)")
                 .eq("advisor_id", advisorId)
                 .maybeSingle();
 

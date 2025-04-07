@@ -8,6 +8,6 @@ const {
 
 const router = express.Router();
 
-router.post("/excel-data", beforeIssuanceExcelDataValidator, beforeIssuanceExcelDataController);
+router.post("/insert-excel-data", beforeIssuanceExcelDataValidator, beforeIssuanceExcelDataController);
 
 module.exports = router;
