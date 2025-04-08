@@ -3,12 +3,14 @@ const LeadProductRelationshipManagerRelationDatabase = require("../../../infrast
 const jwt = require("jsonwebtoken");
 const { generateOtp } = require("../../../utils/crypto.util");
 const authUtil = require("../../../utils/auth.util.js");
+const LeadProductRelationDatabase = require("../../../infrastructure/databases/lead_product_relation/lead_product_relation.database.js");
 
 class LeadService {
     constructor(supabaseInstance) {
         this.leadDatabase = new LeadDatabase(supabaseInstance);
         this.leadProductRelationshipManagerRelationDatabase =
             new LeadProductRelationshipManagerRelationDatabase(supabaseInstance);
+        this.leadProductRelationDatabase = new LeadProductRelationDatabase(supabaseInstance);
     }
 
     async getLeadList(pageNumber, limit) {
@@ -136,6 +138,33 @@ class LeadService {
             );
         }
     }
+
+    async getLeadProductRelationByAdvisorIdService(page_number, limit, advisor_id) {
+        try {
+            const { data, total_count } =
+                await this.leadProductRelationDatabase.getLeadProductRelationByAdvisorIdDatabase(
+                    page_number,
+                    limit,
+                    advisor_id,
+                );
+            const total_pages = Math.ceil(total_count / limit);
+            return {
+                data,
+                metadata: {
+                    page: page_number,
+                    per_page: limit,
+                    total_count,
+                    total_pages,
+                },
+            };
+        } catch (error) {
+            console.error("Error in getLeadProductRelationByAdvisorIdService:", error);
+            throw new Error(
+                `Failed to fetch lead product relation: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
     async sendLeadOtp(mobile_number) {
         try {
             // const otp = generateOtp(4);
@@ -170,32 +199,6 @@ class LeadService {
                 mobile_number,
             };
         } catch (error) {
-            throw new Error(error.message || "Verification failed");
-        }
-    }
-
-    async verifyLeadMobile(token, otp, mobile_number) {
-        try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || "your-secret-key");
-            const tokenOtp = decoded.otp;
-            const tokenMobile = decoded.mobile_number;
-
-            // Validate mobile number consistency
-            if (tokenMobile !== mobile_number) {
-                throw new Error("Mobile number does not match token");
-            }
-
-            // Check OTP match
-            if (parseInt(otp) !== parseInt(tokenOtp)) {
-                throw new Error("Invalid OTP");
-            }
-
-            return {
-                message: "Mobile number verified successfully",
-                mobile_number,
-            };
-        } catch (error) {
-            console.error("Error in verifyLeadMobile:", error);
             throw new Error(error.message || "Verification failed");
         }
     }

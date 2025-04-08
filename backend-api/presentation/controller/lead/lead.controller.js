@@ -22,18 +22,7 @@ exports.getLeadListController = async (req, res) => {
     #swagger.responses[200] = {
         schema: {
             success: true,
-            data: [{
-                leadname: 'string',
-                product_name: 'string',
-                companyname: 'string',
-                relationship_manager: 'string',
-                priority: 'string',
-                status: 'string',
-                lead_id: 'string',
-                product_id: 'string',
-                advisor_id: 'string',
-                created_at: 'string'
-            }],
+            data: [],
             metadata: {
                 page: 1,
                 per_page: 10,
@@ -59,6 +48,90 @@ exports.getLeadListController = async (req, res) => {
         return res.status(200).json({
             success: true,
             data: result.data,
+            metadata: {
+                page: pageNumber,
+                per_page: limit,
+                total_count: result.total_count,
+                total_pages: result.total_pages,
+            },
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+exports.getLeadListProductByAdvisorIdController = async (req, res) => {
+    /*
+    #swagger.tags = ['leads']
+    #swagger.description = 'Get Lead and product List By Advisor Id'
+    #swagger.parameters['page_number'] = { 
+      in: 'query', 
+      type: 'integer', 
+      required: false, 
+      description: 'Page number (default: 1)',
+      default: 1
+    }
+    #swagger.parameters['limit'] = { 
+      in: 'query', 
+      type: 'integer', 
+      required: false, 
+      description: 'Number of records per page (default: 10)',
+      default: 10 
+    }
+      #swagger.parameters['advisor_id'] = {
+        in: 'query',
+        type: 'string',
+        required: true,
+        description: 'Advisor ID'
+      }
+    #swagger.responses[200] = {
+        schema: {
+            success: true,
+            data: [],
+            metadata: {
+                page: 1,
+                per_page: 10,
+                total_count: 120,
+                total_pages: 12
+            }
+        }
+    }
+    */
+    try {
+        const pageNumber = parseInt(req.query.page_number) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const advisor_id = req.query.advisor_id;
+
+        const result = await leadService.getLeadProductRelationByAdvisorIdService(
+            pageNumber,
+            limit,
+            advisor_id,
+        );
+
+        return res.status(200).json({
+            success: true,
+            data: result?.data?.map(m => {
+                return {
+                    ...m,
+                    policy_amount: m?.before_issuance_excel_data_id?.policy_amount,
+                    total_commission_amount:
+                        m?.after_issuance_transaction?.[0]?.commission_amount *
+                        m?.after_issuance_transaction?.[0]?.actual_number_transaction,
+                    total_commission_received:
+                        m?.after_issuance_transaction?.[0]?.issuance_transaction_invoice?.reduce(
+                            (acc, cur) => acc + cur.paid_amount,
+                            0,
+                        ),
+                    last_payment_date:
+                        m?.after_issuance_transaction?.[0]?.issuance_transaction_invoice?.sort(
+                            (a, b) => new Date(b.created_at) - new Date(a.created_at),
+                        )[0]?.created_at,
+                    payment_logs:
+                        m?.after_issuance_transaction?.[0]?.issuance_transaction_invoice || [],
+                };
+            }),
             metadata: {
                 page: pageNumber,
                 per_page: limit,

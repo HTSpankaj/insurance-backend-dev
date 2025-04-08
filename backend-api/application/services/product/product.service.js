@@ -95,12 +95,13 @@ class ProductService {
         }
     }
 
-    async getProductsByCategoryId(page_number, limit, category_id, search) {
+    async getProductsByCategoryId(page_number, limit, category_id, sub_category_id, search) {
         try {
             const { data, total_count } = await this.productDatabase.getProductsByCategoryId(
                 page_number,
                 limit,
                 category_id,
+                sub_category_id,
                 search,
             );
             const total_pages = Math.ceil(total_count / limit);

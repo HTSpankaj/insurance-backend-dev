@@ -129,12 +129,13 @@ class ProductDatabase {
         }
     }
 
-    async getProductsByCategoryId(page_number, limit, category_id, search) {
+    async getProductsByCategoryId(page_number, limit, category_id, sub_category_id, search) {
         try {
             const { data, error } = await this.db.rpc("get_products_by_category_id", {
                 p_page_number: page_number,
                 p_limit: limit,
-                p_category_id: category_id,
+                p_category_id: category_id || null,
+                p_sub_category_id: sub_category_id || null,
                 p_search: search || null,
             });
 

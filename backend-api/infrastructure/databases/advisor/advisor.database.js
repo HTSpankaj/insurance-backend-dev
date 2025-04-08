@@ -242,7 +242,11 @@ class AdvisorDatabase {
             const from = (page - 1) * perPage;
             const to = from + perPage - 1;
 
-            let query = this.db.from(tableName).select("*");
+            let query = this.db
+                .from(tableName)
+                .select("*, advisor_onboarding_status_id(id, title)", {
+                    count: "exact",
+                });
 
             // Apply filters
             if (activeStatus === "Active" || activeStatus === "Inactive") {
@@ -253,7 +257,7 @@ class AdvisorDatabase {
                     .filter(f => onboardingStatusString.some(s => s.title === f))
                     .map(m => onboardingStatusString.find(f => f.title === m).id);
                 query = query.in("advisor_onboarding_status_id", _onboardingStatus);
-                console.log(_onboardingStatus);
+                // console.log(_onboardingStatus);
             }
             if (joinAs === "Advisor" || joinAs === "Entrepreneur") {
                 query = query.eq("join_as", joinAs);
@@ -261,25 +265,9 @@ class AdvisorDatabase {
             // Add ORDER BY created_at (descending order, newest first)
             query = query.order("created_at", { ascending: false });
             // Get paginated data
-            const { data, error } = await query.range(from, to);
+            const { data, error, count } = await query.range(from, to);
             if (error) throw error;
 
-            // Get total count with the same filters
-            let countQuery = this.db.from(tableName).select("*", { count: "exact", head: true });
-            if (activeStatus === "Active" || activeStatus === "Inactive") {
-                countQuery = countQuery.eq("advisor_status", activeStatus);
-            }
-            if (onboardingStatus === "pending") {
-                countQuery = countQuery.eq("advisor_onboarding_status_id", 1);
-            }
-            if (joinAs === "Advisor" || joinAs === "Entrepreneur") {
-                countQuery = countQuery.eq("join_as", joinAs);
-            }
-            const { count, countError } = await countQuery;
-            if (countError) throw countError;
-
-            // console.log("Advisors fetched:", data);
-            // console.log("Total count:", count);
             return { advisors: data || [], totalCount: count || 0 };
         } catch (error) {
             console.error("Error in getAdvisorsWithPagination:", error);
