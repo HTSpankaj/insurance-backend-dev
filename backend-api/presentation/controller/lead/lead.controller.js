@@ -198,3 +198,88 @@ exports.getLeadStatisticsNumberController = async (req, res) => {
         });
     }
 };
+
+exports.leadMobileSendOtpController = async (req, res) => {
+    /*
+        #swagger.tags = ['leads']
+        #swagger.description = 'Send otp to advisor mobile number'
+        #swagger.parameters['body'] = {
+            in: 'body',
+            schema: {
+                mobile_number: '1234567890',
+            }
+        }
+    */ try {
+        const { mobile_number } = req.body;
+
+        // Convert mobile_number to a number if it’s a string
+        const mobileNumber =
+            typeof mobile_number === "string" ? parseInt(mobile_number, 10) : mobile_number;
+
+        // Validation
+        if (!mobileNumber || isNaN(mobileNumber) || mobileNumber.toString().length !== 10) {
+            throw new Error("Mobile number must be a 10-digit number");
+        }
+
+        const result = await leadService.sendLeadOtp(mobileNumber);
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+// New verifyAdvisorMobileController
+exports.leadMobileVerifyController = async (req, res) => {
+    /*
+      #swagger.tags = ['leads']
+      #swagger.description = 'Verify advisor mobile number using OTP'
+      #swagger.parameters['body'] = {
+      in: 'body',
+      schema: {
+        
+          token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+          otp: 1234,
+          mobile_number: '1234567890',
+    
+        
+      }
+    }
+    */
+    try {
+        const { token, otp, mobile_number } = req.body;
+
+        // Convert to number if string
+        const mobileNumber =
+            typeof mobile_number === "string" ? parseInt(mobile_number, 10) : mobile_number;
+
+        // Validation
+        if (!token || typeof token !== "string") {
+            throw new Error("Token must be a string");
+        }
+        if (!otp || typeof otp !== "number" || otp.toString().length !== 4) {
+            throw new Error("OTP must be a 4-digit number");
+        }
+        if (!mobileNumber || isNaN(mobileNumber) || mobileNumber.toString().length !== 10) {
+            throw new Error("Mobile number must be a 10-digit number");
+        }
+
+        const result = await leadService.verifyLeadMobile(token, otp, mobileNumber);
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};

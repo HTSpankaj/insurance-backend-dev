@@ -231,3 +231,55 @@ exports.getProductListByCompanyIdController = async (req, res) => {
         });
     }
 };
+
+exports.getProductsByCategoryIdController = async (req, res) => {
+    /*
+    #swagger.tags = ['Product']
+    #swagger.description = 'Get products by category ID with pagination and search'
+    #swagger.parameters['page_number'] = { in: 'query', type: 'integer', required: false, description: 'Page number (default: 1)' }
+    #swagger.parameters['limit'] = { in: 'query', type: 'integer', required: false, description: 'Number of records per page (default: 10)' }
+    #swagger.parameters['category_id'] = { in: 'query', type: 'string', required: true, description: 'Category ID (UUID)' 
+    
+    }
+    #swagger.parameters['search'] = { in: 'query', type: 'string', required: false, description: 'Search term for product name, subcategory, or company name' }
+  */
+    try {
+        const { page_number, limit, category_id, search } = req.query;
+        const uuidRegex =
+            /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+
+        const pageNumber = parseInt(page_number) || 1;
+        const limitPerPage = parseInt(limit) || 10;
+
+        if (pageNumber < 1) throw new Error("page_number must be a positive integer");
+        if (limitPerPage < 1 || limitPerPage > 100)
+            throw new Error("limit must be between 1 and 100");
+        if (!category_id || !uuidRegex.test(category_id))
+            throw new Error("category_id must be a valid UUID");
+        if (search && (typeof search !== "string" || search.trim().length < 1))
+            throw new Error("Search term must be a non-empty string");
+
+        const result = await productService.getProductsByCategoryId(
+            pageNumber,
+            limitPerPage,
+            category_id,
+            search?.trim(),
+        );
+
+        return res.status(200).json({
+            success: true,
+            data: result.data,
+            metadata: {
+                page: pageNumber,
+                per_page: limitPerPage,
+                total_count: result.total_count,
+                total_pages: result.total_pages,
+            },
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};

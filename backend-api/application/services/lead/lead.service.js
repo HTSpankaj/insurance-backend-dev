@@ -1,5 +1,8 @@
 const LeadDatabase = require("../../../infrastructure/databases/lead/lead.database");
 const LeadProductRelationshipManagerRelationDatabase = require("../../../infrastructure/databases/relationship-manager/lead_product_relationship_manager_relation.database");
+const jwt = require("jsonwebtoken");
+const { generateOtp } = require("../../../utils/crypto.util");
+const authUtil = require("../../../utils/auth.util.js");
 
 class LeadService {
     constructor(supabaseInstance) {
@@ -131,6 +134,69 @@ class LeadService {
             throw new Error(
                 `Failed to fetch lead statistics: ${error.message || JSON.stringify(error)}`,
             );
+        }
+    }
+    async sendLeadOtp(mobile_number) {
+        try {
+            // const otp = generateOtp(4);
+            const otp = 1234;
+            const token = jwt.sign(
+                { mobile_number, otp },
+                process.env.JWT_SECRET || "your-secret-key",
+                { expiresIn: "10m" },
+            );
+
+            return { token, mobile_number };
+        } catch (error) {
+            throw new Error(`Failed to send OTP: ${error.message}`);
+        }
+    }
+
+    async verifyLeadMobile(token, otp, mobile_number) {
+        try {
+            const decoded = verifyToken(token);
+            const tokenOtp = decoded.otp;
+            const tokenMobile = decoded.mobile_number;
+
+            if (tokenMobile !== mobile_number) {
+                throw new Error("Mobile number does not match token");
+            }
+            if (parseInt(otp) !== parseInt(tokenOtp)) {
+                throw new Error("Invalid OTP");
+            }
+
+            return {
+                message: "Mobile number verified successfully",
+                mobile_number,
+            };
+        } catch (error) {
+            throw new Error(error.message || "Verification failed");
+        }
+    }
+
+    async verifyLeadMobile(token, otp, mobile_number) {
+        try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET || "your-secret-key");
+            const tokenOtp = decoded.otp;
+            const tokenMobile = decoded.mobile_number;
+
+            // Validate mobile number consistency
+            if (tokenMobile !== mobile_number) {
+                throw new Error("Mobile number does not match token");
+            }
+
+            // Check OTP match
+            if (parseInt(otp) !== parseInt(tokenOtp)) {
+                throw new Error("Invalid OTP");
+            }
+
+            return {
+                message: "Mobile number verified successfully",
+                mobile_number,
+            };
+        } catch (error) {
+            console.error("Error in verifyLeadMobile:", error);
+            throw new Error(error.message || "Verification failed");
         }
     }
 }

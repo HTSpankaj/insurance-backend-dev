@@ -94,6 +94,23 @@ class ProductService {
             );
         }
     }
+
+    async getProductsByCategoryId(page_number, limit, category_id, search) {
+        try {
+            const { data, total_count } = await this.productDatabase.getProductsByCategoryId(
+                page_number,
+                limit,
+                category_id,
+                search,
+            );
+            const total_pages = Math.ceil(total_count / limit);
+            return { data, total_count, total_pages };
+        } catch (error) {
+            throw new Error(
+                `Failed to fetch products by category: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 }
 
 module.exports = ProductService;
