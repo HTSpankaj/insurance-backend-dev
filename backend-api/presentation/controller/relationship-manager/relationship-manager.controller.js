@@ -21,7 +21,7 @@ exports.addRelationshipManagerController = async (req, res) => {
 
     */
     try {
-        const { name, contact_number, region, category } = req.body;
+        const { name, contact_number, region, category, company_id } = req.body;
 
         // Validation
         if (!name || typeof name !== "string" || name.trim().length < 2) {
