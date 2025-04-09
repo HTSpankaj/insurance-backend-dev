@@ -8,13 +8,14 @@ class RelationshipManagerDatabase {
         this.db = supabaseInstance;
     }
 
-    async createRelationshipManager(name, contact_number) {
+    async createRelationshipManager(name, contact_number, company_id) {
         try {
             const { data, error } = await this.db
                 .from(relationshipManagerTableName)
                 .insert({
                     name,
                     contact_number,
+                    company_id
                 })
                 .select()
                 .maybeSingle();

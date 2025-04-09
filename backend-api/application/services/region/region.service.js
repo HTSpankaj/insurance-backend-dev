@@ -5,10 +5,10 @@ class RegionService {
         this.regionDatabase = new RegionDatabase(supabaseInstance);
     }
 
-    async addRegion(title, state, city) {
+    async addRegion(title, state, city, company_id) {
         try {
             // Insert into region table
-            const region = await this.regionDatabase.createRegion(title);
+            const region = await this.regionDatabase.createRegion(title, company_id);
 
             // Insert into region_state table
             await this.regionDatabase.createRegionStates(region.region_id, state);

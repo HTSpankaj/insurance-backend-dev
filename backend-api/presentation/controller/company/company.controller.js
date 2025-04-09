@@ -172,6 +172,7 @@ exports.addRegionController = async (req, res) => {
     in: 'body',
     schema:  {
         title: 'North Region',
+        company_id: '550e8400-e29b-41d4-a716-446655440000',
         state: ['550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001'],
         city: ['550e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440003']
       }
@@ -179,7 +180,7 @@ exports.addRegionController = async (req, res) => {
   }
   */
     try {
-        const { title, state, city } = req.body;
+        const { title, state, city, company_id } = req.body;
 
         // Validation
         if (!title || typeof title !== "string" || title.trim().length < 2) {
@@ -205,7 +206,7 @@ exports.addRegionController = async (req, res) => {
             }
         });
 
-        const result = await regionService.addRegion(title, state, city);
+        const result = await regionService.addRegion(title, state, city, company_id);
 
         return res.status(200).json({
             success: true,

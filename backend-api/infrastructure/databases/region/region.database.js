@@ -8,11 +8,11 @@ class RegionDatabase {
         this.db = supabaseInstance;
     }
 
-    async createRegion(title) {
+    async createRegion(title, company_id) {
         try {
             const { data, error } = await this.db
                 .from(regionTableName)
-                .insert({ title })
+                .insert({ title, company_id })
                 .select()
                 .maybeSingle();
 

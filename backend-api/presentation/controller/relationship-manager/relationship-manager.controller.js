@@ -12,6 +12,7 @@ exports.addRelationshipManagerController = async (req, res) => {
       schema: {
           name: 'John Doe',
           contact_number: 1234567890,
+          company_id: '550e8400-e29b-41d4-a716-446655440000',
           region: ["39357ef5-e5b7-47d2-98ad-750e202bb49d","e26b14ae-66d0-4ce2-aaa4-fb2b3b82211d"],
           category: ["50f9a13b-d878-454f-a84a-3a1ca0d7a843","7ca19a57-fdbc-4756-bcdb-b8f1623f36a9"]
         }
@@ -54,6 +55,7 @@ exports.addRelationshipManagerController = async (req, res) => {
             contact_number.toString(), // Convert to string for database
             region,
             category,
+            company_id
         );
 
         return res.status(200).json({

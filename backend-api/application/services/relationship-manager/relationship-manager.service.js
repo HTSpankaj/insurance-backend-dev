@@ -5,13 +5,14 @@ class RelationshipManagerService {
         this.relationshipManagerDatabase = new RelationshipManagerDatabase(supabaseInstance);
     }
 
-    async addRelationshipManager(name, contact_number, region, category) {
+    async addRelationshipManager(name, contact_number, region, category, company_id) {
         try {
             // Insert into relationship_manager table
             const relationshipManager =
                 await this.relationshipManagerDatabase.createRelationshipManager(
                     name,
                     contact_number,
+                    company_id
                 );
 
             // Insert into relationship_manager_region_relations table
