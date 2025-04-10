@@ -1,7 +1,7 @@
-const tableName = "advisor_company_access";
+const tableName = "advisor_category_access";
 const { SupabaseClient } = require("@supabase/supabase-js");
 
-class AdvisorCompanyAccessDatabase {
+class AdvisorCategoryAccessDatabase {
     /**
      * Constructor for initializing the SubCategoryService
      * @param {SupabaseClient} supabaseInstance - The Supabase instance
@@ -10,25 +10,25 @@ class AdvisorCompanyAccessDatabase {
         this.db = supabaseInstance;
     }
 
-    async upsertAdvisorCompanyAccessDatabase(advisor_company_access_array) {
+    async upsertAdvisorCategoryAccessDatabase(advisor_category_access_array) {
         try {
             const { data, error } = await this.db
                 .from(tableName)
-                .upsert(advisor_company_access_array, { onConflict: "company_id, advisor_id" })
+                .upsert(advisor_category_access_array, { onConflict: "category_id, advisor_id" })
                 .select();
 
             if (error) throw error;
             return data;
         } catch (error) {
-            throw new Error(`Failed to upsert advisor_company_access: ${error.message}`);
+            throw new Error(`Failed to upsert advisor_category_access: ${error.message}`);
         }
     }
 
-    async getAdvisorCompanyAccessDatabase(advisor_id) {
+    async getAdvisorCategoryAccessDatabase(advisor_id) {
         try {
             const { data, error, count } = await this.db
                 .from(tableName)
-                .select("company_id(company_id,company_name),is_access, advisor_id", {
+                .select("category_id(category_id,title),is_access, advisor_id", {
                     count: "exact",
                 })
                 .eq("advisor_id", advisor_id);
@@ -36,9 +36,9 @@ class AdvisorCompanyAccessDatabase {
             if (error) throw error;
             return { data, total: count };
         } catch (error) {
-            throw new Error(`Failed to get advisor_company_access: ${error.message}`);
+            throw new Error(`Failed to get advisor_category_access: ${error.message}`);
         }
     }
 }
 
-module.exports = AdvisorCompanyAccessDatabase;
+module.exports = AdvisorCategoryAccessDatabase;

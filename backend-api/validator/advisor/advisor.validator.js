@@ -124,6 +124,24 @@ const upsertAdvisorCompanyAccessValidator = [
 
     validateClientParametersAndSendResponse,
 ];
+const upsertAdvisorCategoryAccessValidator = [
+    body("advisor_category_access_array")
+        .isArray({ min: 1 })
+        .withMessage("Data must be a non-empty array"),
+    body("advisor_category_access_array.*.advisor_id")
+        .isString()
+        .notEmpty()
+        .withMessage("advisor_id is required"),
+    body("advisor_category_access_array.*.category_id")
+        .isString()
+        .notEmpty()
+        .withMessage("category_id is required"),
+    body("advisor_category_access_array.*.is_access")
+        .isBoolean()
+        .withMessage("is_access must be a boolean"),
+
+    validateClientParametersAndSendResponse,
+];
 module.exports = {
     advisorRegistrationValidateInput,
     advisorOtpValidateInput,
@@ -131,4 +149,5 @@ module.exports = {
     advisorEmailOtpValidateInput,
     advisorEmailVerifyValidateInput,
     upsertAdvisorCompanyAccessValidator,
+    upsertAdvisorCategoryAccessValidator
 };

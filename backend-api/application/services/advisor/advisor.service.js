@@ -254,8 +254,9 @@ class AdvisorService {
                 joinAs,
             );
 
+            let _advisors = [];
             if (advisors) {
-                advisors = advisors.map(m => ({
+                _advisors = advisors.map(m => ({
                     ...m,
                     onboarding_status: m.advisor_onboarding_status_id.title,
                 }));
@@ -264,7 +265,7 @@ class AdvisorService {
             const totalPages = Math.ceil(totalCount / perPage);
 
             return {
-                advisors,
+                advisors: _advisors,
                 metadata: {
                     page,
                     per_page: perPage,

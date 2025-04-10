@@ -13,6 +13,8 @@ const {
     resubmitAdvisorRequestController,
     upsertAdvisorCompanyAccessController,
     getAdvisorCompanyAccessController,
+    getAdvisorCategoryAccessController,
+upsertAdvisorCategoryAccessController
 } = require("../../../presentation/controller/advisor/advisor.controller");
 const upload = require("../../../middleware/multer.middleware");
 
@@ -23,6 +25,7 @@ const {
     advisorEmailOtpValidateInput,
     advisorEmailVerifyValidateInput,
     upsertAdvisorCompanyAccessValidator,
+    upsertAdvisorCategoryAccessValidator,
 } = require("../../../validator/advisor/advisor.validator");
 
 const { authenticateToken } = require("../../../middleware/auth");
@@ -47,13 +50,22 @@ router.get("/advisor-list", authenticateToken, getAdvisorListController);
 router.get("/advisor-details/:id", authenticateToken, getAdvisorDetailsByIdController);
 router.put("/advisor-request-approve", authenticateToken, approveAdvisorRequestController);
 router.put("/advisor-request-reject", authenticateToken, rejectAdvisorRequestController);
+// router.put("/advisor-request-resubmit", authenticateToken, resubmitAdvisorRequestController);
 
+//* Company Access
 router.get("/get-advisor-company-access", getAdvisorCompanyAccessController);
 router.put(
     "/upsert-advisor-company-access",
     upsertAdvisorCompanyAccessValidator,
     upsertAdvisorCompanyAccessController,
 );
-// router.put("/advisor-request-resubmit", authenticateToken, resubmitAdvisorRequestController);
+
+//* Category Access
+router.get("/get-advisor-category-access", getAdvisorCategoryAccessController);
+router.put(
+    "/upsert-advisor-category-access",
+    upsertAdvisorCategoryAccessValidator,
+    upsertAdvisorCategoryAccessController,
+);
 
 module.exports = router;

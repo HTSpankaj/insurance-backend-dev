@@ -1,9 +1,11 @@
 const { supabaseInstance } = require("../../../supabase-db/index.js");
 const AdvisorService = require("../../../application/services/advisor/advisor.service.js");
 const AdvisorCompanyAccessService = require("../../../application/services/advisor/advisor_company_access.service.js");
+const AdvisorCategoryAccessService = require("../../../application/services/advisor/advisor_catgory_access.service.js");
 
 const advisorService = new AdvisorService(supabaseInstance);
 const advisorCompanyAccessService = new AdvisorCompanyAccessService(supabaseInstance);
+const advisorCategoryAccessService = new AdvisorCategoryAccessService(supabaseInstance);
 
 exports.createAdvisorController = async (req, res) => {
     /*
@@ -52,7 +54,7 @@ exports.createAdvisorController = async (req, res) => {
         const pan_card_file = req.files?.pan_card_file?.[0];
 
         if (!aadhar_card_file || !pan_card_file) {
-            return res.status(400).json({
+            return res.status(500).json({
                 success: false,
                 error: { message: "Aadhar and PAN card files are required" },
             });
@@ -149,7 +151,7 @@ exports.verifyAdvisorMobileController = async (req, res) => {
             ...result, // Spread result based on purpose_for
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -180,7 +182,7 @@ exports.sendAdvisorEmailOtpController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -212,7 +214,7 @@ exports.verifyAdvisorEmailController = async (req, res) => {
             ...result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -249,7 +251,7 @@ exports.getAdvisorStatisticsController = async (req, res) => {
             data: stats,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -317,7 +319,7 @@ exports.getAdvisorListController = async (req, res) => {
             metadata: result.metadata,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -389,7 +391,7 @@ exports.getAdvisorDetailsByIdController = async (req, res) => {
             data: advisor,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -428,7 +430,7 @@ exports.approveAdvisorRequestController = async (req, res) => {
             data: updatedAdvisor,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -467,7 +469,7 @@ exports.approveAdvisorRequestController = async (req, res) => {
 //             data: updatedAdvisor, // Returns updated advisor; adjust to {} if needed
 //         });
 //     } catch (error) {
-//         return res.status(400).json({
+//         return res.status(500).json({
 //             success: false,
 //             error: { message: error.message || "Something went wrong!" },
 //         });
@@ -521,7 +523,7 @@ exports.rejectAdvisorRequestController = async (req, res) => {
             data: updatedAdvisor, // Returns updated advisor; adjust to {} if needed
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -544,7 +546,7 @@ exports.getAdvisorCompanyAccessController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -579,7 +581,65 @@ exports.upsertAdvisorCompanyAccessController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+
+exports.getAdvisorCategoryAccessController = async (req, res) => {
+    /*
+    #swagger.tags = ['Advisor']
+    #swagger.description = 'Get advisor category access'
+    #parameters['advisor_id'] = { in: 'query', type: 'string', required: true, description: 'Advisor ID' }
+    */
+    try {
+        const { advisor_id } = req.query;
+        const result = await advisorCategoryAccessService.getAdvisorCategoryAccessService(advisor_id);
+        return res.status(200).json({
+            success: true,
+            message: "Get advisor category access successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+exports.upsertAdvisorCategoryAccessController = async (req, res) => {
+    /*
+    #swagger.tags = ['Advisor']
+    #swagger.description = 'Upsert advisor category access'
+    #swagger.parameters['body'] = {
+        in: 'body',
+        schema: {
+            advisor_category_access_array: [
+                {
+                    "advisor_id": "550e8400-e29b-41d4-a716-446655440000",
+                    "category_id": "550e8400-e29b-41d4-a716-446655440000",
+                    "is_access": true
+                }
+            ]
+        }
+    }
+    */
+    try {
+        const { advisor_category_access_array } = req.body;
+        const result = await advisorCategoryAccessService.upsertAdvisorCategoryAccessService(
+            advisor_category_access_array,
+        );
+        return res.status(201).json({
+            success: true,
+            message: "Upsert advisor category access successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
