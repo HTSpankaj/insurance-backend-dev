@@ -373,6 +373,29 @@ class AdvisorDatabase {
             );
         }
     }
+
+    async updateAdvisorTabAccessDatabase(advisor_id, tab_access) {
+        try {
+            const { data, error } = await this.db
+                .from(tableName)
+                .update({ tab_access })
+                .eq("advisor_id", advisor_id)
+                .select()
+                .maybeSingle();
+
+            if (error) {
+                console.error("Supabase error in updateAdvisorTabAccessDatabase:", error);
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in updateAdvisorTabAccessDatabase:", error);
+            throw new Error(
+                `Failed to update advisor tab access: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 }
 
 module.exports = AdvisorDatabase;

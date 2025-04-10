@@ -106,6 +106,16 @@ const advisorEmailVerifyValidateInput = [
     validateClientParametersAndSendResponse,
 ];
 
+const updateAdvisorTabAccessValidator = [
+    body("advisor_id")
+        .notEmpty()
+        .withMessage("Advisor ID is required")
+        .isUUID()
+        .withMessage("Invalid advisor ID format"),
+    body("tab_access").notEmpty().withMessage("access is required."),
+    validateClientParametersAndSendResponse,
+];
+
 const upsertAdvisorCompanyAccessValidator = [
     body("advisor_company_access_array")
         .isArray({ min: 1 })
@@ -148,6 +158,7 @@ module.exports = {
     advisorVerifyValidateInput,
     advisorEmailOtpValidateInput,
     advisorEmailVerifyValidateInput,
+    updateAdvisorTabAccessValidator,
     upsertAdvisorCompanyAccessValidator,
-    upsertAdvisorCategoryAccessValidator
+    upsertAdvisorCategoryAccessValidator,
 };

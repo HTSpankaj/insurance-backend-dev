@@ -530,6 +530,34 @@ exports.rejectAdvisorRequestController = async (req, res) => {
     }
 };
 
+exports.updateAdvisorTabAccessController = async (req, res) => {
+    /*
+    #swagger.tags = ['Advisor']
+    #swagger.description = 'Update advisor tab access'
+    #swagger.parameters['body'] = {
+        in: 'body',
+        schema: {
+            advisor_id: "550e8400-e29b-41d4-a716-446655440000",
+            tab_access: {}
+        }
+    }
+    */
+    try {
+        const { advisor_id, tab_access } = req.body;
+        const result = await advisorService.updateAdvisorTabAccessService(advisor_id, tab_access);
+        return res.status(200).json({
+            success: true,
+            message: "Update advisor tab access config successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
 //*  ~~~~~~ Advisor company Access ~~~~~~
 exports.getAdvisorCompanyAccessController = async (req, res) => {
     /*
@@ -588,7 +616,6 @@ exports.upsertAdvisorCompanyAccessController = async (req, res) => {
     }
 };
 
-
 exports.getAdvisorCategoryAccessController = async (req, res) => {
     /*
     #swagger.tags = ['Advisor']
@@ -597,7 +624,8 @@ exports.getAdvisorCategoryAccessController = async (req, res) => {
     */
     try {
         const { advisor_id } = req.query;
-        const result = await advisorCategoryAccessService.getAdvisorCategoryAccessService(advisor_id);
+        const result =
+            await advisorCategoryAccessService.getAdvisorCategoryAccessService(advisor_id);
         return res.status(200).json({
             success: true,
             message: "Get advisor category access successfully.",

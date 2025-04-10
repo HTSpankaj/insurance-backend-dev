@@ -14,7 +14,8 @@ const {
     upsertAdvisorCompanyAccessController,
     getAdvisorCompanyAccessController,
     getAdvisorCategoryAccessController,
-upsertAdvisorCategoryAccessController
+    upsertAdvisorCategoryAccessController,
+    updateAdvisorTabAccessController,
 } = require("../../../presentation/controller/advisor/advisor.controller");
 const upload = require("../../../middleware/multer.middleware");
 
@@ -26,6 +27,7 @@ const {
     advisorEmailVerifyValidateInput,
     upsertAdvisorCompanyAccessValidator,
     upsertAdvisorCategoryAccessValidator,
+    updateAdvisorTabAccessValidator,
 } = require("../../../validator/advisor/advisor.validator");
 
 const { authenticateToken } = require("../../../middleware/auth");
@@ -50,6 +52,11 @@ router.get("/advisor-list", authenticateToken, getAdvisorListController);
 router.get("/advisor-details/:id", authenticateToken, getAdvisorDetailsByIdController);
 router.put("/advisor-request-approve", authenticateToken, approveAdvisorRequestController);
 router.put("/advisor-request-reject", authenticateToken, rejectAdvisorRequestController);
+router.put(
+    "/advisor-tab-access",
+    updateAdvisorTabAccessValidator,
+    updateAdvisorTabAccessController,
+);
 // router.put("/advisor-request-resubmit", authenticateToken, resubmitAdvisorRequestController);
 
 //* Company Access
