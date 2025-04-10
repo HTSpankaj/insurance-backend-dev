@@ -11,39 +11,82 @@ exports.getLeadListController = async (req, res) => {
       in: 'query', 
       type: 'integer', 
       required: false, 
-      description: 'Page number (default: 1)' 
+      description: 'Page number (default: 1)' ,
+      default: 1
+      }
+      #swagger.parameters['limit'] = { 
+        in: 'query', 
+        type: 'integer', 
+        required: false, 
+        description: 'Number of records per page (default: 10)' ,
+        default: 10
     }
-    #swagger.parameters['limit'] = { 
+    #swagger.parameters['search'] = {
+        in: 'query', 
+        type: 'string', 
+        required: false, 
+        description: 'Search term for lead name',
+        default: ''
+    }
+    #swagger.parameters['status'] = { 
       in: 'query', 
-      type: 'integer', 
+      type: 'string', 
       required: false, 
-      description: 'Number of records per page (default: 10)' 
+      description: 'Filter by lead status', 
+      enum: ['', 'New', 'Assigned', 'Sold', 'Lost'], 
+      example: 'Active',
+      default: ''
     }
-    #swagger.responses[200] = {
-        schema: {
-            success: true,
-            data: [],
-            metadata: {
-                page: 1,
-                per_page: 10,
-                total_count: 120,
-                total_pages: 12
-            }
-        }
+    #swagger.parameters['priority'] = { 
+      in: 'query', 
+      type: 'string', 
+      required: false, 
+      description: 'Filter by lead priority', 
+      enum: ['', 'High', 'Medium', 'Low'], 
+      example: 'Active',
+      default: ''
+    }
+    #swagger.parameters['category_id'] = { 
+      in: 'query', 
+      type: 'string', 
+      required: false, 
+      description: 'Category ID (UUID) OR null',
+      default: null
+    }
+    #swagger.parameters['company_id'] = { 
+      in: 'query', 
+      type: 'string', 
+      required: false, 
+      description: 'Company ID (UUID) OR null',
+      default: null
     }
     */
     try {
         const pageNumber = parseInt(req.query.page_number) || 1;
         const limit = parseInt(req.query.limit) || 10;
 
+        const search = req.query.search || null;
+        const status = req.query.status || null;
+        const priority = req.query.priority || null;
+        const category_id = req.query.category_id || null;
+        const company_id = req.query.company_id || null;
+
         if (pageNumber < 1) {
             throw new Error("page_number must be a positive integer");
         }
-        if (limit < 1 || limit > 100) {
-            throw new Error("limit must be between 1 and 100");
+        if (limit < 1) {
+            throw new Error("limit must be a positive integer");
         }
 
-        const result = await leadService.getLeadList(pageNumber, limit);
+        const result = await leadService.getLeadList(
+            pageNumber,
+            limit,
+            search,
+            status,
+            priority,
+            category_id,
+            company_id,
+        );
 
         return res.status(200).json({
             success: true,
@@ -51,8 +94,8 @@ exports.getLeadListController = async (req, res) => {
             metadata: {
                 page: pageNumber,
                 per_page: limit,
-                total_count: result.total_count,
-                total_pages: result.total_pages,
+                current_page_count: result.total_count,
+                // total_pages: result.total_pages,
             },
         });
     } catch (error) {

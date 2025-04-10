@@ -3,76 +3,57 @@ const leadTableName = "lead";
 const { SupabaseClient } = require("@supabase/supabase-js");
 
 class LeadDatabase {
+    /**
+     * Constructor for initializing the SubCategoryService
+     * @param {SupabaseClient} supabaseInstance - The Supabase instance
+     */
     constructor(supabaseInstance) {
         this.db = supabaseInstance;
     }
 
     // lead.database.js
-    async getLeadsWithPagination(offset, limit) {
+    async getLeadsWithPagination(
+        pageNumber,
+        limit,
+        search,
+        status,
+        priority,
+        category_id,
+        company_id,
+    ) {
         try {
-            // Fetch total count
-            const { count, error: countError } = await this.db
-                .from("lead_product_relation")
-                .select("*", { count: "exact", head: true });
+            const offset = (pageNumber - 1) * limit;
+            const limit_val = offset + limit - 1;
 
-            if (countError) {
-                console.error("Supabase error in getLeadsWithPagination (count):", countError);
-                throw countError;
-            }
+            // console.log({offset, limit_val});
 
-            // Fetch paginated data with corrected joins
-            const { data, error } = await this.db
-                .from("lead_product_relation")
-                .select(
-                    `
-                    lead_id,
-                    lead:lead_id (
-                        name,
-                        lead_display_id                   
-                         ),
-                    product:product_id (
-                        product_name,
-                        company:company_id (
-                            company_name
-                        )
-                    ),
-                    relationship_managers:advisor_id (
-                        name
-                    ),
-                    lead_status:lead_status_id (
-                        title
-                    ),
-                    priority,
-                    created_at
-                `,
-                )
-                .order("created_at", { ascending: false })
-                .range(offset, offset + limit - 1);
+            const { data, error, count } = await this.db.rpc(
+                "get_lead_product_relations",
+                {
+                    offset_val: offset,
+                    limit_val: limit_val,
+                    search_val: search,
+                    status_val: status,
+                    priority_val: priority,
+                    category_id_val: category_id,
+                    company_id_val: company_id,
+                },
+                {
+                    count: "exact",
+                },
+            );
 
             if (error) {
-                console.error("Supabase error in getLeadsWithPagination (data):", error);
+                console.error("Supabase error in get_lead_product_relations (data):", error);
                 throw error;
             }
 
-            // Transform the data to flatten the structure
-            const transformedData = data.map(item => ({
-                lead_id: item.lead_id,
-                leadname: item.lead?.name || null,
-                lead_display_id: item.lead?.lead_display_id || null,
-                product_name: item.product?.product_name || null,
-                companyname: item.product?.company?.company_name || null,
-                relationship_manager: item.relationship_managers?.name || null,
-                priority: item.priority || null,
-                status: item.lead_status?.title || null,
-            }));
-
-            console.log("Fetched leads:", transformedData);
             return {
-                data: transformedData || [],
+                data: data || [],
                 total_count: count || 0,
             };
         } catch (error) {
-            console.error("Error in getLeadsWithPagination:", error);
+            console.error("Error in get_lead_product_relations:", error);
             throw new Error(`Failed to fetch leads: ${error.message || JSON.stringify(error)}`);
         }
     }

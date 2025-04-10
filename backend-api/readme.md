@@ -39,3 +39,19 @@ Token is Expired:
 Access Denied Due to CORS:
 
 403 Forbidden: This is used when the server understands the request but refuses to authorize it. However, CORS issues are usually handled by the browser before the request reaches the server, so this might not always be relevant.
+
+return {
+    success: true,
+    data,
+    metadata: {
+        total_count: total,
+        current_page_count: count,
+        ...(!is_all
+            ? {
+                    page: pageNumber,
+                    per_page: limit,
+                    // total_pages
+                }
+            : {}),
+    },
+};

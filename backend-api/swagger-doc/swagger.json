@@ -2543,11 +2543,11 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -3445,14 +3445,71 @@
             "in": "query",
             "type": "integer",
             "required": false,
-            "description": "Page number (default: 1)"
+            "description": "Page number (default: 1)",
+            "default": 1
           },
           {
             "name": "limit",
             "in": "query",
             "type": "integer",
             "required": false,
-            "description": "Number of records per page (default: 10)"
+            "description": "Number of records per page (default: 10)",
+            "default": 10
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Search term for lead name",
+            "default": ""
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Filter by lead status",
+            "enum": [
+              "",
+              "New",
+              "Assigned",
+              "Sold",
+              "Lost"
+            ],
+            "example": "Active",
+            "default": ""
+          },
+          {
+            "name": "priority",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Filter by lead priority",
+            "enum": [
+              "",
+              "High",
+              "Medium",
+              "Low"
+            ],
+            "example": "Active",
+            "default": ""
+          },
+          {
+            "name": "category_id",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Category ID (UUID) OR null",
+            "default": null
+          },
+          {
+            "name": "company_id",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Company ID (UUID) OR null",
+            "default": null
           }
         ],
         "responses": {

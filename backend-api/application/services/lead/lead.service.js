@@ -13,12 +13,16 @@ class LeadService {
         this.leadProductRelationDatabase = new LeadProductRelationDatabase(supabaseInstance);
     }
 
-    async getLeadList(pageNumber, limit) {
+    async getLeadList(pageNumber, limit, search, status, priority, category_id, company_id) {
         try {
-            const offset = (pageNumber - 1) * limit;
             const { data, total_count } = await this.leadDatabase.getLeadsWithPagination(
-                offset,
+                pageNumber,
                 limit,
+                search,
+                status,
+                priority,
+                category_id,
+                company_id,
             );
             const total_pages = Math.ceil(total_count / limit);
 
@@ -28,7 +32,7 @@ class LeadService {
                     page: pageNumber,
                     per_page: limit,
                     total_count,
-                    total_pages,
+                    // total_pages,
                 },
             };
         } catch (error) {
