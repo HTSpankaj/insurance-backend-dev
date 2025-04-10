@@ -11,6 +11,8 @@ const {
     approveAdvisorRequestController,
     rejectAdvisorRequestController,
     resubmitAdvisorRequestController,
+    upsertAdvisorCompanyAccessController,
+    getAdvisorCompanyAccessController,
 } = require("../../../presentation/controller/advisor/advisor.controller");
 const upload = require("../../../middleware/multer.middleware");
 
@@ -20,6 +22,7 @@ const {
     advisorVerifyValidateInput,
     advisorEmailOtpValidateInput,
     advisorEmailVerifyValidateInput,
+    upsertAdvisorCompanyAccessValidator,
 } = require("../../../validator/advisor/advisor.validator");
 
 const { authenticateToken } = require("../../../middleware/auth");
@@ -44,6 +47,9 @@ router.get("/advisor-list", authenticateToken, getAdvisorListController);
 router.get("/advisor-details/:id", authenticateToken, getAdvisorDetailsByIdController);
 router.put("/advisor-request-approve", authenticateToken, approveAdvisorRequestController);
 router.put("/advisor-request-reject", authenticateToken, rejectAdvisorRequestController);
+
+router.get("/get-advisor-company-access", getAdvisorCompanyAccessController);
+router.put("/upsert-advisor-company-access", upsertAdvisorCompanyAccessValidator,upsertAdvisorCompanyAccessController);
 // router.put("/advisor-request-resubmit", authenticateToken, resubmitAdvisorRequestController);
 
 module.exports = router;

@@ -2505,6 +2505,82 @@
         ]
       }
     },
+    "/api/advisor/get-advisor-company-access": {
+      "get": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Get advisor company access",
+        "parameters": [
+          {
+            "name": "advisor_id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/advisor/upsert-advisor-company-access": {
+      "put": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Upsert advisor company access",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "advisor_company_access_array": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "advisor_id": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                      },
+                      "company_id": {
+                        "type": "string",
+                        "example": "550e8400-e29b-41d4-a716-446655440000"
+                      },
+                      "is_access": {
+                        "type": "boolean",
+                        "example": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/company/create-company": {
       "post": {
         "tags": [

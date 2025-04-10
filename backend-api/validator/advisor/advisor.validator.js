@@ -106,10 +106,19 @@ const advisorEmailVerifyValidateInput = [
     validateClientParametersAndSendResponse,
 ];
 
+const upsertAdvisorCompanyAccessValidator = [
+    body("advisor_company_access_array").isArray({ min: 1 }).withMessage("Data must be a non-empty array"),
+    body("advisor_company_access_array.*.advisor_id").isString().notEmpty().withMessage("advisor_id is required"),
+    body("advisor_company_access_array.*.company_id").isString().notEmpty().withMessage("company_id is required"),
+    body("advisor_company_access_array.*.is_access").isBoolean().withMessage("is_access must be a boolean"),
+
+    validateClientParametersAndSendResponse,
+]
 module.exports = {
     advisorRegistrationValidateInput,
     advisorOtpValidateInput,
     advisorVerifyValidateInput,
     advisorEmailOtpValidateInput,
     advisorEmailVerifyValidateInput,
+    upsertAdvisorCompanyAccessValidator
 };

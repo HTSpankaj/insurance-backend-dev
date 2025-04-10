@@ -1,7 +1,9 @@
 const { supabaseInstance } = require("../../../supabase-db/index.js");
 const AdvisorService = require("../../../application/services/advisor/advisor.service.js");
+const AdvisorCompanyAccessService = require("../../../application/services/advisor/advisor_company_access.service.js");
 
 const advisorService = new AdvisorService(supabaseInstance);
+const advisorCompanyAccessService = new AdvisorCompanyAccessService(supabaseInstance);
 
 exports.createAdvisorController = async (req, res) => {
     /*
@@ -525,3 +527,60 @@ exports.rejectAdvisorRequestController = async (req, res) => {
         });
     }
 };
+
+
+//*  ~~~~~~ Advisor company Access ~~~~~~
+exports.getAdvisorCompanyAccessController = async (req, res) => {
+    /*
+    #swagger.tags = ['Advisor']
+    #swagger.description = 'Get advisor company access'
+    #parameters['advisor_id'] = { in: 'query', type: 'string', required: true, description: 'Advisor ID' }
+    */
+    try {
+        const { advisor_id } = req.query;
+        const result = await advisorCompanyAccessService.getAdvisorCompanyAccessService(advisor_id);
+        return res.status(200).json({
+            success: true,
+            message: "Get advisor company access successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+}
+
+exports.upsertAdvisorCompanyAccessController = async (req, res) => {
+    /*
+    #swagger.tags = ['Advisor']
+    #swagger.description = 'Upsert advisor company access'
+    #swagger.parameters['body'] = {
+        in: 'body',
+        schema: {
+            advisor_company_access_array: [
+                {
+                    "advisor_id": "550e8400-e29b-41d4-a716-446655440000",
+                    "company_id": "550e8400-e29b-41d4-a716-446655440000",
+                    "is_access": true
+                }
+            ]
+        }
+    }
+    */
+    try {
+        const { advisor_company_access_array } = req.body;
+        const result = await advisorCompanyAccessService.upsertAdvisorCompanyAccessService(advisor_company_access_array);
+        return res.status(201).json({
+            success: true,
+            message: "Upsert advisor company access successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+}
