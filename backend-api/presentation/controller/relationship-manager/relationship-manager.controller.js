@@ -55,7 +55,7 @@ exports.addRelationshipManagerController = async (req, res) => {
             contact_number.toString(), // Convert to string for database
             region,
             category,
-            company_id
+            company_id,
         );
 
         return res.status(200).json({

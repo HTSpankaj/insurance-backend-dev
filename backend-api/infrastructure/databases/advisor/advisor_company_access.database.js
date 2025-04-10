@@ -18,10 +18,9 @@ class AdvisorCompanyAccessDatabase {
 
     async upsertAdvisorCompanyAccessDatabase(advisor_company_access_array) {
         try {
-            console.log(advisor_company_access_array);
             const { data, error } = await this.db
                 .from(tableName)
-                .upsert(advisor_company_access_array, { onConflict: "company_id,advisor_id" })
+                .upsert(advisor_company_access_array, { onConflict: "company_id, advisor_id" })
                 .select();
 
             if (error) throw error;
@@ -35,7 +34,9 @@ class AdvisorCompanyAccessDatabase {
         try {
             const { data, error, count } = await this.db
                 .from(tableName)
-                .select("company_id(company_id,company_name),is_access, advisor_id", { count: "exact" })
+                .select("company_id(company_id,company_name),is_access, advisor_id", {
+                    count: "exact",
+                })
                 .eq("advisor_id", advisor_id);
 
             if (error) throw error;

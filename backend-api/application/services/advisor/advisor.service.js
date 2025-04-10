@@ -255,10 +255,10 @@ class AdvisorService {
             );
 
             if (advisors) {
-                advisors = advisors.map((m) => ({
+                advisors = advisors.map(m => ({
                     ...m,
-                    onboarding_status: m.advisor_onboarding_status_id.title
-                }))
+                    onboarding_status: m.advisor_onboarding_status_id.title,
+                }));
             }
 
             const totalPages = Math.ceil(totalCount / perPage);

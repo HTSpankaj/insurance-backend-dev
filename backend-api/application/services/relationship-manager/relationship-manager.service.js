@@ -12,7 +12,7 @@ class RelationshipManagerService {
                 await this.relationshipManagerDatabase.createRelationshipManager(
                     name,
                     contact_number,
-                    company_id
+                    company_id,
                 );
 
             // Insert into relationship_manager_region_relations table

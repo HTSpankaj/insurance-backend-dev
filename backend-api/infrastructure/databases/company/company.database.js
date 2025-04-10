@@ -20,7 +20,7 @@ class CompanyDatabase {
         tax_gstin_number,
         is_publish,
         logo_url,
-        created_by_user_id
+        created_by_user_id,
     ) {
         try {
             const { data, error } = await this.db
@@ -34,7 +34,7 @@ class CompanyDatabase {
                     tax_gstin_number: tax_gstin_number,
                     is_publish: is_publish,
                     logo_url: logo_url,
-                    created_by_user_id
+                    created_by_user_id,
                 })
                 .select()
                 .maybeSingle();

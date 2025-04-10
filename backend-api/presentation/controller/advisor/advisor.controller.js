@@ -445,7 +445,7 @@ exports.approveAdvisorRequestController = async (req, res) => {
 //       schema:  {
 //           advisor_id: '550e8400-e29b-41d4-a716-446655440000'
 //         }
-      
+
 //     }
 //     */
 //     try {
@@ -528,7 +528,6 @@ exports.rejectAdvisorRequestController = async (req, res) => {
     }
 };
 
-
 //*  ~~~~~~ Advisor company Access ~~~~~~
 exports.getAdvisorCompanyAccessController = async (req, res) => {
     /*
@@ -550,7 +549,7 @@ exports.getAdvisorCompanyAccessController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 
 exports.upsertAdvisorCompanyAccessController = async (req, res) => {
     /*
@@ -571,7 +570,9 @@ exports.upsertAdvisorCompanyAccessController = async (req, res) => {
     */
     try {
         const { advisor_company_access_array } = req.body;
-        const result = await advisorCompanyAccessService.upsertAdvisorCompanyAccessService(advisor_company_access_array);
+        const result = await advisorCompanyAccessService.upsertAdvisorCompanyAccessService(
+            advisor_company_access_array,
+        );
         return res.status(201).json({
             success: true,
             message: "Upsert advisor company access successfully.",
@@ -583,4 +584,4 @@ exports.upsertAdvisorCompanyAccessController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};

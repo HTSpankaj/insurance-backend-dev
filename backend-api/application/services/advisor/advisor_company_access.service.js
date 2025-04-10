@@ -7,12 +7,16 @@ class AdvisorCompanyAccessService {
     }
 
     async getAdvisorCompanyAccessService(advisor_id) {
-        const advisorCompanyAccess = await this.advisorCompanyAccessDatabase.getAdvisorCompanyAccessDatabase(advisor_id);
+        const advisorCompanyAccess =
+            await this.advisorCompanyAccessDatabase.getAdvisorCompanyAccessDatabase(advisor_id);
         return advisorCompanyAccess;
     }
 
     async upsertAdvisorCompanyAccessService(advisor_company_access_array) {
-        const advisorCompanyAccess = await this.advisorCompanyAccessDatabase.upsertAdvisorCompanyAccessDatabase(advisor_company_access_array);
+        const advisorCompanyAccess =
+            await this.advisorCompanyAccessDatabase.upsertAdvisorCompanyAccessDatabase(
+                advisor_company_access_array,
+            );
         return advisorCompanyAccess;
     }
 }

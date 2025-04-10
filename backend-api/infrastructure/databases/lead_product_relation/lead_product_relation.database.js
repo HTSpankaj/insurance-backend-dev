@@ -55,7 +55,6 @@ class LeadProductRelationDatabase {
     }
 
     async getLeadProductRelationByAdvisorIdDatabase(page_number, limit, advisor_id) {
-
         const offset = (page_number - 1) * limit;
         const { data, total_count } = await this.db
             .from(tableName)

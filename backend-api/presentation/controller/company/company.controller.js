@@ -151,7 +151,7 @@ exports.createCompanyController = async (req, res) => {
             irdai_license_file,
             terms_of_agreement_file,
             business_certification_file,
-            created_by_user_id
+            created_by_user_id,
         );
 
         return res.status(200).json({

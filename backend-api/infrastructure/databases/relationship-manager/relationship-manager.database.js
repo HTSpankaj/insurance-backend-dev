@@ -15,7 +15,7 @@ class RelationshipManagerDatabase {
                 .insert({
                     name,
                     contact_number,
-                    company_id
+                    company_id,
                 })
                 .select()
                 .maybeSingle();
