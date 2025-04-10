@@ -61,7 +61,7 @@ class LeadProductRelationDatabase {
             .from(tableName)
             .select(
                 `
-                *, 
+                *, lead_status_id(title), 
                 lead_id(name, email, contact_number, dob, address, city_id(title, state_id(title)), lead_display_id),
                 product_id(product_id, product_name, description, company_id(company_id, company_name), sub_category_id(sub_category_id, title, category_id(category_id, title))),
                 before_issuance_excel_data_id(policy_amount),

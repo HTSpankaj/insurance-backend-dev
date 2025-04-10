@@ -44,6 +44,6 @@ router.get("/advisor-list", authenticateToken, getAdvisorListController);
 router.get("/advisor-details/:id", authenticateToken, getAdvisorDetailsByIdController);
 router.put("/advisor-request-approve", authenticateToken, approveAdvisorRequestController);
 router.put("/advisor-request-reject", authenticateToken, rejectAdvisorRequestController);
-router.put("/advisor-request-resubmit", authenticateToken, resubmitAdvisorRequestController);
+// router.put("/advisor-request-resubmit", authenticateToken, resubmitAdvisorRequestController);
 
 module.exports = router;

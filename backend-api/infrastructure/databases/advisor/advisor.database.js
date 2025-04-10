@@ -320,60 +320,9 @@ class AdvisorDatabase {
             );
         }
     }
-    // Ensure this method is added
-    async updateAdvisorForResubmission(advisorId, statusId, remark) {
-        try {
-            console.log(
-                "Updating advisor for re-submission for ID:",
-                advisorId,
-                "with remark:",
-                remark,
-            );
-            const { data: currentData, error: fetchError } = await this.db
-                .from(tableName)
-                .select("rejection_remark")
-                .eq("advisor_id", advisorId)
-                .maybeSingle();
-
-            if (fetchError) {
-                console.error("Supabase error fetching current rejection_remark:", fetchError);
-                throw fetchError;
-            }
-            if (!currentData) {
-                throw new Error("Advisor not found");
-            }
-
-            const currentRemarks = Array.isArray(currentData.rejection_remark)
-                ? currentData.rejection_remark
-                : [];
-            const updatedRemarks = [...currentRemarks, remark];
-
-            const { data, error } = await this.db
-                .from(tableName)
-                .update({
-                    advisor_onboarding_status_id: statusId,
-                    rejection_remark: updatedRemarks,
-                })
-                .eq("advisor_id", advisorId)
-                .select()
-                .maybeSingle();
-
-            if (error) {
-                console.error("Supabase error in updateAdvisorForResubmission:", error);
-                throw error;
-            }
-            console.log("Updated advisor:", data);
-            return data;
-        } catch (error) {
-            console.error("Error in updateAdvisorForResubmission:", error);
-            throw new Error(
-                `Failed to update advisor for re-submission: ${error.message || JSON.stringify(error)}`,
-            );
-        }
-    }
 
     // New updateAdvisorForResubmission method
-    async updateAdvisorForResubmission(advisorId, statusId, remark) {
+    async updateAdvisorForRejection(advisorId, statusId, remark) {
         try {
             console.log(
                 "Updating advisor for re-submission for ID:",

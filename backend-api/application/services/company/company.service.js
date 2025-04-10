@@ -19,6 +19,7 @@ class CompanyService {
         irdai_license_file,
         terms_of_agreement_file,
         business_certification_file,
+        created_by_user_id
     ) {
         try {
             // First, create the company without the logo_url
@@ -31,6 +32,7 @@ class CompanyService {
                 tax_gstin_number,
                 is_publish,
                 null, // Temporarily set logo_url to null
+                created_by_user_id
             );
 
             // Upload files to Supabase bucket under company/<company_id>/document/

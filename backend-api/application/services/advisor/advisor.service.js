@@ -313,26 +313,26 @@ class AdvisorService {
     }
 
     // New rejectAdvisorRequest method
-    async rejectAdvisorRequest(advisorId) {
-        try {
-            console.log("Rejecting advisor request for ID:", advisorId);
-            const updatedAdvisor = await this.advisorDatabase.updateAdvisorStatus(advisorId, 3); // 3 = Rejected
+    // async rejectAdvisorRequest(advisorId) {
+    //     try {
+    //         console.log("Rejecting advisor request for ID:", advisorId);
+    //         const updatedAdvisor = await this.advisorDatabase.updateAdvisorStatus(advisorId, 3); // 3 = Rejected
 
-            if (!updatedAdvisor) {
-                throw new Error("Advisor not found");
-            }
+    //         if (!updatedAdvisor) {
+    //             throw new Error("Advisor not found");
+    //         }
 
-            return updatedAdvisor;
-        } catch (error) {
-            console.error("Error in rejectAdvisorRequest:", error);
-            throw new Error(
-                `Failed to reject advisor request: ${error.message || JSON.stringify(error)}`,
-            );
-        }
-    }
+    //         return updatedAdvisor;
+    //     } catch (error) {
+    //         console.error("Error in rejectAdvisorRequest:", error);
+    //         throw new Error(
+    //             `Failed to reject advisor request: ${error.message || JSON.stringify(error)}`,
+    //         );
+    //     }
+    // }
 
     // New resubmitAdvisorRequest method
-    async resubmitAdvisorRequest(advisorId, reasonType, reason, actionByUserId) {
+    async RejectAdvisorRequest(advisorId, reasonType, reason, actionByUserId) {
         try {
             console.log("Marking advisor request for re-submission for ID:", advisorId);
             const remark = {
@@ -341,9 +341,9 @@ class AdvisorService {
                 action_by_user_id: actionByUserId,
                 created_at: new Date().toISOString(),
             };
-            const updatedAdvisor = await this.advisorDatabase.updateAdvisorForResubmission(
+            const updatedAdvisor = await this.advisorDatabase.updateAdvisorForRejection(
                 advisorId,
-                3,
+                4,
                 remark,
             ); // 3 = Rejected
 

@@ -93,6 +93,7 @@ exports.createCompanyController = async (req, res) => {
         const irdai_license_file = req.files?.irdai_license_file?.[0];
         const terms_of_agreement_file = req.files?.terms_of_agreement_file?.[0];
         const business_certification_file = req.files?.business_certification_file?.[0];
+        const created_by_user_id = res.locals.tokenData?.user_id;
 
         // Validation for FormData fields (all received as strings)
         if (!company_name || company_name.trim().length < 2) {
@@ -150,6 +151,7 @@ exports.createCompanyController = async (req, res) => {
             irdai_license_file,
             terms_of_agreement_file,
             business_certification_file,
+            created_by_user_id
         );
 
         return res.status(200).json({

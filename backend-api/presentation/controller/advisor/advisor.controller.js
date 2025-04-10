@@ -434,46 +434,46 @@ exports.approveAdvisorRequestController = async (req, res) => {
 };
 
 // New rejectAdvisorRequestController
-exports.rejectAdvisorRequestController = async (req, res) => {
-    /*
-      #swagger.tags = ['Advisor']
-      #swagger.description = 'Reject an advisor request by setting advisor_onboarding_status_id to 3'
-      #swagger.parameters['body'] = {
-      in: 'body',
-      schema:  {
-          advisor_id: '550e8400-e29b-41d4-a716-446655440000'
-        }
+// exports.rejectAdvisorRequestController = async (req, res) => {
+//     /*
+//       #swagger.tags = ['Advisor']
+//       #swagger.description = 'Reject an advisor request by setting advisor_onboarding_status_id to 3'
+//       #swagger.parameters['body'] = {
+//       in: 'body',
+//       schema:  {
+//           advisor_id: '550e8400-e29b-41d4-a716-446655440000'
+//         }
       
-    }
-    */
-    try {
-        const { advisor_id } = req.body;
+//     }
+//     */
+//     try {
+//         const { advisor_id } = req.body;
 
-        if (
-            !advisor_id ||
-            !/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
-                advisor_id,
-            )
-        ) {
-            throw new Error("Invalid advisor ID");
-        }
+//         if (
+//             !advisor_id ||
+//             !/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
+//                 advisor_id,
+//             )
+//         ) {
+//             throw new Error("Invalid advisor ID");
+//         }
 
-        const updatedAdvisor = await advisorService.rejectAdvisorRequest(advisor_id);
+//         const updatedAdvisor = await advisorService.rejectAdvisorRequest(advisor_id);
 
-        return res.status(200).json({
-            success: true,
-            data: updatedAdvisor, // Returns updated advisor; adjust to {} if needed
-        });
-    } catch (error) {
-        return res.status(400).json({
-            success: false,
-            error: { message: error.message || "Something went wrong!" },
-        });
-    }
-};
+//         return res.status(200).json({
+//             success: true,
+//             data: updatedAdvisor, // Returns updated advisor; adjust to {} if needed
+//         });
+//     } catch (error) {
+//         return res.status(400).json({
+//             success: false,
+//             error: { message: error.message || "Something went wrong!" },
+//         });
+//     }
+// };
 
 // New resubmitAdvisorRequestController
-exports.resubmitAdvisorRequestController = async (req, res) => {
+exports.rejectAdvisorRequestController = async (req, res) => {
     /*
       #swagger.tags = ['Advisor']
       #swagger.description = 'Reject an advisor request for re-submission by setting advisor_onboarding_status_id to 3 and adding rejection remark'
@@ -507,7 +507,7 @@ exports.resubmitAdvisorRequestController = async (req, res) => {
             throw new Error("User ID not found in token");
         }
 
-        const updatedAdvisor = await advisorService.resubmitAdvisorRequest(
+        const updatedAdvisor = await advisorService.RejectAdvisorRequest(
             advisor_id,
             reason_type,
             reason,
