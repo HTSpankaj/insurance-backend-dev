@@ -83,12 +83,13 @@ class SubCategoryService {
         }
     }
 
-    async getAllSubCategoriesService(pageNumber, limit, is_all) {
+    async getAllSubCategoriesService(pageNumber, limit, is_all, search) {
         try {
             const { data, total } = await this.subCategoryDatabase.getAllSubCategoriesDatabase(
                 pageNumber,
                 limit,
                 is_all,
+                search,
             );
             return {
                 success: true,

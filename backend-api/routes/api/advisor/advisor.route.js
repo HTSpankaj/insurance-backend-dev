@@ -16,6 +16,7 @@ const {
     getAdvisorCategoryAccessController,
     upsertAdvisorCategoryAccessController,
     updateAdvisorTabAccessController,
+    activeInactiveAdvisorController,
 } = require("../../../presentation/controller/advisor/advisor.controller");
 const upload = require("../../../middleware/multer.middleware");
 
@@ -28,6 +29,8 @@ const {
     upsertAdvisorCompanyAccessValidator,
     upsertAdvisorCategoryAccessValidator,
     updateAdvisorTabAccessValidator,
+    activeInactiveAdvisorValidator,
+    advisorUpdateRegistrationValidator,
 } = require("../../../validator/advisor/advisor.validator");
 
 const { authenticateToken } = require("../../../middleware/auth");
@@ -39,6 +42,12 @@ router.post(
     "/advisor-registration",
     upload,
     advisorRegistrationValidateInput,
+    createAdvisorController,
+);
+router.post(
+    "/resubmit-advisor-registration",
+    upload,
+    advisorUpdateRegistrationValidator,
     createAdvisorController,
 );
 router.post("/advisor-mobile-send-otp", advisorOtpValidateInput, sendAdvisorOtpController);
@@ -55,7 +64,14 @@ router.put("/advisor-request-reject", authenticateToken, rejectAdvisorRequestCon
 router.put(
     "/advisor-tab-access",
     updateAdvisorTabAccessValidator,
+    authenticateToken,
     updateAdvisorTabAccessController,
+);
+router.put(
+    "/active-inactive-advisor",
+    activeInactiveAdvisorValidator,
+    authenticateToken,
+    activeInactiveAdvisorController,
 );
 // router.put("/advisor-request-resubmit", authenticateToken, resubmitAdvisorRequestController);
 
@@ -64,6 +80,7 @@ router.get("/get-advisor-company-access", getAdvisorCompanyAccessController);
 router.put(
     "/upsert-advisor-company-access",
     upsertAdvisorCompanyAccessValidator,
+    authenticateToken,
     upsertAdvisorCompanyAccessController,
 );
 
@@ -72,6 +89,7 @@ router.get("/get-advisor-category-access", getAdvisorCategoryAccessController);
 router.put(
     "/upsert-advisor-category-access",
     upsertAdvisorCategoryAccessValidator,
+    authenticateToken,
     upsertAdvisorCategoryAccessController,
 );
 

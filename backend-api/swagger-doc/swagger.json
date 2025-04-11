@@ -977,6 +977,13 @@
             "description": "Number of records per page (default: 10)",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search keyword",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -1191,6 +1198,13 @@
             "description": "Number of records per page (default: 10)",
             "required": false,
             "type": "integer"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Search keyword",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -1638,6 +1652,182 @@
       }
     },
     "/api/advisor/advisor-registration": {
+      "post": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Register a new advisor",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "join_as",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Role the advisor is joining as"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Full name of the advisor"
+          },
+          {
+            "name": "mobile_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "10-digit mobile number"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Email address"
+          },
+          {
+            "name": "aadhar_card_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "12-digit Aadhar card number"
+          },
+          {
+            "name": "pan_card_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "10-character PAN card number (e.g., ABCDE1234F)"
+          },
+          {
+            "name": "qualification",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Educational qualification"
+          },
+          {
+            "name": "bank_name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Bank name"
+          },
+          {
+            "name": "bank_ifsc_code",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "11-character IFSC code (e.g., HDFC0001234)"
+          },
+          {
+            "name": "bank_branch",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Bank branch"
+          },
+          {
+            "name": "bank_account_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "9-18 digit bank account number"
+          },
+          {
+            "name": "aadhar_card_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Aadhar card file (JPEG or PDF)"
+          },
+          {
+            "name": "pan_card_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "PAN card file (JPEG or PDF)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Advisor registered successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "data": {
+                  "type": "object",
+                  "properties": {
+                    "advisor_id": {
+                      "type": "string",
+                      "example": "uuid"
+                    },
+                    "name": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "email": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "aadhar_card_image_url": {
+                      "type": "string",
+                      "example": "string"
+                    },
+                    "pan_card_image_url": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean",
+                  "example": false
+                },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "string"
+                    }
+                  }
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/advisor/resubmit-advisor-registration": {
       "post": {
         "tags": [
           "Advisor"
@@ -2534,6 +2724,44 @@
                 "tab_access": {
                   "type": "object",
                   "properties": {}
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/advisor/active-inactive-advisor": {
+      "put": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Update advisor status",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "advisor_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "advisor_status": {
+                  "type": "string",
+                  "example": "Active/Inactive"
                 }
               }
             }
@@ -3514,45 +3742,7 @@
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "data": {
-                  "type": "array",
-                  "example": [],
-                  "items": {}
-                },
-                "metadata": {
-                  "type": "object",
-                  "properties": {
-                    "page": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "per_page": {
-                      "type": "number",
-                      "example": 10
-                    },
-                    "total_count": {
-                      "type": "number",
-                      "example": 120
-                    },
-                    "total_pages": {
-                      "type": "number",
-                      "example": 12
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "OK"
           },
           "400": {
             "description": "Bad Request"

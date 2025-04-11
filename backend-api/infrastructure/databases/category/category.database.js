@@ -88,10 +88,14 @@ class CategoryDatabase {
         }
     }
 
-    async getCategoryListWithProductCounts(pageNumber, limit, is_all) {
+    async getCategoryListWithProductCounts(pageNumber, limit, is_all, search) {
         try {
             const offset = (pageNumber - 1) * limit;
-            let query = this.db.rpc("get_category_list_with_counts", {}, { count: "exact" });
+            let query = this.db.rpc(
+                "get_category_list_with_counts",
+                { search_val: search },
+                { count: "exact" },
+            );
 
             if (!is_all && !isNaN(pageNumber) && !isNaN(limit)) {
                 query = query.range(offset, offset + limit - 1);

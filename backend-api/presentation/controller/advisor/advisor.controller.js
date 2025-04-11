@@ -89,6 +89,90 @@ exports.createAdvisorController = async (req, res) => {
     }
 };
 
+exports.resubmitAdvisorRegistrationController = async (req, res) => {
+    /*
+    #swagger.tags = ['Advisor']
+    #swagger.autoBody = false
+    #swagger.description = 'Register a new advisor'
+    #swagger.consumes = ['multipart/form-data']
+    #swagger.parameters['advisor_id'] = { in: 'formData', type: 'string', required: true, description: 'Advisor ID' }
+    #swagger.parameters['join_as'] = { in: 'formData', type: 'string', required: true, description: 'Role the advisor is joining as' }
+    #swagger.parameters['name'] = { in: 'formData', type: 'string', required: true, description: 'Full name of the advisor' }
+    #swagger.parameters['mobile_number'] = { in: 'formData', type: 'string', required: true, description: '10-digit mobile number' }
+    #swagger.parameters['email'] = { in: 'formData', type: 'string', required: true, description: 'Email address' }
+    #swagger.parameters['aadhar_card_number'] = { in: 'formData', type: 'string', required: true, description: '12-digit Aadhar card number' }
+    #swagger.parameters['pan_card_number'] = { in: 'formData', type: 'string', required: true, description: '10-character PAN card number (e.g., ABCDE1234F)' }
+    #swagger.parameters['qualification'] = { in: 'formData', type: 'string', required: true, description: 'Educational qualification' }
+    #swagger.parameters['bank_name'] = { in: 'formData', type: 'string', required: true, description: 'Bank name' }
+    #swagger.parameters['bank_ifsc_code'] = { in: 'formData', type: 'string', required: true, description: '11-character IFSC code (e.g., HDFC0001234)' }
+    #swagger.parameters['bank_branch'] = { in: 'formData', type: 'string', required: true, description: 'Bank branch' }
+    #swagger.parameters['bank_account_number'] = { in: 'formData', type: 'string', required: true, description: '9-18 digit bank account number' }
+    #swagger.parameters['aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (JPEG or PDF)' }
+    #swagger.parameters['pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (JPEG or PDF)' }
+    #swagger.responses[200] = {
+      description: 'Advisor registered successfully',
+      schema: { success: true, data: { advisor_id: 'uuid', name: 'string', email: 'string', aadhar_card_image_url: 'string', pan_card_image_url: 'string' } }
+    }
+    #swagger.responses[400] = {
+      description: 'Invalid input',
+      schema: { success: false, error: { message: 'string' } }
+    }
+  */
+    try {
+        const {
+            advisor_id,
+            join_as,
+            name,
+            mobile_number,
+            email,
+            aadhar_card_number,
+            pan_card_number,
+            qualification,
+            bank_name,
+            bank_ifsc_code,
+            bank_branch,
+            bank_account_number,
+        } = req.body;
+
+        const aadhar_card_file = req.files?.aadhar_card_file?.[0];
+        const pan_card_file = req.files?.pan_card_file?.[0];
+
+        if (!aadhar_card_file || !pan_card_file) {
+            return res.status(500).json({
+                success: false,
+                error: { message: "Aadhar and PAN card files are required" },
+            });
+        }
+
+        const result = await advisorService.createAdvisor(
+            join_as,
+            name,
+            mobile_number,
+            email,
+            aadhar_card_number,
+            pan_card_number,
+            qualification,
+            bank_name,
+            bank_ifsc_code,
+            bank_branch,
+            bank_account_number,
+            aadhar_card_file,
+            pan_card_file,
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "Advisor registered successfully",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
 exports.sendAdvisorOtpController = async (req, res) => {
     /*
         #swagger.tags = ['Advisor']
@@ -548,6 +632,37 @@ exports.updateAdvisorTabAccessController = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Update advisor tab access config successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+exports.activeInactiveAdvisorController = async (req, res) => {
+    /*
+    #swagger.tags = ['Advisor']
+    #swagger.description = 'Update advisor status'
+    #swagger.parameters['body'] = {
+        in: 'body',
+        schema: {
+            advisor_id: "550e8400-e29b-41d4-a716-446655440000",
+            advisor_status: "Active/Inactive"
+        }
+    }
+    */
+    try {
+        const { advisor_id, advisor_status } = req.body;
+        const result = await advisorService.activeInactiveAdvisorService(
+            advisor_id,
+            advisor_status,
+        );
+        return res.status(200).json({
+            success: true,
+            message: "Update advisor status successfully.",
             data: result,
         });
     } catch (error) {

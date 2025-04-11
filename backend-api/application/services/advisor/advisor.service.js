@@ -10,6 +10,7 @@ class AdvisorService {
         this.advisorDatabase = new AdvisorDatabase(supabaseInstance);
         this.aadharStorage = new BucketNameStorage(supabaseInstance, "aadhar-cards");
         this.panStorage = new BucketNameStorage(supabaseInstance, "pan-cards");
+        this.advisorStorage = new BucketNameStorage(supabaseInstance, "advisor");
     }
 
     async createAdvisor(
@@ -46,30 +47,34 @@ class AdvisorService {
                 bank_account_number,
             );
 
-            const aadharExt = aadhar_card_file.mimetype === "application/pdf" ? "pdf" : "jpeg";
-            const aadharFilePath = `${advisor.advisor_id}_aadhar.${aadharExt}`;
+            let aadharPublicUrl = "";
+            let panPublicUrl = "";
+
+            // Todo: aadhar and pan card file upload
+            const _aadharFilePath = `${advisor.advisor_id}/document/aadharCard.${aadhar_card_file?.mimetype.split("/")[1]}`;
             const aadharUploadResult = await this.aadharStorage.uploadFile(
-                aadharFilePath,
+                _aadharFilePath,
                 aadhar_card_file.buffer,
                 aadhar_card_file.mimetype,
             );
+            if (aadharUploadResult) {
+                aadharPublicUrl = await this.storage.getPublicUrl(aadharUploadResult?.path);
+            }
 
-            const aadharUrl = await this.aadharStorage.getPublicUrl(aadharFilePath);
-
-            const panExt = pan_card_file.mimetype === "application/pdf" ? "pdf" : "jpeg";
-            const panFilePath = `${advisor.advisor_id}_pan.${panExt}`;
+            const _panFilePath = `${advisor.advisor_id}/document/panCard.${pan_card_file?.mimetype.split("/")[1]}`;
             const panUploadResult = await this.panStorage.uploadFile(
-                panFilePath,
+                _panFilePath,
                 pan_card_file.buffer,
                 pan_card_file.mimetype,
             );
-
-            const panUrl = await this.panStorage.getPublicUrl(panFilePath);
+            if (panUploadResult) {
+                panPublicUrl = await this.storage.getPublicUrl(panUploadResult?.path);
+            }
 
             const updatedAdvisor = await this.advisorDatabase.updateAdvisorFiles(
                 advisor.advisor_id,
-                aadharUrl,
-                panUrl,
+                aadharPublicUrl,
+                panPublicUrl,
             );
 
             return updatedAdvisor;
@@ -385,6 +390,27 @@ class AdvisorService {
             console.error("Error in updateAdvisorTabAccessDatabase:", error);
             throw new Error(
                 `Failed to update advisor tab access: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
+    async activeInactiveAdvisorService(advisor_id, advisor_status) {
+        try {
+            const { data, error } = await this.advisorDatabase.activeInactiveAdvisorDatabase(
+                advisor_id,
+                advisor_status,
+            );
+
+            if (error) {
+                console.error("Supabase error in activeInactiveAdvisorDatabase:", error);
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in activeInactiveAdvisorDatabase:", error);
+            throw new Error(
+                `Failed to update advisor status: ${error.message || JSON.stringify(error)}`,
             );
         }
     }

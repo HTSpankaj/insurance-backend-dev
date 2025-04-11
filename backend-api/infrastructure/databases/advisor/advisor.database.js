@@ -37,7 +37,6 @@ class AdvisorDatabase {
                     aadhar_card_number,
                     pan_card_number,
                     qualification,
-                    advisor_status: "Active", // Explicitly set to Active
                 })
                 .select()
                 .maybeSingle();
@@ -393,6 +392,24 @@ class AdvisorDatabase {
             console.error("Error in updateAdvisorTabAccessDatabase:", error);
             throw new Error(
                 `Failed to update advisor tab access: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
+    async activeInactiveAdvisorDatabase(advisor_id, advisor_status) {
+        try {
+            const { data, error } = await this.db
+                .from(tableName)
+                .update({ advisor_status })
+                .eq("advisor_id", advisor_id)
+                .select()
+                .maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(
+                `Failed to update advisor status: ${error.message || JSON.stringify(error)}`,
             );
         }
     }

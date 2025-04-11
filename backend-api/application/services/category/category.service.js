@@ -104,12 +104,13 @@ class CategoryService {
         }
     }
 
-    async getCategoryListWithProductCounts(pageNumber, limit, is_all) {
+    async getCategoryListWithProductCounts(pageNumber, limit, is_all, search) {
         try {
             const { data, total } = await this.categoryDatabase.getCategoryListWithProductCounts(
                 pageNumber,
                 limit,
                 is_all,
+                search,
             );
             return {
                 success: true,

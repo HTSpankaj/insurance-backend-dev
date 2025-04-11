@@ -127,15 +127,24 @@ exports.getAllSubCategoriesController = async (req, res) => {
         required: false,
         type: 'integer'
     }
+    #swagger.parameters['search'] = {
+        in: 'query',
+        description: 'Search keyword',
+        required: false,
+        type: 'string'
+    }
   */
     try {
         const pageNumber = parseInt(req.query.page_number) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const is_all = req?.query?.is_all == "true";
+        const search = req?.query?.search;
+
         const result = await subCategoryService.getAllSubCategoriesService(
             pageNumber,
             limit,
             is_all,
+            search,
         );
         return res.status(result.success ? 200 : 400).json(result);
     } catch (error) {

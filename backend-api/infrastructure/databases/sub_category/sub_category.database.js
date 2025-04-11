@@ -64,14 +64,18 @@ class SubCategoryDatabase {
         }
     }
 
-    async getAllSubCategoriesDatabase(pageNumber, limit, is_all) {
+    async getAllSubCategoriesDatabase(pageNumber, limit, is_all, search) {
         try {
             const offset = (pageNumber - 1) * limit;
             let query = this.db
-                .from("sub_category")
+                .from(tableName)
                 .select("*, category:category_id(title)", { count: "exact" })
                 .eq("is_delete", false)
                 .order("created_at", { ascending: false });
+
+            if (search && search.trim() !== "") {
+                query = query.ilike("title", `%${search}%`);
+            }
 
             if (!is_all && pageNumber && limit) {
                 query = query.range(offset, offset + limit - 1);

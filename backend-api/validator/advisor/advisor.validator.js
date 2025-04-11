@@ -43,6 +43,53 @@ const advisorRegistrationValidateInput = [
         .withMessage("Bank account number must be 9-18 digits"),
     validateClientParametersAndSendResponse,
 ];
+const advisorUpdateRegistrationValidator = [
+    body("advisor_id")
+        .notEmpty()
+        .withMessage("Advisor ID is required")
+        .isUUID()
+        .withMessage("Invalid advisor ID format"),
+    body("join_as").notEmpty().withMessage("Join_as is required"),
+    body("name")
+        .notEmpty()
+        .withMessage("Name is required")
+        .isLength({ min: 2 })
+        .withMessage("Name must be at least 2 characters long"),
+    body("mobile_number")
+        .notEmpty()
+        .withMessage("Mobile number is required")
+        .matches(/^\d{10}$/)
+        .withMessage("Mobile number must be 10 digits"),
+    body("email")
+        .notEmpty()
+        .withMessage("Email is required")
+        .isEmail()
+        .withMessage("Please enter a valid email address"),
+    body("aadhar_card_number")
+        .notEmpty()
+        .withMessage("Aadhar card number is required")
+        .matches(/^\d{12}$/)
+        .withMessage("Aadhar card number must be 12 digits"),
+    body("pan_card_number")
+        .notEmpty()
+        .withMessage("PAN card number is required")
+        .matches(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/)
+        .withMessage("PAN card number must be 10 characters (e.g., ABCDE1234F)"),
+    body("qualification").notEmpty().withMessage("Qualification is required"),
+    body("bank_name").notEmpty().withMessage("Bank name is required"),
+    body("bank_ifsc_code")
+        .notEmpty()
+        .withMessage("Bank IFSC code is required")
+        .matches(/^[A-Z]{4}0[A-Z0-9]{6}$/)
+        .withMessage("Bank IFSC code must be 11 characters (e.g., HDFC0001234)"),
+    body("bank_branch").notEmpty().withMessage("Bank branch is required"),
+    body("bank_account_number")
+        .notEmpty()
+        .withMessage("Bank account number is required")
+        .matches(/^\d{9,18}$/)
+        .withMessage("Bank account number must be 9-18 digits"),
+    validateClientParametersAndSendResponse,
+];
 
 const advisorOtpValidateInput = [
     body("mobile_number")
@@ -115,6 +162,19 @@ const updateAdvisorTabAccessValidator = [
     body("tab_access").notEmpty().withMessage("access is required."),
     validateClientParametersAndSendResponse,
 ];
+const activeInactiveAdvisorValidator = [
+    body("advisor_id")
+        .notEmpty()
+        .withMessage("Advisor ID is required")
+        .isUUID()
+        .withMessage("Invalid advisor ID format"),
+    body("advisor_status")
+        .notEmpty()
+        .withMessage("status is required.")
+        .isIn(["Active", "Inactive"])
+        .withMessage("status must be Active or Inactive"),
+    validateClientParametersAndSendResponse,
+];
 
 const upsertAdvisorCompanyAccessValidator = [
     body("advisor_company_access_array")
@@ -154,11 +214,13 @@ const upsertAdvisorCategoryAccessValidator = [
 ];
 module.exports = {
     advisorRegistrationValidateInput,
+    advisorUpdateRegistrationValidator,
     advisorOtpValidateInput,
     advisorVerifyValidateInput,
     advisorEmailOtpValidateInput,
     advisorEmailVerifyValidateInput,
     updateAdvisorTabAccessValidator,
+    activeInactiveAdvisorValidator,
     upsertAdvisorCompanyAccessValidator,
     upsertAdvisorCategoryAccessValidator,
 };
