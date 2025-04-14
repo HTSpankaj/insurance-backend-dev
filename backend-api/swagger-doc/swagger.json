@@ -1838,6 +1838,20 @@
         ],
         "parameters": [
           {
+            "name": "advisor_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Advisor ID"
+          },
+          {
+            "name": "bank_details_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "bank_details_id ID"
+          },
+          {
             "name": "join_as",
             "in": "formData",
             "type": "string",
@@ -1931,68 +1945,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Advisor registered successfully",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "advisor_id": {
-                      "type": "string",
-                      "example": "uuid"
-                    },
-                    "name": {
-                      "type": "string",
-                      "example": "string"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "string"
-                    },
-                    "aadhar_card_image_url": {
-                      "type": "string",
-                      "example": "string"
-                    },
-                    "pan_card_image_url": {
-                      "type": "string",
-                      "example": "string"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "error": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "string"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -2022,7 +1975,7 @@
                 },
                 "purpose_for": {
                   "type": "string",
-                  "example": "registration"
+                  "example": "registration/login"
                 }
               }
             }
@@ -3099,6 +3052,13 @@
         "description": "Get paginated list of companies with statistics",
         "parameters": [
           {
+            "name": "is_all",
+            "in": "query",
+            "type": "boolean",
+            "default": false,
+            "description": "Get all companies"
+          },
+          {
             "name": "page_number",
             "in": "query",
             "type": "integer",
@@ -3118,194 +3078,14 @@
             "type": "string",
             "default": "",
             "description": "Search by company name"
-          },
-          {
-            "name": "description",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "schema",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "company_display_id",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "company_name",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "logo_url",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "total_products",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "converted_leads",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "active_leads",
-            "in": "query",
-            "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "Company list retrieved successfully",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "example": "array"
-                    },
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "type": "string",
-                          "example": "object"
-                        },
-                        "properties": {
-                          "type": "object",
-                          "properties": {
-                            "company_id": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "type": "string",
-                                  "example": "string"
-                                }
-                              }
-                            },
-                            "company_display_id": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "type": "string",
-                                  "example": "string"
-                                }
-                              }
-                            },
-                            "company_name": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "type": "string",
-                                  "example": "string"
-                                }
-                              }
-                            },
-                            "logo_url": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "type": "string",
-                                  "example": "string"
-                                }
-                              }
-                            },
-                            "total_products": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "type": "string",
-                                  "example": "integer"
-                                }
-                              }
-                            },
-                            "converted_leads": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "type": "string",
-                                  "example": "integer"
-                                }
-                              }
-                            },
-                            "active_leads": {
-                              "type": "object",
-                              "properties": {
-                                "type": {
-                                  "type": "string",
-                                  "example": "integer"
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                },
-                "metadata": {
-                  "type": "object",
-                  "properties": {
-                    "page": {
-                      "type": "string",
-                      "example": "number"
-                    },
-                    "per_page": {
-                      "type": "string",
-                      "example": "number"
-                    },
-                    "total_count": {
-                      "type": "string",
-                      "example": "number"
-                    },
-                    "total_pages": {
-                      "type": "string",
-                      "example": "number"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "OK"
           },
           "400": {
-            "description": "Error retrieving company list",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "error": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "string"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -3978,6 +3758,82 @@
                 "mobile_number": {
                   "type": "string",
                   "example": "1234567890"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/lead/lead-email-send-otp": {
+      "post": {
+        "tags": [
+          "leads"
+        ],
+        "description": "Send otp to advisor mobile number",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "example@gmail.com"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/lead/lead-email-verify": {
+      "post": {
+        "tags": [
+          "leads"
+        ],
+        "description": "Verify advisor email using OTP",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                },
+                "otp": {
+                  "type": "number",
+                  "example": 1234
+                },
+                "email": {
+                  "type": "string",
+                  "example": "example@gmail.com"
                 }
               }
             }

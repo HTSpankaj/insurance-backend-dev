@@ -49,6 +49,11 @@ const advisorUpdateRegistrationValidator = [
         .withMessage("Advisor ID is required")
         .isUUID()
         .withMessage("Invalid advisor ID format"),
+    body("bank_details_id")
+        .notEmpty()
+        .withMessage("Bank details ID is required")
+        .isUUID()
+        .withMessage("Invalid bank details ID format"),
     body("join_as").notEmpty().withMessage("Join_as is required"),
     body("name")
         .notEmpty()

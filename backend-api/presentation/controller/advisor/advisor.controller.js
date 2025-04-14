@@ -96,6 +96,7 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
     #swagger.description = 'Register a new advisor'
     #swagger.consumes = ['multipart/form-data']
     #swagger.parameters['advisor_id'] = { in: 'formData', type: 'string', required: true, description: 'Advisor ID' }
+    #swagger.parameters['bank_details_id'] = { in: 'formData', type: 'string', required: true, description: 'bank_details_id ID' }
     #swagger.parameters['join_as'] = { in: 'formData', type: 'string', required: true, description: 'Role the advisor is joining as' }
     #swagger.parameters['name'] = { in: 'formData', type: 'string', required: true, description: 'Full name of the advisor' }
     #swagger.parameters['mobile_number'] = { in: 'formData', type: 'string', required: true, description: '10-digit mobile number' }
@@ -109,18 +110,11 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
     #swagger.parameters['bank_account_number'] = { in: 'formData', type: 'string', required: true, description: '9-18 digit bank account number' }
     #swagger.parameters['aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (JPEG or PDF)' }
     #swagger.parameters['pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (JPEG or PDF)' }
-    #swagger.responses[200] = {
-      description: 'Advisor registered successfully',
-      schema: { success: true, data: { advisor_id: 'uuid', name: 'string', email: 'string', aadhar_card_image_url: 'string', pan_card_image_url: 'string' } }
-    }
-    #swagger.responses[400] = {
-      description: 'Invalid input',
-      schema: { success: false, error: { message: 'string' } }
-    }
   */
     try {
         const {
             advisor_id,
+            bank_details_id,
             join_as,
             name,
             mobile_number,
@@ -144,7 +138,9 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
             });
         }
 
-        const result = await advisorService.createAdvisor(
+        const result = await advisorService.reSubmitAdvisor(
+            advisor_id,
+            bank_details_id,
             join_as,
             name,
             mobile_number,
@@ -181,7 +177,7 @@ exports.sendAdvisorOtpController = async (req, res) => {
             in: 'body',
             schema: {
                 mobile_number: '1234567890',
-                purpose_for: 'registration'
+                purpose_for: 'registration/login'
             }
         }
     */

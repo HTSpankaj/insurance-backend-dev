@@ -47,6 +47,7 @@ class CourseService {
                     filePath,
                     file.buffer,
                     file.mimetype,
+                    false,
                 );
                 if (error) {
                     console.error("Service - Upload error:", error);

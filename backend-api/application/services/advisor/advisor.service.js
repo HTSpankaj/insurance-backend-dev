@@ -4,6 +4,7 @@ const BucketNameStorage = require("../../../infrastructure/storage/bucketName.st
 const jwt = require("jsonwebtoken");
 const { generateOtp } = require("../../../utils/crypto.util");
 const authUtil = require("../../../utils/auth.util.js");
+const { generateOtpToken, verifyOtpToken } = require("../../../utils/jwt.util.js");
 
 class AdvisorService {
     constructor(supabaseInstance) {
@@ -56,6 +57,7 @@ class AdvisorService {
                 _aadharFilePath,
                 aadhar_card_file.buffer,
                 aadhar_card_file.mimetype,
+                false,
             );
             if (aadharUploadResult) {
                 aadharPublicUrl = await this.storage.getPublicUrl(aadharUploadResult?.path);
@@ -86,6 +88,86 @@ class AdvisorService {
         }
     }
 
+    async reSubmitAdvisor(
+        advisor_id,
+        bank_details_id,
+        join_as,
+        name,
+        mobile_number,
+        email,
+        aadhar_card_number,
+        pan_card_number,
+        qualification,
+        bank_name,
+        bank_ifsc_code,
+        bank_branch,
+        bank_account_number,
+        aadhar_card_file,
+        pan_card_file,
+    ) {
+        try {
+            const advisor = await this.advisorDatabase.updateResubmitAdvisor(
+                advisor_id,
+                join_as,
+                name,
+                mobile_number,
+                email,
+                aadhar_card_number,
+                pan_card_number,
+                qualification,
+            );
+
+            await this.advisorDatabase.createBankDetails(
+                bank_details_id,
+                bank_name,
+                bank_ifsc_code,
+                bank_branch,
+                bank_account_number,
+            );
+
+            let aadharPublicUrl = "";
+            let panPublicUrl = "";
+
+            // Todo: aadhar and pan card file upload
+            const _aadharFilePath = `${advisor.advisor_id}/document/aadharCard.${aadhar_card_file?.mimetype.split("/")[1]}`;
+            const aadharUploadResult = await this.aadharStorage.uploadFile(
+                _aadharFilePath,
+                aadhar_card_file.buffer,
+                aadhar_card_file.mimetype,
+                true,
+            );
+            if (aadharUploadResult) {
+                aadharPublicUrl = await this.storage.getPublicUrl(aadharUploadResult?.path);
+                aadharPublicUrl = aadharPublicUrl + `?dt=${Date.now()}`;
+            }
+
+            const _panFilePath = `${advisor.advisor_id}/document/panCard.${pan_card_file?.mimetype.split("/")[1]}`;
+            const panUploadResult = await this.panStorage.uploadFile(
+                _panFilePath,
+                pan_card_file.buffer,
+                pan_card_file.mimetype,
+                true,
+            );
+            if (panUploadResult) {
+                panPublicUrl = await this.storage.getPublicUrl(panUploadResult?.path);
+                panPublicUrl = panPublicUrl + `?dt=${Date.now()}`;
+            }
+
+            const updatedAdvisor = await this.advisorDatabase.updateAdvisorFiles(
+                advisor.advisor_id,
+                aadharPublicUrl,
+                panPublicUrl,
+            );
+
+            return updatedAdvisor;
+        } catch (error) {
+            console.error("Error in reSubmitAdvisor:", error);
+            throw new Error(
+                `Failed to re-submit advisor: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
     async sendAdvisorOtp(mobile_number, purpose_for) {
         try {
             const exists = await this.advisorDatabase.checkMobileNumber(mobile_number);
@@ -97,11 +179,7 @@ class AdvisorService {
             }
             // const otp = generateOtp(4);
             const otp = 1234;
-            const token = jwt.sign(
-                { mobile_number, otp, purpose_for },
-                process.env.JWT_SECRET || "your-secret-key",
-                { expiresIn: "10m" },
-            );
+            const token = generateOtpToken({ mobile_number, otp, purpose_for });
 
             return { token, mobile_number };
         } catch (error) {
@@ -112,55 +190,42 @@ class AdvisorService {
     // New verifyAdvisorMobile method
     async verifyAdvisorMobile(token, otp, mobile_number, purpose_for) {
         try {
-            // Decode token
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || "your-secret-key");
-            const tokenOtp = decoded.otp;
-            const tokenMobile = decoded.mobile_number;
+            const decoded = await verifyOtpToken(token);
 
-            // Validate mobile number consistency
-            if (tokenMobile !== mobile_number) {
-                throw new Error("Mobile number does not match token");
-            }
+            if (decoded?.success) {
+                const decodedData = decoded?.data;
+                const tokenOtp = decodedData.otp;
+                const tokenMobile = decodedData.mobile_number;
 
-            // Check OTP match
-            if (parseInt(otp) !== parseInt(tokenOtp)) {
-                throw new Error("Invalid OTP");
-            }
-
-            if (purpose_for === "registration") {
-                return {
-                    data: {
-                        message: "Mobile number verified successfully",
-                        mobile_number,
-                    },
-                };
-            } else if (purpose_for === "login") {
-                // Fetch user from database
-                const user = await this.advisorDatabase.getAdvisorByMobile(mobile_number);
-                if (!user) {
-                    throw new Error("User not found");
+                if (tokenMobile !== mobile_number) {
+                    throw new Error("Mobile number does not match token");
                 }
+                if (parseInt(otp) !== parseInt(tokenOtp)) {
+                    throw new Error("Invalid OTP");
+                }
+                if (purpose_for === "registration") {
+                    return {
+                        data: {
+                            message: "Mobile number verified successfully",
+                            mobile_number,
+                        },
+                    };
+                } else if (purpose_for === "login") {
+                    const user = await this.advisorDatabase.getAdvisorByMobile(mobile_number);
+                    if (!user) {
+                        throw new Error("User not found");
+                    }
 
-                // Generate tokens
-                // const access_token = jwt.sign(
-                //     { advisor_id: user.advisor_id, mobile_number },
-                //     process.env.JWT_SECRET || "your-secret-key",
-                //     { expiresIn: "15m" },
-                // );
-                // const refresh_token = jwt.sign(
-                //     { advisor_id: user.advisor_id, mobile_number },
-                //     process.env.JWT_SECRET || "your-secret-key",
-                //     { expiresIn: "7d" },
-                // );
-                const userOject = { ...user };
-                console.log({ userOject });
+                    const userOject = { ...user };
+                    const logInTokens = authUtil.logInGenerateAndStoreToken(userOject);
 
-                const logInTokens = authUtil.logInGenerateAndStoreToken(userOject);
-
-                return {
-                    data: user,
-                    token: logInTokens,
-                };
+                    return {
+                        data: user,
+                        token: logInTokens,
+                    };
+                }
+            } else {
+                throw new Error(decoded?.message || "Verification failed");
             }
         } catch (error) {
             throw new Error(error.message || "Verification failed");
@@ -169,21 +234,15 @@ class AdvisorService {
     // New sendAdvisorEmailOtp method
     async sendAdvisorEmailOtp(email) {
         try {
-            console.log("Sending OTP for email:", email);
             const exists = await this.advisorDatabase.checkEmail(email);
-            console.log("Email exists:", exists);
-
             if (exists) {
                 throw new Error("Email already registered");
             }
 
             // const otp = generateOtp(4);
             const otp = 1234;
-            const token = jwt.sign({ email, otp }, process.env.JWT_SECRET || "your-secret-key", {
-                expiresIn: "10m",
-            });
+            const token = generateOtpToken({ email, otp });
 
-            console.log(`OTP for ${email}: ${otp}`);
             return { token, email };
         } catch (error) {
             console.error("Error in sendAdvisorEmailOtp:", error);
@@ -194,24 +253,27 @@ class AdvisorService {
     // New verifyAdvisorEmail method
     async verifyAdvisorEmail(token, otp, email) {
         try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET || "your-secret-key");
-            const tokenOtp = decoded.otp;
-            const tokenEmail = decoded.email;
+            const decoded = await verifyOtpToken(token);
 
-            if (tokenEmail !== email) {
-                throw new Error("Email does not match token");
+            if (decoded?.success) {
+                const decodedData = decoded?.data;
+                const tokenOtp = decodedData.otp;
+                const tokenEmail = decodedData.email;
+                if (tokenEmail !== email) {
+                    throw new Error("Email does not match token");
+                }
+                if (parseInt(otp) !== parseInt(tokenOtp)) {
+                    throw new Error("Invalid OTP");
+                }
+                return {
+                    data: {
+                        message: "Email verified successfully",
+                        email,
+                    },
+                };
+            } else {
+                throw new Error(decoded?.message || "Verification failed");
             }
-
-            if (parseInt(otp) !== parseInt(tokenOtp)) {
-                throw new Error("Invalid OTP");
-            }
-
-            return {
-                data: {
-                    message: "Email verified successfully",
-                    email,
-                },
-            };
         } catch (error) {
             console.error("Error in verifyAdvisorEmail:", error);
             throw new Error(error.message || "Verification failed");

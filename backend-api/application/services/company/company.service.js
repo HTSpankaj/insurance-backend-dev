@@ -40,7 +40,12 @@ class CompanyService {
                 const fileExtension = file.mimetype.split("/")[1];
                 const filePath = `${company.company_id}/document/${fileName}-${Date.now()}.${fileExtension}`; // Use actual company_id
                 console.log("Uploading file to:", `company/${filePath}`);
-                const { data, error } = await this.storage.uploadFile(filePath, file.buffer);
+                const { data, error } = await this.storage.uploadFile(
+                    filePath,
+                    file.buffer,
+                    file.mimetype,
+                    false,
+                );
                 if (error) throw error;
                 return this.storage.getPublicUrl(filePath);
             };
@@ -82,22 +87,28 @@ class CompanyService {
         }
     }
 
-    async getCompanyList(pageNumber, limit, search) {
+    async getCompanyList(pageNumber, limit, search, is_all) {
         try {
             const { data, total_count } = await this.companyDatabase.getCompaniesWithStats(
                 pageNumber,
                 limit,
                 search,
+                is_all,
             );
             const total_pages = Math.ceil(total_count / limit);
 
             return {
                 data,
                 metadata: {
-                    page: pageNumber,
-                    per_page: limit,
-                    total_count,
-                    total_pages,
+                    total_count: total_count,
+                    current_page_count: data?.length || 0,
+                    ...(!is_all
+                        ? {
+                              page: pageNumber,
+                              per_page: limit,
+                              total_pages,
+                          }
+                        : {}),
                 },
             };
         } catch (error) {

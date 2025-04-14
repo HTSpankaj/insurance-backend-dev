@@ -3,6 +3,13 @@ const LeadService = require("../../../application/services/lead/lead.service.js"
 
 const leadService = new LeadService(supabaseInstance);
 
+const leadStatusEnum = [
+    { id: 1, title: "New" },
+    { id: 2, title: "Assigned" },
+    { id: 3, title: "Sold" },
+    { id: 4, title: "Lost" },
+]
+
 exports.getLeadListController = async (req, res) => {
     /*
     #swagger.tags = ['leads']
@@ -34,7 +41,7 @@ exports.getLeadListController = async (req, res) => {
       required: false, 
       description: 'Filter by lead status', 
       enum: ['', 'New', 'Assigned', 'Sold', 'Lost'], 
-      example: 'Active',
+      example: 'New',
       default: ''
     }
     #swagger.parameters['priority'] = { 
@@ -43,7 +50,7 @@ exports.getLeadListController = async (req, res) => {
       required: false, 
       description: 'Filter by lead priority', 
       enum: ['', 'High', 'Medium', 'Low'], 
-      example: 'Active',
+      example: 'High',
       default: ''
     }
     #swagger.parameters['category_id'] = { 
@@ -78,11 +85,17 @@ exports.getLeadListController = async (req, res) => {
             throw new Error("limit must be a positive integer");
         }
 
+
+        let _status = null;
+        if (status && leadStatusEnum?.find((item) => item?.title === status)) {
+            _status = leadStatusEnum.find((item) => item?.title === status)?.id;
+        }
+
         const result = await leadService.getLeadList(
             pageNumber,
             limit,
             search,
-            status,
+            _status,
             priority,
             category_id,
             company_id,
@@ -350,8 +363,6 @@ exports.leadMobileSendOtpController = async (req, res) => {
         });
     }
 };
-
-// New verifyAdvisorMobileController
 exports.leadMobileVerifyController = async (req, res) => {
     /*
       #swagger.tags = ['leads']
@@ -387,6 +398,62 @@ exports.leadMobileVerifyController = async (req, res) => {
         }
 
         const result = await leadService.verifyLeadMobile(token, otp, mobileNumber);
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+exports.leadEmailSendOtpController = async (req, res) => {
+    /*
+        #swagger.tags = ['leads']
+        #swagger.description = 'Send otp to advisor mobile number'
+        #swagger.parameters['body'] = {
+            in: 'body',
+            schema: {
+                email: 'example@gmail.com',
+            }
+        }
+    */ try {
+        const { email } = req.body;
+
+        const result = await leadService.sendEmailOtp(email);
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+exports.leadEmailVerifyController = async (req, res) => {
+    /*
+        #swagger.tags = ['leads']
+        #swagger.description = 'Verify advisor email using OTP'
+        #swagger.parameters['body'] = {
+            in: 'body',
+            schema: {
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
+                otp: 1234,
+                email: 'example@gmail.com',
+            }
+        }
+    */
+    try {
+        const { token, otp, email } = req.body;
+
+        const result = await leadService.verifyLeadEmail(token, otp, email);
 
         return res.status(200).json({
             success: true,

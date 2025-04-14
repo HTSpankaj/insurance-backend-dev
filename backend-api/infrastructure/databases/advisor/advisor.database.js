@@ -53,6 +53,44 @@ class AdvisorDatabase {
         }
     }
 
+    async updateResubmitAdvisor(
+        advisor_id,
+        join_as,
+        name,
+        mobile_number,
+        email,
+        aadhar_card_number,
+        pan_card_number,
+        qualification,
+    ) {
+        try {
+            const { data, error } = await this.db
+                .from(tableName)
+                .update({
+                    join_as,
+                    name,
+                    mobile_number,
+                    email,
+                    aadhar_card_number,
+                    pan_card_number,
+                    qualification,
+                    advisor_onboarding_status_id: 3,
+                })
+                .eq("advisor_id", advisor_id)
+                .select()
+                .maybeSingle();
+
+            if (error) {
+                console.error("Supabase error in update Advisor:", error);
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in update Advisor:", error);
+            throw new Error(`Failed to update advisor: ${error.message || JSON.stringify(error)}`);
+        }
+    }
     async createBankDetails(
         advisor_id,
         bank_name,
@@ -83,6 +121,41 @@ class AdvisorDatabase {
             console.error("Error in createBankDetails:", error);
             throw new Error(
                 `Failed to create bank details: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+    async updateBankDetails(
+        bank_details_id,
+        advisor_id,
+        bank_name,
+        bank_ifsc_code,
+        bank_branch,
+        bank_account_number,
+    ) {
+        try {
+            const { data, error } = await this.db
+                .from(bankTableName)
+                .update({
+                    advisor_id,
+                    bank_name,
+                    bank_ifsc_code,
+                    bank_branch,
+                    bank_account_number,
+                })
+                .eq("bank_details_id", bank_details_id)
+                .select()
+                .maybeSingle();
+
+            if (error) {
+                console.error("Supabase error in updateBankDetails:", error);
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in updateBankDetails:", error);
+            throw new Error(
+                `Failed to update bank details: ${error.message || JSON.stringify(error)}`,
             );
         }
     }

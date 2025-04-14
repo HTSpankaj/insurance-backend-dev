@@ -17,6 +17,7 @@ const {
     upsertAdvisorCategoryAccessController,
     updateAdvisorTabAccessController,
     activeInactiveAdvisorController,
+    resubmitAdvisorRegistrationController,
 } = require("../../../presentation/controller/advisor/advisor.controller");
 const upload = require("../../../middleware/multer.middleware");
 
@@ -48,7 +49,7 @@ router.post(
     "/resubmit-advisor-registration",
     upload,
     advisorUpdateRegistrationValidator,
-    createAdvisorController,
+    resubmitAdvisorRegistrationController,
 );
 router.post("/advisor-mobile-send-otp", advisorOtpValidateInput, sendAdvisorOtpController);
 router.post("/advisor-mobile-verify", advisorVerifyValidateInput, verifyAdvisorMobileController);

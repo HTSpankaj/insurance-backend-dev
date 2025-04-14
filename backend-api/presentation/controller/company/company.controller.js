@@ -226,6 +226,12 @@ exports.getCompanyListController = async (req, res) => {
     /*
     #swagger.tags = ['Company']
     #swagger.description = 'Get paginated list of companies with statistics'
+    #swagger.parameters['is_all'] = { 
+      in: 'query', 
+      type: 'boolean', 
+      default: false, 
+      description: 'Get all companies' 
+    }
     #swagger.parameters['page_number'] = { 
       in: 'query', 
       type: 'integer', 
@@ -244,40 +250,11 @@ exports.getCompanyListController = async (req, res) => {
       default: '', 
       description: 'Search by company name' 
     }
-    #swagger.responses[200] = {
-      description: 'Company list retrieved successfully',
-      schema: { 
-        success: true, 
-        data: { 
-          type: 'array', 
-          items: { 
-            type: 'object', 
-            properties: {
-              company_id: { type: 'string' },
-              company_display_id: { type: 'string' },
-              company_name: { type: 'string' },
-              logo_url: { type: 'string' },
-              total_products: { type: 'integer' },
-              converted_leads: { type: 'integer' },
-              active_leads: { type: 'integer' }
-            }
-          }
-        }, 
-        metadata: { 
-          page: 'number', 
-          per_page: 'number', 
-          total_count: 'number', 
-          total_pages: 'number' 
-        } 
-      }
-    }
-    #swagger.responses[400] = {
-      description: 'Error retrieving company list',
-      schema: { success: false, error: { message: 'string' } }
-    }
+    
     */
     try {
         const { page_number = 1, limit = 10, search = "" } = req.query;
+        const is_all = req.query.is_all === "true" ? true : false;
 
         const pageNumber = parseInt(page_number);
         const perPage = parseInt(limit);
@@ -287,7 +264,7 @@ exports.getCompanyListController = async (req, res) => {
             throw new Error("Invalid page_number or limit");
         }
 
-        const result = await companyService.getCompanyList(pageNumber, perPage, search);
+        const result = await companyService.getCompanyList(pageNumber, perPage, search, is_all);
 
         return res.status(200).json({
             success: true,

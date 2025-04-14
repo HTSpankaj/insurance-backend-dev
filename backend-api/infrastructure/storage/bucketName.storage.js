@@ -4,12 +4,12 @@ class BucketNameStorage {
         this.bucketName = bucketName;
     }
 
-    async uploadFile(filePath, imageBuffer, contentType) {
+    async uploadFile(filePath, imageBuffer, contentType, upsert = false) {
         const { data, error } = await this.db.storage
             .from(this.bucketName)
             .upload(filePath, imageBuffer, {
                 cacheControl: "3600",
-                upsert: false,
+                upsert: upsert,
                 contentType: contentType,
             });
         if (data?.path) {

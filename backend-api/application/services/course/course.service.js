@@ -44,6 +44,7 @@ class CourseService {
                     filePath,
                     course_banner_img_file.buffer,
                     course_banner_img_file.mimetype,
+                    false,
                 );
                 if (uploadFileResponse) {
                     const banner_url = await this.storage.getPublicUrl(uploadFileResponse?.path);

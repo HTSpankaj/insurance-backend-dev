@@ -32,9 +32,11 @@ class ProductService {
                 const fileExtension = file.mimetype.split("/")[1];
 
                 const filePath = `company_id/product_id/${product.product_id}/${fileName}-${Date.now()}.${fileExtension}`;
-                const { error } = await this.storage.uploadFile(filePath, file.buffer, {
-                    contentType: file.mimetype,
-                });
+                const { error } = await this.storage.uploadFile(
+                    filePath,
+                    file.buffer,
+                    file.mimetype,
+                );
                 if (error) throw error;
                 return this.storage.getPublicUrl(filePath);
             };

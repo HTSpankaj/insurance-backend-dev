@@ -1,9 +1,7 @@
 const LeadDatabase = require("../../../infrastructure/databases/lead/lead.database");
 const LeadProductRelationshipManagerRelationDatabase = require("../../../infrastructure/databases/relationship-manager/lead_product_relationship_manager_relation.database");
-const jwt = require("jsonwebtoken");
-const { generateOtp } = require("../../../utils/crypto.util");
-const authUtil = require("../../../utils/auth.util.js");
 const LeadProductRelationDatabase = require("../../../infrastructure/databases/lead_product_relation/lead_product_relation.database.js");
+const { generateOtpToken, verifyOtpToken } = require("../../../utils/jwt.util.js");
 
 class LeadService {
     constructor(supabaseInstance) {
@@ -173,11 +171,7 @@ class LeadService {
         try {
             // const otp = generateOtp(4);
             const otp = 1234;
-            const token = jwt.sign(
-                { mobile_number, otp },
-                process.env.JWT_SECRET || "your-secret-key",
-                { expiresIn: "10m" },
-            );
+            const token = generateOtpToken({ mobile_number, otp });
 
             return { token, mobile_number };
         } catch (error) {
@@ -187,21 +181,62 @@ class LeadService {
 
     async verifyLeadMobile(token, otp, mobile_number) {
         try {
-            const decoded = verifyToken(token);
-            const tokenOtp = decoded.otp;
-            const tokenMobile = decoded.mobile_number;
-
-            if (tokenMobile !== mobile_number) {
-                throw new Error("Mobile number does not match token");
+            const decoded = await verifyOtpToken(token);
+            if (decoded?.success) {
+                const data = decoded?.data;
+                const tokenOtp = data.otp;
+                const tokenMobile = data.mobile_number;
+                if (tokenMobile !== mobile_number) {
+                    throw new Error("Mobile number does not match token");
+                }
+                if (parseInt(otp) !== parseInt(tokenOtp)) {
+                    throw new Error("Invalid OTP");
+                }
+                return {
+                    message: "Mobile number verified successfully",
+                    mobile_number,
+                };
+            } else {
+                throw new Error(decoded?.message || "Verification failed");
             }
-            if (parseInt(otp) !== parseInt(tokenOtp)) {
-                throw new Error("Invalid OTP");
-            }
+        } catch (error) {
+            throw new Error(error.message || "Verification failed");
+        }
+    }
 
-            return {
-                message: "Mobile number verified successfully",
-                mobile_number,
-            };
+    async sendEmailOtp(email) {
+        try {
+            // const otp = generateOtp(4);
+            const otp = 1234;
+            const token = generateOtpToken({ email, otp });
+
+            return { token, email };
+        } catch (error) {
+            throw new Error(`Failed to send OTP: ${error.message}`);
+        }
+    }
+
+    async verifyLeadEmail(token, otp, email) {
+        try {
+            const decoded = await verifyOtpToken(token);
+
+            if (decoded?.success) {
+                const data = decoded?.data;
+                const tokenOtp = data.otp;
+                const tokenMobile = data.email;
+                if (tokenMobile !== email) {
+                    throw new Error("Email does not match token");
+                }
+                if (parseInt(otp) !== parseInt(tokenOtp)) {
+                    throw new Error("Invalid OTP");
+                }
+                return {
+                    message: "Email verified successfully",
+                    email,
+                };
+            } else {
+                throw new Error(decoded?.message || "Verification failed");
+            }
         } catch (error) {
             throw new Error(error.message || "Verification failed");
         }

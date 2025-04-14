@@ -105,96 +105,38 @@ class CompanyDatabase {
         }
     }
 
-    async getCompaniesWithStats(pageNumber, limit, search) {
+    async getCompaniesWithStats(pageNumber, limit, search, is_all) {
         try {
-            const offset = (pageNumber - 1) * limit;
-
-            // Build the query for companies with pagination and search
-            let query = this.db.from(companyTableName).select(
-                `
-                    company_id,
-                    company_display_id,
-                    company_name,
-                    logo_url
-                `,
-                { count: "exact" },
-            );
-
-            // Apply search filter on company_name
-            if (search) {
-                query = query.ilike("company_name", `%${search}%`);
-            }
-
-            // Apply pagination and order by created_at
-            query = query
-                .order("created_at", { ascending: false })
-                .range(offset, offset + limit - 1);
-
-            const { data: companies, count, error } = await query;
-
+            const { data, error } = await this.db.rpc("get_company_list_with_stats", {
+                p_page_number: pageNumber,
+                p_limit: limit,
+                p_search: search || "",
+                is_all,
+            });
             if (error) {
                 console.error("Supabase error in getCompaniesWithStats:", error);
                 throw error;
             }
-
-            // Fetch statistics for each company
-            const companiesWithStats = await Promise.all(
-                companies.map(async company => {
-                    // Total Products
-                    const { count: totalProducts } = await this.db
-                        .from("products")
-                        .select("*", { count: "exact", head: true })
-                        .eq("company_id", company.company_id);
-
-                    // Converted Leads (lead_status_id = 3 for "SOLD")
-                    const { count: convertedLeads } = await this.db
-                        .from("lead_product_relation")
-                        .select("*", { count: "exact", head: true })
-                        .eq("lead_status_id", 3)
-                        .in(
-                            "product_id",
-                            await this.db
-                                .from("products")
-                                .select("product_id")
-                                .eq("company_id", company.company_id)
-                                .then(res => res.data.map(p => p.product_id)),
-                        );
-
-                    // Active Leads (lead_status_id = 1 for "ACTIVE")
-                    const { count: activeLeads } = await this.db
-                        .from("lead_product_relation")
-                        .select("*", { count: "exact", head: true })
-                        .eq("lead_status_id", 1)
-                        .in(
-                            "product_id",
-                            await this.db
-                                .from("products")
-                                .select("product_id")
-                                .eq("company_id", company.company_id)
-                                .then(res => res.data.map(p => p.product_id)),
-                        );
-
-                    return {
-                        company_id: company.company_id,
-                        company_display_id: company.company_display_id,
-                        company_name: company.company_name,
-                        logo_url: company.logo_url,
-                        total_products: totalProducts || 0,
-                        converted_leads: convertedLeads || 0,
-                        active_leads: activeLeads || 0,
-                    };
-                }),
-            );
-
+            if (!data || data.length === 0) {
+                return {
+                    data: [],
+                    total_count: 0,
+                };
+            }
             return {
-                data: companiesWithStats,
-                total_count: count || 0,
+                data: data.map(item => ({
+                    company_name: item.company_name,
+                    company_id: item.company_id,
+                    logo_url: item.logo_url,
+                    total_products: Number(item.total_products),
+                    converted_leads: Number(item.converted_leads),
+                    active_leads: Number(item.active_leads),
+                })),
+                total_count: Number(data[0].total_count) || 0,
             };
         } catch (error) {
             console.error("Error in getCompaniesWithStats:", error);
-            throw new Error(
-                `Failed to fetch companies with stats: ${error.message || JSON.stringify(error)}`,
-            );
+            throw new Error(`Failed to fetch companies: ${error.message || JSON.stringify(error)}`);
         }
     }
 
