@@ -71,7 +71,7 @@ class ProductDatabase {
             // Build the query
             let query = this.db
                 .from(productTableName)
-                .select("*", { count: "exact" })
+                .select("*, sub_category_id", { count: "exact" })
                 .eq("company_id", company_id);
 
             // Apply filters

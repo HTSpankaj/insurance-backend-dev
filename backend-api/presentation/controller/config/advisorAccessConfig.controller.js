@@ -10,13 +10,13 @@ exports.updateAdvisorAccessConfigController = async (req, res) => {
     #swagger.parameters['body'] = {
         in: 'body',
         schema: {
-            id: 1,
+            id: "",
             access: {}
         }
     }
     */
     try {
-        const { id, title, access } = req.body;
+        const { id, access } = req.body;
         const result = await advisorAccessService.updateAdvisorAccessDatabase(id, access);
         return res.status(200).json({
             success: true,
