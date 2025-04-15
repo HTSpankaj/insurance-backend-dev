@@ -72,12 +72,16 @@ class ProductDatabase {
         sub_category_id = null,
     ) {
         try {
-            let query = this.db.rpc("get_product_list", {
-                company_id_val: company_id || null,
-                search_val: search || null,
-                category_id_val: category_id || null,
-                sub_category_id_val: sub_category_id || null,
-            }, { count: "exact"});
+            let query = this.db.rpc(
+                "get_product_list",
+                {
+                    company_id_val: company_id || null,
+                    search_val: search || null,
+                    category_id_val: category_id || null,
+                    sub_category_id_val: sub_category_id || null,
+                },
+                { count: "exact" },
+            );
 
             // Apply pagination
             query = query

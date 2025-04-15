@@ -2655,6 +2655,32 @@
         }
       }
     },
+    "/api/advisor/advisor-statistics-by-advisor-id": {
+      "get": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Get advisor statistics by advisor id",
+        "parameters": [
+          {
+            "name": "advisor_id",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/advisor/get-advisor-company-access": {
       "get": {
         "tags": [

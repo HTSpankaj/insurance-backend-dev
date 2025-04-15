@@ -463,6 +463,19 @@ class AdvisorService {
             );
         }
     }
+
+    async getAdvisorStatisticsByAdvisorIdService(advisor_id) {
+        try {
+            const data =
+                await this.advisorDatabase.getAdvisorStatisticsByAdvisorIdDatabase(advisor_id);
+            return data;
+        } catch (error) {
+            console.error("Error in getAdvisorStatisticsByAdvisorIdDatabase:", error);
+            throw new Error(
+                `Failed to get advisor statistics: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 }
 
 module.exports = AdvisorService;

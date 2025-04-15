@@ -93,14 +93,17 @@ class RelationshipManagerDatabase {
     async getRelationshipManagersWithPagination(company_id, offset, limit, search, region_id_val) {
         try {
             // Build the query
-            let query = this.db
-                .rpc("get_relationship_managers", {
-
+            let query = this.db.rpc(
+                "get_relationship_managers",
+                {
                     search_val: search || null,
                     company_id_val: company_id || null,
                     region_id_val: region_id_val || null,
-        }, {
-                count: "exact",})
+                },
+                {
+                    count: "exact",
+                },
+            );
 
             // Apply pagination
             query = query

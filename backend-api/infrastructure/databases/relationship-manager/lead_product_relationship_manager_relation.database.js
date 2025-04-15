@@ -31,17 +31,21 @@ class LeadProductRelationshipManagerRelationDatabase {
             return false;
         }
     }
-    
-    async relationshipManagerAssignToLeadDatabase(lead_product_relation_id, relationship_manager_id,relationship_manager_assign_by){
-        try {
 
+    async relationshipManagerAssignToLeadDatabase(
+        lead_product_relation_id,
+        relationship_manager_id,
+        relationship_manager_assign_by,
+    ) {
+        try {
             const { data, error } = await this.db
                 .from(tableName)
                 .insert({
                     lead_product_relation_id,
                     relationship_manager_id,
                     relationship_manager_assign_by,
-                }).select()
+                })
+                .select()
                 .maybeSingle();
 
             if (error) throw error;

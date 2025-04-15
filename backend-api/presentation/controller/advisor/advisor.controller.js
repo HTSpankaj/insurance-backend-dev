@@ -770,3 +770,25 @@ exports.upsertAdvisorCategoryAccessController = async (req, res) => {
         });
     }
 };
+
+exports.getAdvisorStatisticsByAdvisorIdController = async (req, res) => {
+    /*
+    #swagger.tags = ['Advisor']
+    #swagger.description = 'Get advisor statistics by advisor id'
+    #parameters['advisor_id'] = { in: 'query', type: 'string', required: true, description: 'Advisor ID' }
+    */
+    try {
+        const { advisor_id } = req.query;
+        const result = await advisorService.getAdvisorStatisticsByAdvisorIdService(advisor_id);
+        return res.status(200).json({
+            success: true,
+            message: "Get advisor statistics by advisor id successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};

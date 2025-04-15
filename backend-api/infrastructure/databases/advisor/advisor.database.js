@@ -499,6 +499,21 @@ class AdvisorDatabase {
             );
         }
     }
+
+    async getAdvisorStatisticsByAdvisorIdDatabase(advisor_id = null) {
+        try {
+            const { data, error } = await this.db.rpc("get_advisor_statistics_by_advisor_id", {
+                advisor_id_val: advisor_id,
+            });
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(
+                `Failed to get advisor statistics: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 }
 
 module.exports = AdvisorDatabase;

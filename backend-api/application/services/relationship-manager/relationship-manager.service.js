@@ -4,7 +4,8 @@ const RelationshipManagerDatabase = require("../../../infrastructure/databases/r
 class RelationshipManagerService {
     constructor(supabaseInstance) {
         this.relationshipManagerDatabase = new RelationshipManagerDatabase(supabaseInstance);
-        this.leadProductRelationshipManagerRelationDatabase = new LeadProductRelationshipManagerRelationDatabase(supabaseInstance);
+        this.leadProductRelationshipManagerRelationDatabase =
+            new LeadProductRelationshipManagerRelationDatabase(supabaseInstance);
     }
 
     async addRelationshipManager(name, contact_number, region, category, company_id) {
@@ -53,7 +54,7 @@ class RelationshipManagerService {
                     offset,
                     limit,
                     search,
-                    region_id
+                    region_id,
                 );
             const total_pages = Math.ceil(total_count / limit);
 
@@ -70,9 +71,17 @@ class RelationshipManagerService {
         }
     }
 
-    async relationshipManagerAssignToLeadService(lead_product_relation_id, relationship_manager_id,relationship_manager_assign_by){
+    async relationshipManagerAssignToLeadService(
+        lead_product_relation_id,
+        relationship_manager_id,
+        relationship_manager_assign_by,
+    ) {
         try {
-            return await this.leadProductRelationshipManagerRelationDatabase.relationshipManagerAssignToLeadDatabase(lead_product_relation_id, relationship_manager_id,relationship_manager_assign_by);
+            return await this.leadProductRelationshipManagerRelationDatabase.relationshipManagerAssignToLeadDatabase(
+                lead_product_relation_id,
+                relationship_manager_id,
+                relationship_manager_assign_by,
+            );
         } catch (error) {
             console.error("Error in relationshipManagerAssignToLeadService:", error);
             throw new Error(

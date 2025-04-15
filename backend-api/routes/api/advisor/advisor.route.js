@@ -18,6 +18,7 @@ const {
     updateAdvisorTabAccessController,
     activeInactiveAdvisorController,
     resubmitAdvisorRegistrationController,
+    getAdvisorStatisticsByAdvisorIdController,
 } = require("../../../presentation/controller/advisor/advisor.controller");
 const upload = require("../../../middleware/multer.middleware");
 
@@ -73,6 +74,11 @@ router.put(
     activeInactiveAdvisorValidator,
     authenticateToken,
     activeInactiveAdvisorController,
+);
+router.get(
+    "/advisor-statistics-by-advisor-id",
+    authenticateToken,
+    getAdvisorStatisticsByAdvisorIdController,
 );
 // router.put("/advisor-request-resubmit", authenticateToken, resubmitAdvisorRequestController);
 

@@ -135,7 +135,7 @@ exports.getRelationshipManagerListByCompanyIdController = async (req, res) => {
             pageNumber,
             limitPerPage,
             search?.trim(),
-            region_id
+            region_id,
         );
 
         return res.status(200).json({
@@ -170,15 +170,15 @@ exports.relationshipManagerAssignToLeadController = async (req, res) => {
         }
     }
     */
-    try {    
+    try {
         const { lead_product_relation_id, relationship_manager_id } = req.body;
-        
+
         const relationship_manager_assign_by = res.locals.tokenData?.user_id;
 
         const result = await relationshipManagerService.relationshipManagerAssignToLeadService(
             lead_product_relation_id,
             relationship_manager_id,
-            relationship_manager_assign_by
+            relationship_manager_assign_by,
         );
         return res.status(200).json({
             success: true,
