@@ -31,6 +31,29 @@ class LeadProductRelationshipManagerRelationDatabase {
             return false;
         }
     }
+    
+    async relationshipManagerAssignToLeadDatabase(lead_product_relation_id, relationship_manager_id,relationship_manager_assign_by){
+        try {
+
+            const { data, error } = await this.db
+                .from(tableName)
+                .insert({
+                    lead_product_relation_id,
+                    relationship_manager_id,
+                    relationship_manager_assign_by,
+                }).select()
+                .maybeSingle();
+
+            if (error) throw error;
+            if (!data) throw new Error("Failed to release relationship manager assign to lead");
+
+            return data;
+        } catch (error) {
+            throw new Error(
+                `Failed to release relationship manager assign to lead: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 }
 
 module.exports = LeadProductRelationshipManagerRelationDatabase;

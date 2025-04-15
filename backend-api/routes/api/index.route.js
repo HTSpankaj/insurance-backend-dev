@@ -47,7 +47,7 @@ router.use("/advisor", advisorRoute); // No authentication required for advisor 
 router.use("/company", companyRouter);
 router.use("/lead", leadRouter);
 router.use("/product", productRouter);
-router.use("/relationship-manager", relationshipManagerRouter);
+router.use("/relationship-manager", authenticateToken, relationshipManagerRouter);
 
 router.use("/course", courseRouter);
 

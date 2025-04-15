@@ -1,8 +1,10 @@
+const LeadProductRelationshipManagerRelationDatabase = require("../../../infrastructure/databases/relationship-manager/lead_product_relationship_manager_relation.database");
 const RelationshipManagerDatabase = require("../../../infrastructure/databases/relationship-manager/relationship-manager.database");
 
 class RelationshipManagerService {
     constructor(supabaseInstance) {
         this.relationshipManagerDatabase = new RelationshipManagerDatabase(supabaseInstance);
+        this.leadProductRelationshipManagerRelationDatabase = new LeadProductRelationshipManagerRelationDatabase(supabaseInstance);
     }
 
     async addRelationshipManager(name, contact_number, region, category, company_id) {
@@ -64,6 +66,17 @@ class RelationshipManagerService {
             console.error("Error in getRelationshipManagerListByCompanyId:", error);
             throw new Error(
                 `Failed to fetch relationship manager list: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
+    async relationshipManagerAssignToLeadService(lead_product_relation_id, relationship_manager_id,relationship_manager_assign_by){
+        try {
+            return await this.leadProductRelationshipManagerRelationDatabase.relationshipManagerAssignToLeadDatabase(lead_product_relation_id, relationship_manager_id,relationship_manager_assign_by);
+        } catch (error) {
+            console.error("Error in relationshipManagerAssignToLeadService:", error);
+            throw new Error(
+                `Failed to assign relationship manager to lead: ${error.message || JSON.stringify(error)}`,
             );
         }
     }

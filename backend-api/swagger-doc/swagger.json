@@ -4050,11 +4050,50 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/relationship-manager/assign-relationship-manager-to-lead": {
+      "post": {
+        "tags": [
+          "Relationship-managers"
+        ],
+        "description": "Assign Relationship Manager to Lead",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "lead_product_relation_id": {
+                  "type": "string",
+                  "example": "uuid"
+                },
+                "relationship_manager_id": {
+                  "type": "string",
+                  "example": "uuid"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -4099,7 +4138,7 @@
             "in": "query",
             "type": "string",
             "required": false,
-            "description": "Company ID (UUID)",
+            "description": "Region ID (UUID)",
             "default": null
           }
         ],
@@ -4107,11 +4146,11 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

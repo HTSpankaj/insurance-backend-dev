@@ -63,7 +63,7 @@ exports.addRelationshipManagerController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -149,7 +149,44 @@ exports.getRelationshipManagerListByCompanyIdController = async (req, res) => {
             },
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+exports.relationshipManagerAssignToLeadController = async (req, res) => {
+    /*
+    #swagger.tags = ['Relationship-managers']
+    #swagger.description = 'Assign Relationship Manager to Lead'
+    #swagger.parameters['body'] = {
+        in: 'body',
+        name: 'body',
+        required: true,
+        schema: {
+            lead_product_relation_id: 'uuid',
+            relationship_manager_id: 'uuid'
+        }
+    }
+    */
+    try {    
+        const { lead_product_relation_id, relationship_manager_id } = req.body;
+        
+        const relationship_manager_assign_by = res.locals.tokenData?.user_id;
+
+        const result = await relationshipManagerService.relationshipManagerAssignToLeadService(
+            lead_product_relation_id,
+            relationship_manager_id,
+            relationship_manager_assign_by
+        );
+        return res.status(200).json({
+            success: true,
+            message: "Relationship manager assigned to lead successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
