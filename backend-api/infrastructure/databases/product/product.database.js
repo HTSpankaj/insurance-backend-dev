@@ -2,6 +2,10 @@ const productTableName = "products";
 const supportingDocTableName = "product_supporting_document";
 
 class ProductDatabase {
+    /**
+     * Constructor for initializing the UsersDatabase
+     * @param {SupabaseClient} supabaseInstance - The supabase instance
+     */
     constructor(supabaseInstance) {
         this.db = supabaseInstance;
     }
@@ -60,30 +64,20 @@ class ProductDatabase {
         }
     }
     async getProductsWithPagination(
-        company_id,
+        company_id = null,
         offset,
         limit,
-        search,
-        category_id,
-        sub_category_id,
+        search = null,
+        category_id = null,
+        sub_category_id = null,
     ) {
         try {
-            // Build the query
-            let query = this.db
-                .from(productTableName)
-                .select("*, sub_category_id", { count: "exact" })
-                .eq("company_id", company_id);
-
-            // Apply filters
-            if (search) {
-                query = query.ilike("name", `%${search}%`);
-            }
-            if (category_id) {
-                query = query.eq("category_id", category_id);
-            }
-            if (sub_category_id) {
-                query = query.eq("sub_category_id", sub_category_id);
-            }
+            let query = this.db.rpc("get_product_list", {
+                company_id_val: company_id || null,
+                search_val: search || null,
+                category_id_val: category_id || null,
+                sub_category_id_val: sub_category_id || null,
+            });
 
             // Apply pagination
             query = query
@@ -97,7 +91,6 @@ class ProductDatabase {
                 throw error;
             }
 
-            console.log("Fetched products:", data);
             return {
                 data: data || [],
                 total_count: count || 0,
