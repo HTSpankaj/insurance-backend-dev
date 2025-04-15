@@ -2,6 +2,13 @@ const leadProductRelationTableName = "lead_product_relation";
 const leadTableName = "lead";
 const { SupabaseClient } = require("@supabase/supabase-js");
 
+const leadStatusEnum = [
+    { id: 1, title: "New" },
+    { id: 2, title: "Assigned" },
+    { id: 3, title: "Sold" },
+    { id: 4, title: "Lost" },
+];
+
 class LeadDatabase {
     /**
      * Constructor for initializing the SubCategoryService
@@ -27,13 +34,18 @@ class LeadDatabase {
 
             // console.log({offset, limit_val});
 
+            let _status = null;
+            if (status && leadStatusEnum?.find(item => item?.title === status)) {
+                _status = leadStatusEnum.find(item => item?.title === status)?.id;
+            }
+
             const { data, error, count } = await this.db.rpc(
                 "get_lead_product_relations",
                 {
                     offset_val: offset,
                     limit_val: limit_val,
                     search_val: search,
-                    status_val: status,
+                    status_val: _status,
                     priority_val: priority,
                     category_id_val: category_id,
                     company_id_val: company_id,

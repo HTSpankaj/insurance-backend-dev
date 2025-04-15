@@ -309,31 +309,44 @@ class AdvisorDatabase {
     }
 
     // New getAdvisorsWithPagination method
-    async getAdvisorsWithPagination(page, perPage, activeStatus, onboardingStatus = [], joinAs) {
+    async getAdvisorsWithPagination(
+        page,
+        perPage,
+        activeStatus,
+        onboardingStatus = [],
+        joinAs,
+        search,
+    ) {
         try {
             const from = (page - 1) * perPage;
             const to = from + perPage - 1;
 
-            let query = this.db
-                .from(tableName)
-                .select("*, advisor_onboarding_status_id(id, title)", {
-                    count: "exact",
-                });
-
-            // Apply filters
+            let _activeStatus = null;
+            let _onboardingStatus = null;
+            let _joinAs = null;
             if (activeStatus === "Active" || activeStatus === "Inactive") {
-                query = query.eq("advisor_status", activeStatus);
+                _activeStatus = activeStatus;
             }
             if (onboardingStatus?.length > 0) {
-                const _onboardingStatus = onboardingStatus
+                _onboardingStatus = onboardingStatus
                     .filter(f => onboardingStatusString.some(s => s.title === f))
                     .map(m => onboardingStatusString.find(f => f.title === m).id);
-                query = query.in("advisor_onboarding_status_id", _onboardingStatus);
-                // console.log(_onboardingStatus);
             }
             if (joinAs === "Advisor" || joinAs === "Entrepreneur") {
-                query = query.eq("join_as", joinAs);
+                _joinAs = joinAs;
             }
+
+            let query = this.db.rpc(
+                "get_advisor_list",
+                {
+                    search_val: search || null,
+                    advisor_onboarding_status_val: _onboardingStatus,
+                    join_as_val: _joinAs,
+                    advisor_status_val: _activeStatus,
+                },
+                { count: "exact" },
+            );
+
             // Add ORDER BY created_at (descending order, newest first)
             query = query.order("created_at", { ascending: false });
             // Get paginated data

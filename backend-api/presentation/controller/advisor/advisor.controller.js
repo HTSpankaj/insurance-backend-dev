@@ -345,26 +345,10 @@ exports.getAdvisorListController = async (req, res) => {
       #swagger.description = 'Get paginated list of advisors with filters'
       #swagger.parameters['page_number'] = { in: 'query', type: 'integer', default: 1, description: 'Page number' }
       #swagger.parameters['limit'] = { in: 'query', type: 'integer', default: 10, description: 'Number of records per page' }
+      #swagger.parameters['search'] = { in: 'query', type: 'string', default: '', description: 'Filter by advisor name' }
       #swagger.parameters['active_status'] = { in: 'query', type: 'string', enum: ['', 'active', 'inactive'], default: '', description: 'Filter by active status' }
       #swagger.parameters['advisor_onboarding_status'] = { in: 'query', type: 'string', default: 'Pending,Approved,Re-Submitted,Rejected', description: 'Filter by onboarding status send by comma separated string.' }
       #swagger.parameters['join_as'] = { in: 'query', type: 'string', enum: ['', 'advisor', 'entrepreneur'], default: '', description: 'Filter by join_as role' }
-      #swagger.responses[200] = {
-        description: 'Advisor list retrieved successfully',
-        schema: { 
-          success: true, 
-          data: { type: 'array', items: { type: 'object' } }, 
-          metadata: { 
-            page: 'number', 
-            per_page: 'number', 
-            total_count: 'number', 
-            total_pages: 'number' 
-          } 
-        }
-      }
-      #swagger.responses[400] = {
-        description: 'Error retrieving advisor list',
-        schema: { success: false, error: { message: 'string' } }
-      }
     */
     try {
         let {
@@ -373,6 +357,7 @@ exports.getAdvisorListController = async (req, res) => {
             active_status = "",
             advisor_onboarding_status = "",
             join_as = "",
+            search = "",
         } = req.query;
         const page = parseInt(page_number);
         const perPage = parseInt(limit);
@@ -391,6 +376,7 @@ exports.getAdvisorListController = async (req, res) => {
             active_status,
             advisor_onboarding_status,
             join_as,
+            search,
         );
 
         return res.status(200).json({

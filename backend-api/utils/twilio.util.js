@@ -13,14 +13,18 @@ async function createVerification() {
     //     });
     // console.log(verification.accountSid);
 
-    client.verify.v2.services("HXbe43668d5842958747aa38c1f29083d2").verifications.create({
-        channel: "whatsapp",
-        to: "+  ",
-    }).then((res) => {
-        console.log(res);
-    }).catch((err) => {
-        console.log(err);
-    });
+    client.verify.v2
+        .services("HXbe43668d5842958747aa38c1f29083d2")
+        .verifications.create({
+            channel: "whatsapp",
+            to: "+  ",
+        })
+        .then(res => {
+            console.log(res);
+        })
+        .catch(err => {
+            console.log(err);
+        });
 }
 
 module.exports = { createVerification };

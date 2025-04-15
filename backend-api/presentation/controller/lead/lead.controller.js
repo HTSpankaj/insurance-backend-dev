@@ -3,13 +3,6 @@ const LeadService = require("../../../application/services/lead/lead.service.js"
 
 const leadService = new LeadService(supabaseInstance);
 
-const leadStatusEnum = [
-    { id: 1, title: "New" },
-    { id: 2, title: "Assigned" },
-    { id: 3, title: "Sold" },
-    { id: 4, title: "Lost" },
-]
-
 exports.getLeadListController = async (req, res) => {
     /*
     #swagger.tags = ['leads']
@@ -85,17 +78,11 @@ exports.getLeadListController = async (req, res) => {
             throw new Error("limit must be a positive integer");
         }
 
-
-        let _status = null;
-        if (status && leadStatusEnum?.find((item) => item?.title === status)) {
-            _status = leadStatusEnum.find((item) => item?.title === status)?.id;
-        }
-
         const result = await leadService.getLeadList(
             pageNumber,
             limit,
             search,
-            _status,
+            status,
             priority,
             category_id,
             company_id,

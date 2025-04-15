@@ -304,39 +304,26 @@ class AdvisorService {
     }
 
     // New getAdvisorList method
-    async getAdvisorList(page, perPage, activeStatus, onboardingStatus, joinAs) {
+    async getAdvisorList(page, perPage, activeStatus, onboardingStatus, joinAs, search) {
         try {
-            console.log("Fetching advisor list with:", {
-                page,
-                perPage,
-                activeStatus,
-                onboardingStatus,
-                joinAs,
-            });
             const { advisors, totalCount } = await this.advisorDatabase.getAdvisorsWithPagination(
                 page,
                 perPage,
                 activeStatus,
                 onboardingStatus,
                 joinAs,
+                search,
             );
-
-            let _advisors = [];
-            if (advisors) {
-                _advisors = advisors.map(m => ({
-                    ...m,
-                    onboarding_status: m.advisor_onboarding_status_id.title,
-                }));
-            }
 
             const totalPages = Math.ceil(totalCount / perPage);
 
             return {
-                advisors: _advisors,
+                advisors: advisors,
                 metadata: {
+                    total_count: totalCount,
+                    current_page_count: advisors.length,
                     page,
                     per_page: perPage,
-                    total_count: totalCount,
                     total_pages: totalPages,
                 },
             };
