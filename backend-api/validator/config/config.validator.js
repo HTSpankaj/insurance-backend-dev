@@ -3,7 +3,7 @@ const { validateClientParametersAndSendResponse } = require("../validator");
 
 const advisorUpdateConfigValidator = [
     body("id").isUUID().withMessage("id must be a valid UUID."),
-    body("access").isJSON().notEmpty().withMessage("access is required."),
+    body("access").notEmpty().withMessage("access is required."),
 
     validateClientParametersAndSendResponse,
 ];
