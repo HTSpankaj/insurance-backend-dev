@@ -98,10 +98,17 @@ exports.getRelationshipManagerListByCompanyIdController = async (req, res) => {
       required: false, 
       description: 'Search term for relationship manager name' 
     }
+    #swagger.parameters['region_id'] = { 
+      in: 'query', 
+      type: 'string', 
+      required: false, 
+      description: 'Region ID (UUID)',
+      default: null
+    }
     */
     try {
         const { id } = req.params;
-        const { page_number, limit, search } = req.query;
+        const { page_number, limit, search, region_id } = req.query;
 
         // Validation
         const uuidRegex =
@@ -128,6 +135,7 @@ exports.getRelationshipManagerListByCompanyIdController = async (req, res) => {
             pageNumber,
             limitPerPage,
             search?.trim(),
+            region_id
         );
 
         return res.status(200).json({

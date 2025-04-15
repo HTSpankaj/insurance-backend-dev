@@ -77,7 +77,7 @@ class ProductDatabase {
                 search_val: search || null,
                 category_id_val: category_id || null,
                 sub_category_id_val: sub_category_id || null,
-            });
+            }, { count: "exact"});
 
             // Apply pagination
             query = query

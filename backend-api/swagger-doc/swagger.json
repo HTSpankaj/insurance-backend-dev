@@ -4093,6 +4093,14 @@
             "type": "string",
             "required": false,
             "description": "Search term for relationship manager name"
+          },
+          {
+            "name": "region_id",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Company ID (UUID)",
+            "default": null
           }
         ],
         "responses": {

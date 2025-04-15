@@ -42,7 +42,7 @@ class RelationshipManagerService {
         }
     }
 
-    async getRelationshipManagerListByCompanyId(company_id, pageNumber, limit, search) {
+    async getRelationshipManagerListByCompanyId(company_id, pageNumber, limit, search, region_id) {
         try {
             const offset = (pageNumber - 1) * limit;
             const { data, total_count } =
@@ -51,6 +51,7 @@ class RelationshipManagerService {
                     offset,
                     limit,
                     search,
+                    region_id
                 );
             const total_pages = Math.ceil(total_count / limit);
 

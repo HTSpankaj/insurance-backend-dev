@@ -4,6 +4,10 @@ const categoryRelationsTableName = "relationship_manager_category_relations";
 const { SupabaseClient } = require("@supabase/supabase-js");
 
 class RelationshipManagerDatabase {
+    /**
+     * Constructor for initializing the UsersDatabase
+     * @param {SupabaseClient} supabaseInstance - The supabase instance
+     */
     constructor(supabaseInstance) {
         this.db = supabaseInstance;
     }
@@ -86,29 +90,17 @@ class RelationshipManagerDatabase {
         }
     }
 
-    async getRelationshipManagersWithPagination(company_id, offset, limit, search) {
+    async getRelationshipManagersWithPagination(company_id, offset, limit, search, region_id_val) {
         try {
             // Build the query
             let query = this.db
-                .from(relationshipManagerTableName)
-                .select(
-                    `
-                    *,
-                    relationship_manager_region_relations!relationship_manager_id (
-                        region_id
-                    ),
-                    relationship_manager_category_relations!relationship_manager_id (
-                        category_id
-                    )
-                `,
-                    { count: "exact" },
-                )
-                .eq("company_id", company_id);
+                .rpc("get_relationship_managers", {
 
-            // Apply search filter
-            if (search) {
-                query = query.ilike("name", `%${search}%`);
-            }
+                    search_val: search || null,
+                    company_id_val: company_id || null,
+                    region_id_val: region_id_val || null,
+        }, {
+                count: "exact",})
 
             // Apply pagination
             query = query
