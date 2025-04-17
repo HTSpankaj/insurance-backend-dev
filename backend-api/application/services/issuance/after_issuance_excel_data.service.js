@@ -28,13 +28,14 @@ class AfterIssuanceExcelDataService {
                 element.payout_type,
                 element.commission_start_date,
                 element.commission_end_date,
-            )
-            
+            );
+
             if (element.commission_transaction_number === 0) {
                 error_result.add({
                     error: company?.error,
                     data: element,
-                    message: "Error for calculating commission transaction number. Please check Payout Type, Commission Start Date and Commission End Date.",
+                    message:
+                        "Error for calculating commission transaction number. Please check Payout Type, Commission Start Date and Commission End Date.",
                 });
                 continue;
             }
@@ -73,13 +74,14 @@ class AfterIssuanceExcelDataService {
                 await this.leadProductRelationDatabase.getLeadProductRelationByLeadIdAndProductId(
                     lead.data.lead_id,
                     product.data.product_id,
-                    element?.lead_product_relation_id
+                    element?.lead_product_relation_id,
                 );
             if (!leadProduct?.success) {
                 error_result.add({
                     error: leadProduct?.error,
                     data: element,
-                    message: "Lead Product Relation not found. please check lead_id, product_id or lead_product_relation_id.",
+                    message:
+                        "Lead Product Relation not found. please check lead_id, product_id or lead_product_relation_id.",
                 });
                 continue;
             }

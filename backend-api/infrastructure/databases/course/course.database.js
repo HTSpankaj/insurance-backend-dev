@@ -68,7 +68,8 @@ class CourseDatabase {
                     availability_schedule,
                     schedule_date,
                     status,
-            }).eq("id", id)
+                })
+                .eq("id", id)
                 .select()
                 .maybeSingle();
 
@@ -132,7 +133,10 @@ class CourseDatabase {
         try {
             let query = this.db
                 .from(courseTableName) // Fix: Use courseTableName
-                .select("title, status, is_delete, category_id(category_id, title), course_banner_img_url, created_at", { count: "exact" })
+                .select(
+                    "title, status, is_delete, category_id(category_id, title), course_banner_img_url, created_at",
+                    { count: "exact" },
+                )
                 .eq("is_delete", false)
                 .order("created_at", { ascending: false });
 

@@ -45,7 +45,10 @@ const afterIssuanceExcelDataValidator = [
     //     .isInt({ min: 1 })
     //     .withMessage("commission_transaction_number must be a positive integer"),
 
-    body("data.*.policy_sold_date").isISO8601().withMessage("policy_sold_date must be a valid date").isDate({ format: "YYYY-MM-DD" })
+    body("data.*.policy_sold_date")
+        .isISO8601()
+        .withMessage("policy_sold_date must be a valid date")
+        .isDate({ format: "YYYY-MM-DD" })
         .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.commission_start_date")
         .isISO8601()

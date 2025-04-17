@@ -150,24 +150,15 @@ class CompanyDatabase {
                 .select(
                     `
                     lead_id,
-                    lead:lead_id (name, lead_display_id),
+                    lead:lead_id (*),
                     advisor:advisor_id (name),
-                    product:product_id (product_name),
-                    lead_status_id
+                    product:product_id (*),
+                    lead_status_id(*)
                 `,
                     { count: "exact" },
                 )
-                .eq("lead_status_id", 3) // SOLD
-                .in(
-                    "product_id",
-                    await this.db
-                        .from("products")
-                        .select("product_id")
-                        .eq("company_id", companyId)
-                        .then(res => res.data.map(p => p.product_id)),
-                );
+                .eq("lead_status_id", 3); // SOLD
 
-            // Apply pagination and order by created_at
             query = query
                 .order("created_at", { ascending: false })
                 .range(offset, offset + limit - 1);
@@ -180,19 +171,19 @@ class CompanyDatabase {
             }
 
             // Map the data to the required format
-            const formattedData = data.map(item => ({
-                lead_id: item.lead_id,
-                lead_display_id: item.lead?.lead_display_id || null,
-                lead_name: item.lead?.name || null,
-                advisor_name: item.advisor?.name || null,
-                product_name: item.product?.product_name || null,
-                policy_amount: null, // Not available in table
-                commission_amount: null, // Not available in table
-                last_payment_date: null, // Not available in table
-            }));
+            // const formattedData = data.map(item => ({
+            //     lead_id: item.lead_id,
+            //     lead_display_id: item.lead?.lead_display_id || null,
+            //     lead_name: item.lead?.name || null,
+            //     advisor_name: item.advisor?.name || null,
+            //     product_name: item.product?.product_name || null,
+            //     policy_amount: null, // Not available in table
+            //     commission_amount: null, // Not available in table
+            //     last_payment_date: null, // Not available in table
+            // }));
 
             return {
-                data: formattedData,
+                data: data,
                 total_count: count || 0,
             };
         } catch (error) {

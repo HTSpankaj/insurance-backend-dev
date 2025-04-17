@@ -6,7 +6,10 @@ const {
     updateCourseController,
 } = require("../../../presentation/controller/course/createCourse.controller");
 const uploadCourseBanner = require("../../../middleware/course.middleware");
-const { createCourseValidator, updateCourseValidator } = require("../../../validator/course/course.validator");
+const {
+    createCourseValidator,
+    updateCourseValidator,
+} = require("../../../validator/course/course.validator");
 
 const router = express.Router();
 

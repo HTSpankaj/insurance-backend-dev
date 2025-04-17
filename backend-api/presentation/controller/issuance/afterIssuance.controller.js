@@ -54,7 +54,6 @@ exports.afterIssuanceExcelDataController = async (req, res) => {
     //  //? Insurance Products//   Part Payment
     //  "issuance_date": "",
 
-
     //  //? Mutual Products//      One Time
     //  "profit_book_amount": "",
     //  "profit_book_date": "",

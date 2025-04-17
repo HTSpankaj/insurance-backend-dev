@@ -302,38 +302,6 @@ exports.getConvertedLeadsByCompanyIdController = async (req, res) => {
       default: 10, 
       description: 'Number of records per page' 
     }
-    #swagger.responses[200] = {
-      description: 'Converted leads retrieved successfully',
-      schema: { 
-        success: true, 
-        data: { 
-          type: 'array', 
-          items: { 
-            type: 'object', 
-            properties: {
-              lead_id: { type: 'string' },
-              lead_display_id: { type: 'string' },
-              lead_name: { type: 'string' },
-              advisor_name: { type: 'string' },
-              product_name: { type: 'string' },
-              policy_amount: { type: 'number' },
-              commission_amount: { type: 'number' },
-              last_payment_date: { type: 'string' }
-            }
-          }
-        }, 
-        metadata: { 
-          page: 'number', 
-          per_page: 'number', 
-          total_count: 'number', 
-          total_pages: 'number' 
-        } 
-      }
-    }
-    #swagger.responses[400] = {
-      description: 'Error retrieving converted leads',
-      schema: { success: false, error: { message: 'string' } }
-    }
     */
     try {
         const { id } = req.params;
