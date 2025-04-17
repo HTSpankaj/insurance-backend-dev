@@ -86,6 +86,113 @@ exports.getLeadListController = async (req, res) => {
             priority,
             category_id,
             company_id,
+            null,
+        );
+
+        return res.status(200).json({
+            success: true,
+            data: result.data,
+            metadata: {
+                page: pageNumber,
+                per_page: limit,
+                current_page_count: result.total_count,
+                // total_pages: result.total_pages,
+            },
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+exports.getLeadListForAdvisorController = async (req, res) => {
+    /*
+    #swagger.tags = ['leads']
+    #swagger.description = 'Get Lead List'
+    #swagger.parameters['page_number'] = { 
+      in: 'query', 
+      type: 'integer', 
+      required: false, 
+      description: 'Page number (default: 1)' ,
+      default: 1
+      }
+      #swagger.parameters['limit'] = { 
+        in: 'query', 
+        type: 'integer', 
+        required: false, 
+        description: 'Number of records per page (default: 10)' ,
+        default: 10
+    }
+    #swagger.parameters['search'] = {
+        in: 'query', 
+        type: 'string', 
+        required: false, 
+        description: 'Search term for lead name',
+        default: ''
+    }
+    #swagger.parameters['status'] = { 
+      in: 'query', 
+      type: 'string', 
+      required: false, 
+      description: 'Filter by lead status', 
+      enum: ['', 'New', 'Assigned', 'Sold', 'Lost'], 
+      example: 'New',
+      default: ''
+    }
+    #swagger.parameters['priority'] = { 
+      in: 'query', 
+      type: 'string', 
+      required: false, 
+      description: 'Filter by lead priority', 
+      enum: ['', 'High', 'Medium', 'Low'], 
+      example: 'High',
+      default: ''
+    }
+    #swagger.parameters['category_id'] = { 
+      in: 'query', 
+      type: 'string', 
+      required: false, 
+      description: 'Category ID (UUID) OR null',
+      default: null
+    }
+    #swagger.parameters['company_id'] = { 
+      in: 'query', 
+      type: 'string', 
+      required: false, 
+      description: 'Company ID (UUID) OR null',
+      default: null
+    }
+    */
+    try {
+        const pageNumber = parseInt(req.query.page_number) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+
+        const search = req.query.search || null;
+        const status = req.query.status || null;
+        const priority = req.query.priority || null;
+        const category_id = req.query.category_id || null;
+        const company_id = req.query.company_id || null;
+
+        const advisor_id = res.locals.tokenData?.advisor_id;
+
+        if (pageNumber < 1) {
+            throw new Error("page_number must be a positive integer");
+        }
+        if (limit < 1) {
+            throw new Error("limit must be a positive integer");
+        }
+
+        const result = await leadService.getLeadList(
+            pageNumber,
+            limit,
+            search,
+            status,
+            priority,
+            category_id,
+            company_id,
+            advisor_id
         );
 
         return res.status(200).json({

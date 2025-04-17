@@ -27,6 +27,7 @@ class LeadDatabase {
         priority,
         category_id,
         company_id,
+        advisor_id = null,
     ) {
         try {
             const offset = (pageNumber - 1) * limit;
@@ -49,6 +50,7 @@ class LeadDatabase {
                     priority_val: priority,
                     category_id_val: category_id,
                     company_id_val: company_id,
+                    advisor_id_val: advisor_id || null,
                 },
                 {
                     count: "exact",
