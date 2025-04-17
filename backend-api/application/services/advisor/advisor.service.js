@@ -60,7 +60,7 @@ class AdvisorService {
                 false,
             );
             if (aadharUploadResult) {
-                aadharPublicUrl = await this.storage.getPublicUrl(aadharUploadResult?.path);
+                aadharPublicUrl = await this.aadharStorage.getPublicUrl(aadharUploadResult?.path);
             }
 
             const _panFilePath = `${advisor.advisor_id}/document/panCard.${pan_card_file?.mimetype.split("/")[1]}`;
@@ -70,7 +70,7 @@ class AdvisorService {
                 pan_card_file.mimetype,
             );
             if (panUploadResult) {
-                panPublicUrl = await this.storage.getPublicUrl(panUploadResult?.path);
+                panPublicUrl = await this.panStorage.getPublicUrl(panUploadResult?.path);
             }
 
             const updatedAdvisor = await this.advisorDatabase.updateAdvisorFiles(
@@ -137,7 +137,7 @@ class AdvisorService {
                 true,
             );
             if (aadharUploadResult) {
-                aadharPublicUrl = await this.storage.getPublicUrl(aadharUploadResult?.path);
+                aadharPublicUrl = await this.aadharStorage.getPublicUrl(aadharUploadResult?.path);
                 aadharPublicUrl = aadharPublicUrl + `?dt=${Date.now()}`;
             }
 
@@ -149,7 +149,7 @@ class AdvisorService {
                 true,
             );
             if (panUploadResult) {
-                panPublicUrl = await this.storage.getPublicUrl(panUploadResult?.path);
+                panPublicUrl = await this.panStorage.getPublicUrl(panUploadResult?.path);
                 panPublicUrl = panPublicUrl + `?dt=${Date.now()}`;
             }
 
