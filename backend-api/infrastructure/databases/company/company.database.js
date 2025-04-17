@@ -149,11 +149,14 @@ class CompanyDatabase {
                 .from("lead_product_relation")
                 .select(
                     `
+                    lead_product_id,
                     lead_id,
                     lead:lead_id (*),
                     advisor:advisor_id (name),
                     product:product_id (*),
-                    lead_status_id(*)
+                    lead_status_id(*),
+                    payment:after_issuance_transaction!left(*, payment_log:issuance_transaction_invoice(*))
+
                 `,
                     { count: "exact" },
                 )
