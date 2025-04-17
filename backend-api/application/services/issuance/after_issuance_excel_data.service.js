@@ -4,6 +4,7 @@ const AfterIssuanceTransactionDatabase = require("../../../infrastructure/databa
 const LeadDatabase = require("../../../infrastructure/databases/lead/lead.database");
 const LeadProductRelationDatabase = require("../../../infrastructure/databases/lead_product_relation/lead_product_relation.database");
 const ProductDatabase = require("../../../infrastructure/databases/product/product.database");
+const { calculateCommissionTransactionNumber } = require("../../../utils/dateTime.util");
 
 class AfterIssuanceExcelDataService {
     constructor(supabaseInstance) {
@@ -23,6 +24,20 @@ class AfterIssuanceExcelDataService {
 
         for (const element of list) {
             element.transaction_created_by_user_id = transaction_created_by_user_id;
+            element.commission_transaction_number = calculateCommissionTransactionNumber(
+                element.payout_type,
+                element.commission_start_date,
+                element.commission_end_date,
+            )
+            
+            if (element.commission_transaction_number === 0) {
+                error_result.add({
+                    error: company?.error,
+                    data: element,
+                    message: "Error for calculating commission transaction number. Please check Payout Type, Commission Start Date and Commission End Date.",
+                });
+                continue;
+            }
 
             const [company_display_id, product_display_id] = element.product_id.split("-");
             const company = await this.companyDatabase.getCompanyByDisplayId(company_display_id);
@@ -58,12 +73,13 @@ class AfterIssuanceExcelDataService {
                 await this.leadProductRelationDatabase.getLeadProductRelationByLeadIdAndProductId(
                     lead.data.lead_id,
                     product.data.product_id,
+                    element?.lead_product_relation_id
                 );
             if (!leadProduct?.success) {
                 error_result.add({
                     error: leadProduct?.error,
                     data: element,
-                    message: "Lead Product Relation not found.",
+                    message: "Lead Product Relation not found. please check lead_id, product_id or lead_product_relation_id.",
                 });
                 continue;
             }
@@ -100,6 +116,7 @@ class AfterIssuanceExcelDataService {
                     excelData.data?.payout_type,
                     excelData.data?.commission_transaction_number,
                     excelData.data?.commission_start_date,
+                    excelData.data?.commission_end_date,
                     excelData.data?.id,
                 );
 

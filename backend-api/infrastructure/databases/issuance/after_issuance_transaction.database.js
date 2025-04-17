@@ -17,6 +17,7 @@ class AfterIssuanceTransactionDatabase {
         payout_type,
         actual_number_transaction,
         commission_start_date,
+        commission_end_date,
         after_issuance_excel_data_id,
     ) {
         const { data, error } = await this.db
@@ -27,6 +28,7 @@ class AfterIssuanceTransactionDatabase {
                 payout_type,
                 actual_number_transaction,
                 commission_start_date,
+                commission_end_date,
                 after_issuance_excel_data_id,
             })
             .select("*")

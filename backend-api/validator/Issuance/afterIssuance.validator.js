@@ -40,12 +40,21 @@ const afterIssuanceExcelDataValidator = [
     body("data.*.commission_amount")
         .isFloat({ min: 0 })
         .withMessage("commission_amount must be a positive number"),
-    body("data.*.commission_transaction_number")
-        .isInt({ min: 1 })
-        .withMessage("commission_transaction_number must be a positive integer"),
+
+    // body("data.*.commission_transaction_number")
+    //     .isInt({ min: 1 })
+    //     .withMessage("commission_transaction_number must be a positive integer"),
+
+    body("data.*.policy_sold_date").isISO8601().withMessage("policy_sold_date must be a valid date").isDate({ format: "YYYY-MM-DD" })
+        .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.commission_start_date")
         .isISO8601()
         .withMessage("commission_start_date must be a valid date")
+        .isDate({ format: "YYYY-MM-DD" })
+        .withMessage("Date must be in YYYY-MM-DD format"),
+    body("data.*.commission_end_date")
+        .isISO8601()
+        .withMessage("commission_end_date must be a valid date")
         .isDate({ format: "YYYY-MM-DD" })
         .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.file_name").isString().notEmpty().withMessage("file_name is required"),

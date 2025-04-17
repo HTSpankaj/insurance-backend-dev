@@ -18,6 +18,7 @@ exports.afterIssuanceExcelDataController = async (req, res) => {
                     "product_id": "",
                     "product_name": "",
                     "company_name": "",
+                    "lead_product_relation_id": "",
                     "lead_close_date": "",
                     "start_date_policy": "",
                     "end_date_policy": "",
@@ -25,8 +26,22 @@ exports.afterIssuanceExcelDataController = async (req, res) => {
                     "payout_type": "",
                     "commission_amount": "",
 
-                    "commission_transaction_number": 2,
+                    "policy_sold_date": 2,
                     "commission_start_date": "",
+                    "commission_end_date": "",
+
+                    
+                    "issuance_date": "",
+
+
+                    
+                    "profit_book_amount": "",
+                    "profit_book_date": "",
+
+                    
+                    "loan_disbursed_amount": "",
+                    "loan_disbursed_date": "",
+                    "emi_amount": "",
                     
                     "file_name": "",
                     "row_number": "",
@@ -35,6 +50,19 @@ exports.afterIssuanceExcelDataController = async (req, res) => {
         }
     }
     */
+
+    //  //? Insurance Products//   Part Payment
+    //  "issuance_date": "",
+
+
+    //  //? Mutual Products//      One Time
+    //  "profit_book_amount": "",
+    //  "profit_book_date": "",
+
+    //  //? Loan Products//         One Time
+    //  "loan_disbursed_amount": "",
+    //  "loan_disbursed_date": "",
+    //  "emi_amount": "",
 
     try {
         const { data } = req.body;

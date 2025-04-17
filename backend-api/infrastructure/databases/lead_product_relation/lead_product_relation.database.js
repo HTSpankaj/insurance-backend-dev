@@ -11,12 +11,13 @@ class LeadProductRelationDatabase {
         this.db = supabaseInstance;
     }
 
-    async getLeadProductRelationByLeadIdAndProductId(lead_id, productId) {
+    async getLeadProductRelationByLeadIdAndProductId(lead_id, productId, lead_product_relation_display_id) {
         const { data, error } = await this.db
             .from(tableName)
             .select("*")
             .eq("lead_id", lead_id)
             .eq("product_id", productId)
+            .eq("lead_product_relation_display_id", lead_product_relation_display_id)
             .maybeSingle();
         if (data) {
             return {

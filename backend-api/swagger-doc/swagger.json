@@ -4268,11 +4268,114 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/course/update-course": {
+      "put": {
+        "tags": [
+          "Course"
+        ],
+        "description": "Create a new course",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "course UUID"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Course title"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Course description"
+          },
+          {
+            "name": "category_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Category UUID"
+          },
+          {
+            "name": "access_for_all_user",
+            "in": "formData",
+            "type": "boolean",
+            "required": true,
+            "description": "Access for all users"
+          },
+          {
+            "name": "access_for_verified_user",
+            "in": "formData",
+            "type": "boolean",
+            "required": true,
+            "description": "Access for verified users"
+          },
+          {
+            "name": "availability_schedule",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "enum": [
+              "Immediate",
+              "Schedule"
+            ],
+            "description": "Availability schedule"
+          },
+          {
+            "name": "schedule_date",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "description": "Scheduled release date (YYYY-MM-DD)"
+          },
+          {
+            "name": "status",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "enum": [
+              "Saved As Draft",
+              "Published",
+              "Archived"
+            ],
+            "description": "Course status"
+          },
+          {
+            "name": "course_banner_img_file",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "Course banner image (JPEG, PNG)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -4302,11 +4405,11 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -4452,6 +4555,9 @@
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -4492,6 +4598,10 @@
                         "example": ""
                       },
                       "company_name": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "lead_product_relation_id": {
                         "type": "string",
                         "example": ""
                       },
@@ -4586,6 +4696,10 @@
                         "type": "string",
                         "example": ""
                       },
+                      "lead_product_relation_id": {
+                        "type": "string",
+                        "example": ""
+                      },
                       "lead_close_date": {
                         "type": "string",
                         "example": ""
@@ -4610,11 +4724,39 @@
                         "type": "string",
                         "example": ""
                       },
-                      "commission_transaction_number": {
+                      "policy_sold_date": {
                         "type": "number",
                         "example": 2
                       },
                       "commission_start_date": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "commission_end_date": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "issuance_date": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "profit_book_amount": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "profit_book_date": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "loan_disbursed_amount": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "loan_disbursed_date": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "emi_amount": {
                         "type": "string",
                         "example": ""
                       },

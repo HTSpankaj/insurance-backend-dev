@@ -62,6 +62,63 @@ class CourseService {
         }
     }
 
+    async updateCourse(
+        id,
+        title,
+        description,
+        category_id,
+        access_for_all_user,
+        access_for_verified_user,
+        availability_schedule,
+        schedule_date,
+        status,
+        course_banner_img_file,
+    ) {
+        try {
+            // Insert into course table
+            let updateCourseResponse = await this.courseDatabase.updateCourse(
+                id,
+                title,
+                description,
+                category_id,
+                access_for_all_user,
+                access_for_verified_user,
+                availability_schedule,
+                schedule_date,
+                status,
+            );
+
+            if (!updateCourseResponse || !updateCourseResponse.id) {
+                throw new Error("Course update failed");
+            }
+
+            if (course_banner_img_file) {
+                const fileExtension = course_banner_img_file.mimetype.split("/")[1];
+                const filePath = `courses/${updateCourseResponse.id}/banner.${fileExtension}`;
+
+                console.log("Uploading file to:", filePath);
+                const uploadFileResponse = await this.storage.uploadFile(
+                    filePath,
+                    course_banner_img_file.buffer,
+                    course_banner_img_file.mimetype,
+                    true,
+                );
+                if (uploadFileResponse) {
+                    const banner_url = await this.storage.getPublicUrl(uploadFileResponse?.path);
+                    updateCourseResponse = await this.courseDatabase.updateCourseBanner(
+                        updateCourseResponse?.id,
+                        banner_url,
+                    );
+                }
+            }
+
+            return updateCourseResponse;
+        } catch (error) {
+            console.error("Error in updateCourse:", error);
+            throw new Error(`Failed to update course: ${error.message}`);
+        }
+    }
+
     async deleteCourse(courseId) {
         try {
             const deletedCourse = await this.courseDatabase.deleteCourse(courseId);

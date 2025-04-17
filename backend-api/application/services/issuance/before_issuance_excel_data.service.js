@@ -56,12 +56,13 @@ class BeforeIssuanceExcelDataService {
                 await this.leadProductRelationDatabase.getLeadProductRelationByLeadIdAndProductId(
                     lead.data.lead_id,
                     product.data.product_id,
+                    element?.lead_product_relation_id
                 );
             if (!leadProduct?.success) {
                 error_result.add({
                     error: leadProduct?.error,
                     data: element,
-                    message: "Lead Product Relation not found.",
+                    message: "Lead Product Relation not found. please check lead_id, product_id or lead_product_relation_id.",
                 });
                 continue;
             }

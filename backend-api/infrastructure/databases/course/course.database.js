@@ -45,6 +45,41 @@ class CourseDatabase {
         }
     }
 
+    async updateCourse(
+        id,
+        title,
+        description,
+        category_id,
+        access_for_all_user,
+        access_for_verified_user,
+        availability_schedule,
+        schedule_date,
+        status,
+    ) {
+        try {
+            const { data, error } = await this.db
+                .from(courseTableName)
+                .update({
+                    title,
+                    description,
+                    category_id,
+                    access_for_all_user,
+                    access_for_verified_user,
+                    availability_schedule,
+                    schedule_date,
+                    status,
+            }).eq("id", id)
+                .select()
+                .maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error("Error in createCourse:", error);
+            throw new Error(`Failed to create course: ${error.message || JSON.stringify(error)}`);
+        }
+    }
+
     async updateCourseBanner(course_id, course_banner_img_url) {
         try {
             const { data, error } = await this.db
@@ -97,7 +132,7 @@ class CourseDatabase {
         try {
             let query = this.db
                 .from(courseTableName) // Fix: Use courseTableName
-                .select("title, status, is_delete, category_id, created_at", { count: "exact" })
+                .select("title, status, is_delete, category_id(category_id, title), course_banner_img_url, created_at", { count: "exact" })
                 .eq("is_delete", false)
                 .order("created_at", { ascending: false });
 

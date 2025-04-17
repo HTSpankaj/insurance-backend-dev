@@ -18,6 +18,7 @@ exports.beforeIssuanceExcelDataController = async (req, res) => {
                     "product_id": "",
                     "product_name": "",
                     "company_name": "",
+                    "lead_product_relation_id": "",
                     "lead_close_date": "",
                     "start_date_policy": "",
                     "end_date_policy": "",
