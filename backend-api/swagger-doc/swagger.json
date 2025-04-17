@@ -2226,8 +2226,8 @@
             "type": "string",
             "enum": [
               "",
-              "active",
-              "inactive"
+              "Active",
+              "Inactive"
             ],
             "default": "",
             "description": "Filter by active status"
@@ -2925,11 +2925,117 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Company"
+        ],
+        "description": "Create company",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "UUID of the company"
+          },
+          {
+            "name": "company_name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Name of the company"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Contact person full name"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Email address"
+          },
+          {
+            "name": "contact_person",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "10-digit contact phone number"
+          },
+          {
+            "name": "irdai_license_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "IRDAI license number"
+          },
+          {
+            "name": "tax_gstin_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "15-character GSTIN number (e.g., 22AAAAA0000A1Z5)"
+          },
+          {
+            "name": "is_publish",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Publish status (true or false)"
+          },
+          {
+            "name": "logo_file",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "Company logo file (PDF, JPEG, or PNG)"
+          },
+          {
+            "name": "irdai_license_file",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "IRDAI license file (PDF, JPEG, or PNG)"
+          },
+          {
+            "name": "terms_of_agreement_file",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "Terms of agreement file (PDF, JPEG, or PNG)"
+          },
+          {
+            "name": "business_certification_file",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "Business certification file (PDF, JPEG, or PNG)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -2983,11 +3089,11 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -3032,11 +3138,39 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/company/get-company-details/{id}": {
+      "get": {
+        "tags": [
+          "Company"
+        ],
+        "description": "Get company details by company id",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Company id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -3075,11 +3209,11 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -3191,6 +3325,9 @@
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

@@ -38,7 +38,7 @@ class CompanyService {
             // Upload files to Supabase bucket under company/<company_id>/document/
             const uploadFile = async (file, fileName) => {
                 const fileExtension = file.mimetype.split("/")[1];
-                const filePath = `${company.company_id}/document/${fileName}-${Date.now()}.${fileExtension}`; // Use actual company_id
+                const filePath = `${company.company_id}/document/${fileName}.${fileExtension}`; // Use actual company_id
                 console.log("Uploading file to:", `company/${filePath}`);
                 const { data, error } = await this.storage.uploadFile(
                     filePath,
@@ -84,6 +84,110 @@ class CompanyService {
         } catch (error) {
             console.error("Error in createCompany:", error);
             throw new Error(`Failed to create company: ${error.message || JSON.stringify(error)}`);
+        }
+    }
+
+    async updateCompany(
+        company_id,
+        company_name,
+        name,
+        email,
+        contact_person,
+        irdai_license_number,
+        tax_gstin_number,
+        is_publish,
+        logo_file,
+        irdai_license_file,
+        terms_of_agreement_file,
+        business_certification_file,
+        created_by_user_id,
+    ) {
+        try {
+            // First, create the company without the logo_url
+            const company = await this.companyDatabase.updateCompany(
+                company_name,
+                name,
+                email,
+                contact_person,
+                irdai_license_number,
+                tax_gstin_number,
+                is_publish,
+                created_by_user_id,
+            );
+
+            // Upload files to Supabase bucket under company/<company_id>/document/
+            const uploadFile = async (file, fileName) => {
+                const fileExtension = file.mimetype.split("/")[1];
+                const filePath = `${company.company_id}/document/${fileName}.${fileExtension}`; // Use actual company_id
+                console.log("Uploading file to:", `company/${filePath}`);
+                const { data, error } = await this.storage.uploadFile(
+                    filePath,
+                    file.buffer,
+                    file.mimetype,
+                    true,
+                );
+                if (error) throw error;
+                return this.storage.getPublicUrl(filePath);
+            };
+
+            let logo_url = null;
+            let irdai_license_url = null;
+            let terms_of_agreement_url = null;
+            let business_certification_url = null;
+
+            if(logo_file) {
+                logo_url = await uploadFile(logo_file, "logo");
+            }
+            if(irdai_license_file) {
+                irdai_license_url = await uploadFile(irdai_license_file, "irdai_license");
+            }
+            if(terms_of_agreement_file) {
+                terms_of_agreement_url = await uploadFile(
+                    terms_of_agreement_file,
+                    "terms_of_agreement",
+                );
+            }
+            if(business_certification_file) {
+                business_certification_url = await uploadFile(
+                    business_certification_file,
+                    "business_certification",
+                );
+            }
+
+            
+            if (logo_url) {
+                await this.companyDatabase.updateCompanyLogo(
+                    company_id,
+                    logo_url,
+                );
+            }
+
+            if (irdai_license_url || terms_of_agreement_url || business_certification_url) {
+                await this.companyDatabase.updateSupportingDocuments(
+                    company_id,
+                    irdai_license_url,
+                    terms_of_agreement_url,
+                    business_certification_url,
+                );
+            }       
+            
+            return {
+                ...updatedCompany
+            };
+        } catch (error) {
+            console.error("Error in createCompany:", error);
+            throw new Error(`Failed to create company: ${error.message || JSON.stringify(error)}`);
+        }
+    }
+
+    async getCompanyDetailsByCompanyIdService(company_id) {
+        try {
+            return await this.companyDatabase.getCompanyDetailsByCompanyIdDatabase(company_id);
+        } catch (error) {
+            console.error("Error in getCompanyDetailsByCompanyIdService:", error);
+            throw new Error(
+                `Failed to get company details by company_id: ${error.message || JSON.stringify(error)}`,
+            );
         }
     }
 

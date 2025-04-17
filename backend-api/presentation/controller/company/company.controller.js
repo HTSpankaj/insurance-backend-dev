@@ -159,12 +159,220 @@ exports.createCompanyController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
     }
 };
+
+exports.updateCompanyController = async (req, res) => {
+    /*
+    #swagger.tags = ['Company']
+    #swagger.autoBody = false
+    #swagger.description = 'Create company'
+    #swagger.consumes = ['multipart/form-data']
+    #swagger.parameters['company_id'] = {
+      in: 'formData',
+      type: 'string',
+      required: true,
+      description: 'UUID of the company'
+    }
+    #swagger.parameters['company_name'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'Name of the company' 
+    }
+    #swagger.parameters['name'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'Contact person full name' 
+    }
+    #swagger.parameters['email'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'Email address' 
+    }
+    #swagger.parameters['contact_person'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: '10-digit contact phone number' 
+    }
+    #swagger.parameters['irdai_license_number'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'IRDAI license number' 
+    }
+    #swagger.parameters['tax_gstin_number'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: '15-character GSTIN number (e.g., 22AAAAA0000A1Z5)' 
+    }
+    #swagger.parameters['is_publish'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'Publish status (true or false)' 
+    }
+    #swagger.parameters['logo_file'] = { 
+      in: 'formData', 
+      type: 'file', 
+      required: false, 
+      description: 'Company logo file (PDF, JPEG, or PNG)' 
+    }
+    #swagger.parameters['irdai_license_file'] = { 
+      in: 'formData', 
+      type: 'file', 
+      required: false, 
+      description: 'IRDAI license file (PDF, JPEG, or PNG)' 
+    }
+    #swagger.parameters['terms_of_agreement_file'] = { 
+      in: 'formData', 
+      type: 'file', 
+      required: false, 
+      description: 'Terms of agreement file (PDF, JPEG, or PNG)' 
+    }
+    #swagger.parameters['business_certification_file'] = { 
+      in: 'formData', 
+      type: 'file', 
+      required: false, 
+      description: 'Business certification file (PDF, JPEG, or PNG)' 
+    }
+    */
+    try {
+        const {
+            company_id,
+            company_name,
+            name,
+            email,
+            contact_person,
+            irdai_license_number,
+            tax_gstin_number,
+            is_publish,
+        } = req.body;
+
+        const logo_file = req.files?.logo_file?.[0] || null;
+        const irdai_license_file = req.files?.irdai_license_file?.[0] || null;;
+        const terms_of_agreement_file = req.files?.terms_of_agreement_file?.[0] || null;;
+        const business_certification_file = req.files?.business_certification_file?.[0] || null;;
+        const created_by_user_id = res.locals.tokenData?.user_id;
+
+        // Validation for FormData fields (all received as strings)
+        const uuidRegex =
+            /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+        if (!company_id || !uuidRegex.test(company_id)) {
+            throw new Error("Company ID must be a valid UUID");
+        }
+        if (!company_name || company_name.trim().length < 2) {
+            throw new Error("Company name must be a string with at least 2 characters");
+        }
+        if (!name || name.trim().length < 2) {
+            throw new Error("Name must be a string with at least 2 characters");
+        }
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            throw new Error("Invalid email address");
+        }
+        if (!contact_person || !/^\d{10}$/.test(contact_person)) {
+            throw new Error("Contact person must be a 10-digit phone number");
+        }
+        if (!irdai_license_number || irdai_license_number.trim().length < 5) {
+            throw new Error("IRDAI license number must be a string with at least 5 characters");
+        }
+        if (
+            !tax_gstin_number ||
+            !/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/.test(tax_gstin_number)
+        ) {
+            throw new Error("Invalid GSTIN number (e.g., 22AAAAA0000A1Z5)");
+        }
+        if (!["true", "false"].includes(is_publish)) {
+            throw new Error('is_publish must be "true" or "false"');
+        }
+
+        // File validation
+        const validFileTypes = ["application/pdf", "image/jpeg", "image/png"];
+        const validateFile = (file, fieldName) => {
+            if (!file) throw new Error(`${fieldName} is required`);
+            if (!validFileTypes.includes(file.mimetype)) {
+                throw new Error(`${fieldName} must be a PDF, JPEG, or PNG`);
+            }
+        };
+
+        if(logo_file) {
+            validateFile(logo_file, "logo_file");
+        }
+        if(irdai_license_file) {
+            validateFile(irdai_license_file, "irdai_license_file");
+        }
+        if(terms_of_agreement_file) {
+            validateFile(terms_of_agreement_file, "terms_of_agreement_file");
+        }
+        if(business_certification_file) {
+            validateFile(business_certification_file, "business_certification_file");
+        }
+
+        // Convert FormData strings to appropriate types
+        const contactPersonNumeric = parseInt(contact_person, 10);
+        const isPublishBoolean = is_publish === "true";
+
+        const result = await companyService.updateCompany(
+            company_id,
+            company_name,
+            name,
+            email,
+            contactPersonNumeric,
+            irdai_license_number,
+            tax_gstin_number,
+            isPublishBoolean,
+            logo_file,
+            irdai_license_file,
+            terms_of_agreement_file,
+            business_certification_file,
+            created_by_user_id,
+        );
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+exports.getCompanyDetailsByCompanyIdController = async (req, res) => {
+    /*
+    #swagger.tags = ['Company']
+    #swagger.description = 'Get company details by company id'
+    #swagger.parameters['id'] = { 
+      in: 'path', 
+      type: 'string', 
+      required: true, 
+      description: 'Company id' 
+    }
+    */
+    try {
+        const { id } = req.params;
+        const result = await companyService.getCompanyDetailsByCompanyIdService(id);
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+}
 
 exports.addRegionController = async (req, res) => {
     /*
@@ -215,7 +423,7 @@ exports.addRegionController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -272,7 +480,7 @@ exports.getCompanyListController = async (req, res) => {
             metadata: result.metadata,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -328,7 +536,7 @@ exports.getConvertedLeadsByCompanyIdController = async (req, res) => {
             metadata: result.metadata,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -387,7 +595,7 @@ exports.getCompanyDetailsByIdWithStatisticsController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });

@@ -51,6 +51,67 @@ class CompanyDatabase {
         }
     }
 
+    async updateCompany(
+        company_id,
+        company_name,
+        name,
+        email,
+        contact_person,
+        irdai_license_number,
+        tax_gstin_number,
+        is_publish,
+        created_by_user_id,
+    ) {
+        try {
+            const { data, error } = await this.db
+                .from(companyTableName)
+                .update({
+                    company_name: company_name,
+                    name: name,
+                    email: email,
+                    contact_person: contact_person,
+                    irdai_license_number: irdai_license_number,
+                    tax_gstin_number: tax_gstin_number,
+                    is_publish: is_publish,
+                    created_by_user_id,
+                })
+                .eq("company_id", company_id)
+                .select()
+                .maybeSingle();
+
+            if (error) {
+                console.error("Supabase error in createCompany:", error);
+                throw error;
+            }
+            console.log("Company insert result:", data);
+            return data;
+        } catch (error) {
+            console.error("Error in createCompany:", error);
+            throw new Error(`Failed to create company: ${error.message || JSON.stringify(error)}`);
+        }
+    }
+
+    async getCompanyDetailsByCompanyIdDatabase(company_id) {
+        try {
+            const { data, error } = await this.db
+                .from(companyTableName)
+                .select("*, company_supporting_document(*)")
+                .eq("company_id", company_id)
+                .maybeSingle();
+
+            if (error) {
+                console.error("Supabase error in getCompanyDetailsByCompanyIdDatabase:", error);
+                throw error;
+            }
+            return data;
+        } catch (error) {
+            console.error("Error in getCompanyDetailsByCompanyIdDatabase:", error);
+            throw new Error(
+                `Failed to get company details by company_id: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
     async createSupportingDocuments(
         company_id,
         irdai_license_url,
@@ -79,6 +140,43 @@ class CompanyDatabase {
             console.error("Error in createSupportingDocuments:", error);
             throw new Error(
                 `Failed to insert supporting documents: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+    async updateSupportingDocuments(
+        company_id,
+        irdai_license_url,
+        terms_of_agreement_url,
+        business_certification_url,
+    ) {
+        try {
+            let postBody = {};
+            if (irdai_license_url) {
+                postBody.irdai_license_url = irdai_license_url;
+            }
+            if (terms_of_agreement_url) {
+                postBody.terms_of_agreement_url = terms_of_agreement_url;
+            }
+            if (business_certification_url) {
+                postBody.business_certification_url = business_certification_url;
+            }
+            const { data, error } = await this.db
+                .from(supportingDocTableName)
+                .update(postBody)
+                .eq("company_id", company_id)
+                .select()
+                .maybeSingle();
+
+            if (error) {
+                console.error("Supabase error in updateSupportingDocuments:", error);
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in updateSupportingDocuments:", error);
+            throw new Error(
+                `update to insert supporting documents: ${error.message || JSON.stringify(error)}`,
             );
         }
     }
@@ -124,14 +222,15 @@ class CompanyDatabase {
                 };
             }
             return {
-                data: data.map(item => ({
-                    company_name: item.company_name,
-                    company_id: item.company_id,
-                    logo_url: item.logo_url,
-                    total_products: Number(item.total_products),
-                    converted_leads: Number(item.converted_leads),
-                    active_leads: Number(item.active_leads),
-                })),
+                // data: data.map(item => ({
+                //     company_name: item.company_name,
+                //     company_id: item.company_id,
+                //     logo_url: item.logo_url,
+                //     total_products: Number(item.total_products),
+                //     converted_leads: Number(item.converted_leads),
+                //     active_leads: Number(item.active_leads),
+                // })),
+                data,
                 total_count: Number(data[0].total_count) || 0,
             };
         } catch (error) {

@@ -346,7 +346,7 @@ exports.getAdvisorListController = async (req, res) => {
       #swagger.parameters['page_number'] = { in: 'query', type: 'integer', default: 1, description: 'Page number' }
       #swagger.parameters['limit'] = { in: 'query', type: 'integer', default: 10, description: 'Number of records per page' }
       #swagger.parameters['search'] = { in: 'query', type: 'string', default: '', description: 'Filter by advisor name' }
-      #swagger.parameters['active_status'] = { in: 'query', type: 'string', enum: ['', 'active', 'inactive'], default: '', description: 'Filter by active status' }
+      #swagger.parameters['active_status'] = { in: 'query', type: 'string', enum: ['', 'Active', 'Inactive'], default: '', description: 'Filter by active status' }
       #swagger.parameters['advisor_onboarding_status'] = { in: 'query', type: 'string', default: 'Pending,Approved,Re-Submitted,Rejected', description: 'Filter by onboarding status send by comma separated string.' }
       #swagger.parameters['join_as'] = { in: 'query', type: 'string', enum: ['', 'advisor', 'entrepreneur'], default: '', description: 'Filter by join_as role' }
     */
