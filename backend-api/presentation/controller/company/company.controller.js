@@ -258,9 +258,9 @@ exports.updateCompanyController = async (req, res) => {
         } = req.body;
 
         const logo_file = req.files?.logo_file?.[0] || null;
-        const irdai_license_file = req.files?.irdai_license_file?.[0] || null;;
-        const terms_of_agreement_file = req.files?.terms_of_agreement_file?.[0] || null;;
-        const business_certification_file = req.files?.business_certification_file?.[0] || null;;
+        const irdai_license_file = req.files?.irdai_license_file?.[0] || null;
+        const terms_of_agreement_file = req.files?.terms_of_agreement_file?.[0] || null;
+        const business_certification_file = req.files?.business_certification_file?.[0] || null;
         const created_by_user_id = res.locals.tokenData?.user_id;
 
         // Validation for FormData fields (all received as strings)
@@ -303,16 +303,16 @@ exports.updateCompanyController = async (req, res) => {
             }
         };
 
-        if(logo_file) {
+        if (logo_file) {
             validateFile(logo_file, "logo_file");
         }
-        if(irdai_license_file) {
+        if (irdai_license_file) {
             validateFile(irdai_license_file, "irdai_license_file");
         }
-        if(terms_of_agreement_file) {
+        if (terms_of_agreement_file) {
             validateFile(terms_of_agreement_file, "terms_of_agreement_file");
         }
-        if(business_certification_file) {
+        if (business_certification_file) {
             validateFile(business_certification_file, "business_certification_file");
         }
 
@@ -372,7 +372,7 @@ exports.getCompanyDetailsByCompanyIdController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 
 exports.addRegionController = async (req, res) => {
     /*

@@ -192,7 +192,7 @@ exports.getLeadListForAdvisorController = async (req, res) => {
             priority,
             category_id,
             company_id,
-            advisor_id
+            advisor_id,
         );
 
         return res.status(200).json({

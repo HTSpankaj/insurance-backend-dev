@@ -105,6 +105,7 @@ class CompanyService {
         try {
             // First, create the company without the logo_url
             const company = await this.companyDatabase.updateCompany(
+                company_id,
                 company_name,
                 name,
                 email,
@@ -135,31 +136,27 @@ class CompanyService {
             let terms_of_agreement_url = null;
             let business_certification_url = null;
 
-            if(logo_file) {
+            if (logo_file) {
                 logo_url = await uploadFile(logo_file, "logo");
             }
-            if(irdai_license_file) {
+            if (irdai_license_file) {
                 irdai_license_url = await uploadFile(irdai_license_file, "irdai_license");
             }
-            if(terms_of_agreement_file) {
+            if (terms_of_agreement_file) {
                 terms_of_agreement_url = await uploadFile(
                     terms_of_agreement_file,
                     "terms_of_agreement",
                 );
             }
-            if(business_certification_file) {
+            if (business_certification_file) {
                 business_certification_url = await uploadFile(
                     business_certification_file,
                     "business_certification",
                 );
             }
 
-            
             if (logo_url) {
-                await this.companyDatabase.updateCompanyLogo(
-                    company_id,
-                    logo_url,
-                );
+                await this.companyDatabase.updateCompanyLogo(company_id, logo_url);
             }
 
             if (irdai_license_url || terms_of_agreement_url || business_certification_url) {
@@ -169,10 +166,10 @@ class CompanyService {
                     terms_of_agreement_url,
                     business_certification_url,
                 );
-            }       
-            
+            }
+
             return {
-                ...updatedCompany
+                ...updatedCompany,
             };
         } catch (error) {
             console.error("Error in createCompany:", error);
