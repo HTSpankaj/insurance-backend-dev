@@ -11,14 +11,14 @@ exports.getMobileBannerController = async (req, res) => {
     */
     try {
         let is_active = req.query?.is_active;
-        if(is_active === 'true') {
+        if (is_active === "true") {
             is_active = true;
-        } else if(is_active === 'false') {
+        } else if (is_active === "false") {
             is_active = false;
         } else {
             is_active = null;
         }
-        
+
         const result = await mobileBannerService.getMobileBannerService(is_active);
         return res.status(200).json({
             success: true,
@@ -31,7 +31,7 @@ exports.getMobileBannerController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 
 exports.insertMobileBannerController = async (req, res) => {
     /*
@@ -64,22 +64,29 @@ exports.insertMobileBannerController = async (req, res) => {
     }
     */
     try {
-        const { title, description, is_active} = req.body;
+        const { title, description, is_active } = req.body;
         const file = req.files?.file?.[0] || null;
 
-        const result = await mobileBannerService.insertUpdateMobileBannerService(null, title, description, is_active, file);
+        const result = await mobileBannerService.insertUpdateMobileBannerService(
+            null,
+            title,
+            description,
+            is_active,
+            file,
+        );
         return res.status(200).json({
             success: true,
             message: "Insert mobile banner config successfully.",
             data: result,
-        })  
+        });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 
 exports.updateMobileBannerController = async (req, res) => {
     /*
@@ -118,19 +125,25 @@ exports.updateMobileBannerController = async (req, res) => {
     }
     */
     try {
-        const { id, title, description, is_active} = req.body;
+        const { id, title, description, is_active } = req.body;
         const file = req.files?.file?.[0] || null;
 
-        const result = await mobileBannerService.insertUpdateMobileBannerService(id, title, description, is_active, file);
+        const result = await mobileBannerService.insertUpdateMobileBannerService(
+            id,
+            title,
+            description,
+            is_active,
+            file,
+        );
         return res.status(200).json({
             success: true,
             message: "Update mobile banner config successfully.",
             data: result,
-        })  
+        });
     } catch (error) {
         return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};

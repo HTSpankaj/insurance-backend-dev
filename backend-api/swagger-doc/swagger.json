@@ -2932,7 +2932,9 @@
             "description": "Internal Server Error"
           }
         }
-      },
+      }
+    },
+    "/api/company/update-company": {
       "put": {
         "tags": [
           "Company"
@@ -4876,6 +4878,189 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/config/mobile-banner/get-config": {
+      "get": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Get mobile banner config",
+        "parameters": [
+          {
+            "name": "is_active",
+            "in": "query",
+            "type": "string",
+            "enum": [
+              "",
+              "true",
+              "false"
+            ],
+            "default": "",
+            "description": "Filter by active status"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/config/mobile-banner/insert-config": {
+      "post": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Insert mobile banner config",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Title of the banner"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Description of the banner"
+          },
+          {
+            "name": "is_active",
+            "in": "formData",
+            "type": "boolean",
+            "required": true,
+            "description": "Active status of the banner"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Banner image/video"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "is_active": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/config/mobile-banner/update-config": {
+      "put": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Insert mobile banner config",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "ID of the banner"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "description": "Title of the banner"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "description": "Description of the banner"
+          },
+          {
+            "name": "is_active",
+            "in": "formData",
+            "type": "boolean",
+            "required": false,
+            "description": "Active status of the banner"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "Banner image/video"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                },
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "is_active": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

@@ -52,7 +52,7 @@ router.use("/relationship-manager", authenticateToken, relationshipManagerRouter
 router.use("/course", courseRouter);
 
 router.use("/issuance", authenticateToken, issuanceRouter);
-router.use("/config", authenticateToken, configRoutes);
+router.use("/config", configRoutes);
 router.use("/api/course", coursemoduleRoutes);
 
 module.exports = router;

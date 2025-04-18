@@ -5,7 +5,7 @@ const insertMobileBannerValidator = [
     body("title").isString().notEmpty().withMessage("Title is required"),
     body("description").isString().notEmpty().withMessage("Description is required"),
     body("is_active").isBoolean().withMessage("is_active must be a boolean"),
-    
+
     validateClientParametersAndSendResponse,
 ];
 const updateMobileBannerValidator = [

@@ -157,7 +157,7 @@ class CompanyService {
 
             let updatedCompany = {};
             if (logo_url) {
-                updatedCompany  = await this.companyDatabase.updateCompanyLogo(company_id, logo_url);
+                updatedCompany = await this.companyDatabase.updateCompanyLogo(company_id, logo_url);
             }
 
             if (irdai_license_url || terms_of_agreement_url || business_certification_url) {
