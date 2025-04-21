@@ -5,6 +5,6 @@ const router = express.Router();
 // const afterIssuanceRoute = require("./afterIssuance.route");
 
 // router.use("/before-issuance", beforeIssuanceRoute);
-router.use("/after-issuance", afterIssuanceRoute);
+// router.use("/after-issuance", afterIssuanceRoute);
 
 module.exports = router;
