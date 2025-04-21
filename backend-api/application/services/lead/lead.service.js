@@ -251,6 +251,12 @@ class LeadService {
             throw new Error(error.message || "Verification failed");
         }
     }
+
+    async leadDetailsByLprIdService(lead_product_relation_display_id) {
+        return await this.leadProductRelationDatabase.leadDetailsByLprIdDatabase(
+            lead_product_relation_display_id,
+        );
+    }
 }
 
 module.exports = LeadService;

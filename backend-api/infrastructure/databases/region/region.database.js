@@ -89,10 +89,10 @@ class RegionDatabase {
                     `
                     *,
                     region_state!region_id (
-                        state_id
+                        state_id(title, id)
                     ),
                     region_city!region_id (
-                        city_id
+                        city_id(title, id)
                     )
                 `,
                     { count: "exact" },
@@ -109,11 +109,20 @@ class RegionDatabase {
                 .order("created_at", { ascending: false })
                 .range(offset, offset + limit - 1);
 
-            const { data, count, error } = await query;
+            let { data, count, error } = await query;
 
             if (error) {
                 console.error("Supabase error in getRegionsWithPagination:", error);
                 throw error;
+            }
+            if (data) {
+                data = data.map(region => {
+                    return {
+                        ...region,
+                        region_state: region.region_state.map(state => state.state_id),
+                        region_city: region.region_city.map(city => city.city_id),
+                    };
+                });
             }
 
             return {

@@ -29,15 +29,11 @@ exports.afterIssuanceExcelDataController = async (req, res) => {
                     "policy_sold_date": 2,
                     "commission_start_date": "",
                     "commission_end_date": "",
-
                     
                     "issuance_date": "",
-
-
                     
                     "profit_book_amount": "",
                     "profit_book_date": "",
-
                     
                     "loan_disbursed_amount": "",
                     "loan_disbursed_date": "",

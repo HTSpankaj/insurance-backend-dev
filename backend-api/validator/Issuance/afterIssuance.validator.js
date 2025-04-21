@@ -65,6 +65,49 @@ const afterIssuanceExcelDataValidator = [
         .isInt({ min: 1 })
         .withMessage("row_number must be a positive integer"),
 
+        //  //? Insurance Products//   Part Payment
+        //  "issuance_date": "",
+        body("data.*.issuance_date")
+            .optional()
+            .isISO8601()
+            .withMessage("issuance_date must be a valid date")
+            .isDate({ format: "YYYY-MM-DD" })
+            .withMessage("Date must be in YYYY-MM-DD format"),
+
+        //  //? Mutual Products//      One Time
+        //  "profit_book_amount": "",
+        //  "profit_book_date": "",
+        body("data.*.profit_book_date")
+            .optional()
+            .isISO8601()
+            .withMessage("profit_book_date must be a valid date")
+            .isDate({ format: "YYYY-MM-DD" })
+            .withMessage("Date must be in YYYY-MM-DD format"),
+        body("data.*.profit_book_amount")
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage("profit_book_amount must be a positive number"),
+
+        //  //? Loan Products//         One Time
+        //  "loan_disbursed_amount": "",
+        //  "loan_disbursed_date": "",
+        //  "emi_amount": "",
+
+        body("data.*.loan_disbursed_amount")
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage("loan_disbursed_amount must be a positive number"),
+        body("data.*.loan_disbursed_date")
+        .optional()
+            .isISO8601()
+            .withMessage("loan_disbursed_date must be a valid date")
+            .isDate({ format: "YYYY-MM-DD" })
+            .withMessage("Date must be in YYYY-MM-DD format"),
+            body("data.*.emi_amount")
+        .optional()
+        .isFloat({ min: 0 })
+        .withMessage("emi_amount must be a positive number"),
+
     validateClientParametersAndSendResponse,
 ];
 

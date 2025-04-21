@@ -100,7 +100,7 @@ exports.getLeadListController = async (req, res) => {
             },
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -206,7 +206,7 @@ exports.getLeadListForAdvisorController = async (req, res) => {
             },
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -290,7 +290,35 @@ exports.getLeadListProductByAdvisorIdController = async (req, res) => {
             },
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+exports.leadDetailsByLprIdController = async (req, res) => {
+    /*
+    #swagger.tags = ['leads']
+    #swagger.description = 'Get Derails By lead_product_relation_display_id [LPR-1]'
+    #swagger.parameters['lpr_id'] = {
+        in: 'path',
+        type: 'string',
+        required: true,
+        description: 'lead_product_relation_display_id [LPR-1]'
+    }
+    */
+    try {
+        const lead_product_relation_display_id = req.params.lpr_id;
+        const result = await leadService.leadDetailsByLprIdService(
+            lead_product_relation_display_id,
+        );
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -388,7 +416,7 @@ exports.addLeadController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -415,7 +443,7 @@ exports.getLeadStatisticsNumberController = async (req, res) => {
             },
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -451,7 +479,7 @@ exports.leadMobileSendOtpController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -498,7 +526,7 @@ exports.leadMobileVerifyController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -525,7 +553,7 @@ exports.leadEmailSendOtpController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
@@ -554,7 +582,7 @@ exports.leadEmailVerifyController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });

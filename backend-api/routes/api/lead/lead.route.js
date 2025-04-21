@@ -10,6 +10,7 @@ const {
     leadEmailSendOtpController,
     leadEmailVerifyController,
     getLeadListForAdvisorController,
+    leadDetailsByLprIdController,
 } = require("../../../presentation/controller/lead/lead.controller");
 
 const { authenticateToken, advisorAuthenticateToken } = require("../../../middleware/auth");
@@ -18,6 +19,7 @@ const router = express.Router();
 router.get("/lead-list", getLeadListController);
 router.get("/lead-list-for-advisor", advisorAuthenticateToken, getLeadListForAdvisorController);
 router.get("/lead-list-product-by-advisor-id", getLeadListProductByAdvisorIdController);
+router.get("/lead-details-by-lpr-id/:lpr_id", leadDetailsByLprIdController);
 router.post("/add-lead", advisorAuthenticateToken, addLeadController);
 router.get("/lead-statistics-number", authenticateToken, getLeadStatisticsNumberController);
 router.post("/lead-mobile-send-otp", leadMobileSendOtpController);

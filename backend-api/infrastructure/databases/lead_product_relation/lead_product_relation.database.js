@@ -77,6 +77,32 @@ class LeadProductRelationDatabase {
             .range(offset, offset + limit - 1);
         return { data, total_count };
     }
+
+    async leadDetailsByLprIdDatabase(lead_product_relation_display_id) {
+        try {
+            const { data, error } = await this.db
+                .from(tableName)
+                .select(
+                    `
+                    lead_product_id, priority, additinal_note, lead_status_id(title), lead_product_relation_display_id,
+                    lead_id(name, email, contact_number, dob, address, city_id(title, state_id(title)), lead_display_id),
+                    product_id(product_id, product_name, description, financial_description, product_display_id, company_id(company_id, company_name, company_display_id, logo_url), sub_category_id(sub_category_id, title, category_id(category_id, title))),
+                    advisor_id(advisor_id,name, join_as, mobile_number, email, advisor_display_id),
+                    before_issuance_excel_data_id(policy_amount),
+                    lead_product_relationship_manager_relation(relationship_manager_id(rm_id, name, contact_number))
+                    `,
+                )
+                .eq("lead_product_relation_display_id", lead_product_relation_display_id)
+                .maybeSingle();
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error("Error in leadDetailsByLprIdDatabase:", error);
+            throw new Error(
+                `Failed to get lead details: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 }
 
 module.exports = LeadProductRelationDatabase;

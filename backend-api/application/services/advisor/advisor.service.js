@@ -1,16 +1,12 @@
 const { SupabaseClient } = require("@supabase/supabase-js");
 const AdvisorDatabase = require("../../../infrastructure/databases/advisor/advisor.database");
 const BucketNameStorage = require("../../../infrastructure/storage/bucketName.storage.js");
-const jwt = require("jsonwebtoken");
-const { generateOtp } = require("../../../utils/crypto.util");
 const authUtil = require("../../../utils/auth.util.js");
 const { generateOtpToken, verifyOtpToken } = require("../../../utils/jwt.util.js");
 
 class AdvisorService {
     constructor(supabaseInstance) {
         this.advisorDatabase = new AdvisorDatabase(supabaseInstance);
-        this.aadharStorage = new BucketNameStorage(supabaseInstance, "aadhar-cards");
-        this.panStorage = new BucketNameStorage(supabaseInstance, "pan-cards");
         this.advisorStorage = new BucketNameStorage(supabaseInstance, "advisor");
     }
 
@@ -53,24 +49,24 @@ class AdvisorService {
 
             // Todo: aadhar and pan card file upload
             const _aadharFilePath = `${advisor.advisor_id}/document/aadharCard.${aadhar_card_file?.mimetype.split("/")[1]}`;
-            const aadharUploadResult = await this.aadharStorage.uploadFile(
+            const aadharUploadResult = await this.advisorStorage.uploadFile(
                 _aadharFilePath,
                 aadhar_card_file.buffer,
                 aadhar_card_file.mimetype,
                 false,
             );
             if (aadharUploadResult) {
-                aadharPublicUrl = await this.aadharStorage.getPublicUrl(aadharUploadResult?.path);
+                aadharPublicUrl = await this.advisorStorage.getPublicUrl(aadharUploadResult?.path);
             }
 
             const _panFilePath = `${advisor.advisor_id}/document/panCard.${pan_card_file?.mimetype.split("/")[1]}`;
-            const panUploadResult = await this.panStorage.uploadFile(
+            const panUploadResult = await this.advisorStorage.uploadFile(
                 _panFilePath,
                 pan_card_file.buffer,
                 pan_card_file.mimetype,
             );
             if (panUploadResult) {
-                panPublicUrl = await this.panStorage.getPublicUrl(panUploadResult?.path);
+                panPublicUrl = await this.advisorStorage.getPublicUrl(panUploadResult?.path);
             }
 
             const updatedAdvisor = await this.advisorDatabase.updateAdvisorFiles(
@@ -130,26 +126,26 @@ class AdvisorService {
 
             // Todo: aadhar and pan card file upload
             const _aadharFilePath = `${advisor.advisor_id}/document/aadharCard.${aadhar_card_file?.mimetype.split("/")[1]}`;
-            const aadharUploadResult = await this.aadharStorage.uploadFile(
+            const aadharUploadResult = await this.advisorStorage.uploadFile(
                 _aadharFilePath,
                 aadhar_card_file.buffer,
                 aadhar_card_file.mimetype,
                 true,
             );
             if (aadharUploadResult) {
-                aadharPublicUrl = await this.aadharStorage.getPublicUrl(aadharUploadResult?.path);
+                aadharPublicUrl = await this.advisorStorage.getPublicUrl(aadharUploadResult?.path);
                 aadharPublicUrl = aadharPublicUrl + `?dt=${Date.now()}`;
             }
 
             const _panFilePath = `${advisor.advisor_id}/document/panCard.${pan_card_file?.mimetype.split("/")[1]}`;
-            const panUploadResult = await this.panStorage.uploadFile(
+            const panUploadResult = await this.advisorStorage.uploadFile(
                 _panFilePath,
                 pan_card_file.buffer,
                 pan_card_file.mimetype,
                 true,
             );
             if (panUploadResult) {
-                panPublicUrl = await this.panStorage.getPublicUrl(panUploadResult?.path);
+                panPublicUrl = await this.advisorStorage.getPublicUrl(panUploadResult?.path);
                 panPublicUrl = panPublicUrl + `?dt=${Date.now()}`;
             }
 

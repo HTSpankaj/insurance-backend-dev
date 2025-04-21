@@ -16,6 +16,7 @@ const subCategoryRouter = require("./sub_category/sub_category.route");
 const companyRouter = require("./company/company.route");
 const leadRouter = require("./lead/lead.route");
 const issuanceRouter = require("./issuance/index.route");
+const remunerationRouter = require("./remuneration/index.route");
 
 var commonRouter = require("./common/index.route");
 const advisorRoute = require("./advisor/advisor.route"); // New advisor route
@@ -50,9 +51,10 @@ router.use("/product", productRouter);
 router.use("/relationship-manager", authenticateToken, relationshipManagerRouter);
 
 router.use("/course", courseRouter);
+router.use("/course", coursemoduleRoutes);
 
 router.use("/issuance", authenticateToken, issuanceRouter);
+router.use("/remuneration", authenticateToken, remunerationRouter);
 router.use("/config", configRoutes);
-router.use("/api/course", coursemoduleRoutes);
 
 module.exports = router;
