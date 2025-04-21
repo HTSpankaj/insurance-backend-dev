@@ -87,8 +87,8 @@ class LeadProductRelationDatabase {
                     lead_product_id, priority, additinal_note, lead_status_id(title), lead_product_relation_display_id,
                     lead_id(name, email, contact_number, dob, address, city_id(title, state_id(title)), lead_display_id),
                     product_id(product_id, product_name, description, financial_description, product_display_id, company_id(company_id, company_name, company_display_id, logo_url), sub_category_id(sub_category_id, title, category_id(category_id, title))),
-                    advisor_id(advisor_id,name, join_as, mobile_number, email, advisor_display_id),
-                    before_issuance_excel_data_id(policy_amount),
+                    advisor_id(advisor_id,name, join_as, mobile_number, email, advisor_display_id, created_at),
+                    before_issuance_excel_data_id(policy_amount, commission_amount),
                     lead_product_relationship_manager_relation(relationship_manager_id(rm_id, name, contact_number))
                     `,
                 )
