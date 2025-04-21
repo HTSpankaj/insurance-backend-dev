@@ -20,7 +20,7 @@ class UsersDatabase {
         try {
             const queryResponse = await this.db
                 .from(tableName)
-                .select("*")
+                .select("*, role:role_id(*)")
                 .eq("email", email)
                 .maybeSingle();
             console.log(queryResponse);
@@ -42,7 +42,7 @@ class UsersDatabase {
     async getUserByUserId(user_id) {
         const { data, error } = await this.db
             .from(tableName)
-            .select("*")
+            .select("*, role:role_id(*)")
             .eq("user_id", user_id)
             .maybeSingle();
         if (data) {
