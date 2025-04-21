@@ -24,6 +24,4 @@ exports.getRemunerationDashboardCardStatisticsController = async (req, res) => {
     }
 };
 
-exports.getRemunerationDashboardEarningBarStatisticsController = async (req, res) => {
-    
-}
+exports.getRemunerationDashboardEarningBarStatisticsController = async (req, res) => {};

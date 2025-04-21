@@ -89,7 +89,7 @@ class LeadService {
                         ?.category_id;
                 const leadCityId = createLeadProductRelationResponse?.lead_id?.city_id?.id;
                 const leadStateId =
-                    createLeadProductRelationResponse?.lead_id?.city_id?.id?.state_id?.id;
+                    createLeadProductRelationResponse?.lead_id?.city_id?.state_id?.id;
 
                 const leadProductRelationshipManagerRelationDatabaseResponse =
                     await this.leadProductRelationshipManagerRelationDatabase.autoAssignRelationshipManagerToLead(
@@ -99,10 +99,10 @@ class LeadService {
                         leadCityId,
                         leadStateId,
                     );
-                console.log(
-                    "leadProductRelationshipManagerRelationDatabaseResponse",
-                    leadProductRelationshipManagerRelationDatabaseResponse,
-                );
+                // console.log(
+                //     "leadProductRelationshipManagerRelationDatabaseResponse",
+                //     leadProductRelationshipManagerRelationDatabaseResponse,
+                // );
 
                 // Todo: Send whatsapp message to Relationship Manager
                 if (leadProductRelationshipManagerRelationDatabaseResponse) {

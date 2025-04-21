@@ -18,22 +18,22 @@ class LeadProductRelationshipManagerRelationDatabase {
         lead_state_id,
     ) {
         const { data, error } = await this.db.rpc("auto_assign_rm_to_lead", {
-            lead_product_relation_id: lead_product_relation_id,
-            lead_product_company_id: lead_product_company_id,
-            lead_product_category_id: lead_product_category_id,
-            lead_city_id: lead_city_id,
-            lead_state_id: lead_state_id,
+            lead_product_relation_id_val: lead_product_relation_id,
+            company_id_val: lead_product_company_id,
+            product_category_id_val: lead_product_category_id,
+            lead_city_id_val: lead_city_id,
+            lead_state_id_val: lead_state_id,
         });
+
         if (error) {
             console.error("Error in auto_assign_rm_to_lead:", error);
-            console.log("Calling auto_assign_rm_to_lead RPC by params => ",{
+            console.log("Calling auto_assign_rm_to_lead RPC by params => ", {
                 lead_product_relation_id: lead_product_relation_id,
                 lead_product_company_id: lead_product_company_id,
                 lead_product_category_id: lead_product_category_id,
                 lead_city_id: lead_city_id,
                 lead_state_id: lead_state_id,
             });
-            
         }
 
         if (data) {

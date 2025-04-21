@@ -5,20 +5,20 @@ const regionService = new RegionService(supabaseInstance);
 
 exports.addRegionController = async (req, res) => {
     /*
-      #swagger.tags = ['region']
-    #swagger.description = 'Add region'
+    #swagger.tags = ['region']
+    #swagger.description = 'Add Region'
     #swagger.parameters['body'] = {
-      in: 'body',
-      schema: {
-          title: 'North Region',
-          state: ['550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001'],
-          city: ['550e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440003']
+        in: 'body',
+        schema:  {
+            title: 'North Region',
+            company_id: '550e8400-e29b-41d4-a716-446655440000',
+            state: ['550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001'],
+            city: ['550e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440003']
         }
-      }
-    
+    }
     */
     try {
-        const { title, state, city } = req.body;
+        const { title, state, city, company_id } = req.body;
 
         // Validation
         if (!title || typeof title !== "string" || title.trim().length < 2) {
@@ -44,14 +44,14 @@ exports.addRegionController = async (req, res) => {
             }
         });
 
-        const result = await regionService.addRegion(title, state, city);
+        const result = await regionService.addRegion(title, state, city, company_id);
 
         return res.status(200).json({
             success: true,
             data: result,
         });
     } catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });

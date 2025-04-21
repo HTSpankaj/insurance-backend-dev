@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {
     getRemunerationDashboardCardStatisticsController,
-    getRemunerationDashboardEarningBarStatisticsController
+    getRemunerationDashboardEarningBarStatisticsController,
 } = require("../../../presentation/controller/remuneration/remuneration.controller");
 
 // const beforeIssuanceRoute = require("./beforeIssuance.route");
