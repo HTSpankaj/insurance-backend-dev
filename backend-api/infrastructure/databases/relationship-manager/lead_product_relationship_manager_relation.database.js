@@ -24,6 +24,9 @@ class LeadProductRelationshipManagerRelationDatabase {
             lead_city_id: lead_city_id,
             lead_state_id: lead_state_id,
         });
+        if (error) {
+            console.error("Error in auto_assign_rm_to_lead:", error);
+        }
 
         if (data) {
             return data;

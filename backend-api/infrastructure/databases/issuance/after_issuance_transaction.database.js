@@ -73,6 +73,20 @@ class AfterIssuanceTransactionDatabase {
             error,
         };
     }
+
+    async getRemunerationDashboardCardStatisticsDatabase() {
+        try {
+            const { data, error } = await this.db.rpc("get_remuneration_dashboard_card_statistics");
+            return {
+                data,
+                error,
+            };
+        } catch (error) {
+            throw new Error(
+                `Failed to get remuneration dashboard card statistics: ${error.message}`,
+            );
+        }
+    }
 }
 
 module.exports = AfterIssuanceTransactionDatabase;
