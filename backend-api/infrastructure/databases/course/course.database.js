@@ -134,7 +134,7 @@ class CourseDatabase {
             let query = this.db
                 .from(courseTableName) // Fix: Use courseTableName
                 .select(
-                    "id, title, status, is_delete, category_id(category_id, title), course_banner_img_url, created_at, course_module(count)",
+                    "id, title, status, is_delete,description, category_id(category_id, title), course_banner_img_url, created_at, course_module(count)",
                     { count: "exact" },
                 )
                 .eq("is_delete", false)
