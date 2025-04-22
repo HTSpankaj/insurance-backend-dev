@@ -5262,6 +5262,34 @@
           }
         }
       }
+    },
+    "/api/config/mobile-banner/delete-config/{id}": {
+      "delete": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Delete mobile banner config",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the banner"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "security": [

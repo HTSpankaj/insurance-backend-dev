@@ -147,3 +147,30 @@ exports.updateMobileBannerController = async (req, res) => {
         });
     }
 };
+
+exports.deleteMobileBannerController = async (req, res) => {
+    /*
+    #swagger.tags = ['Config']
+    #swagger.description = 'Delete mobile banner config'
+    #swagger.parameters['id'] = {
+      in: 'path',
+      type: 'string',
+      required: true,
+      description: 'ID of the banner'
+    }
+    */
+    try {
+        const { id } = req.params;
+        const result = await mobileBannerService.deleteMobileBannerService(id);
+        return res.status(200).json({
+            success: true,
+            message: "Delete mobile banner config successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};

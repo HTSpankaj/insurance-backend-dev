@@ -61,6 +61,10 @@ class MobileBannerService {
         }
         return mobileBannerDatabaseResponse;
     }
+
+    async deleteMobileBannerService(id) {
+        return await this.mobileBannerDatabase.deleteMobileBannerDatabase(id);
+    }
 }
 
 module.exports = MobileBannerService;

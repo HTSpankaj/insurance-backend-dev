@@ -7,6 +7,7 @@ const {
     insertMobileBannerController,
     updateMobileBannerController,
     getMobileBannerController,
+    deleteMobileBannerController,
 } = require("../../../presentation/controller/config/mobileBannerConfig.controller");
 const { authenticateToken } = require("../../../middleware/auth");
 const { mobileBannerMulter } = require("../../../middleware/config.middleware");
@@ -28,5 +29,6 @@ router.put(
     updateMobileBannerValidator,
     updateMobileBannerController,
 );
+router.delete("/delete-config/:id", authenticateToken, deleteMobileBannerController);
 
 module.exports = router;
