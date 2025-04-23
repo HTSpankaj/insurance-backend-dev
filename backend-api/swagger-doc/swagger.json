@@ -4186,6 +4186,72 @@
         }
       }
     },
+    "/api/relationship-manager/update-relationship-manager": {
+      "put": {
+        "tags": [
+          "Relationship-managers"
+        ],
+        "description": "Add a relationship-managers",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "rm_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "John Doe"
+                },
+                "contact_number": {
+                  "type": "number",
+                  "example": 1234567890
+                },
+                "company_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "region": {
+                  "type": "array",
+                  "example": [
+                    "39357ef5-e5b7-47d2-98ad-750e202bb49d",
+                    "e26b14ae-66d0-4ce2-aaa4-fb2b3b82211d"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "category": {
+                  "type": "array",
+                  "example": [
+                    "50f9a13b-d878-454f-a84a-3a1ca0d7a843",
+                    "7ca19a57-fdbc-4756-bcdb-b8f1623f36a9"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/relationship-manager/assign-relationship-manager-to-lead": {
       "post": {
         "tags": [
@@ -4267,6 +4333,34 @@
             "required": false,
             "description": "Region ID (UUID)",
             "default": null
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/relationship-manager/delete-relationship-manager/{rm_id}": {
+      "delete": {
+        "tags": [
+          "Relationship-managers"
+        ],
+        "description": "Delete Relationship Manager",
+        "parameters": [
+          {
+            "name": "rm_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Relationship Manager ID (UUID)"
           }
         ],
         "responses": {

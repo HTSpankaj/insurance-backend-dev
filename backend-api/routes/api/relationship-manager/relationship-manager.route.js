@@ -2,6 +2,8 @@ const express = require("express");
 const {
     addRelationshipManagerController,
     relationshipManagerAssignToLeadController,
+    updateRelationshipManagerController,
+    deleteRelationshipManagerController,
 } = require("../../../presentation/controller/relationship-manager/relationship-manager.controller");
 const {
     getRelationshipManagerListByCompanyIdController,
@@ -12,6 +14,7 @@ const {
 const router = express.Router();
 
 router.post("/add-relationship-manager", addRelationshipManagerController);
+router.put("/update-relationship-manager", updateRelationshipManagerController);
 router.post(
     "/assign-relationship-manager-to-lead",
     relationshipManagerAssignToLeadControllerValidator,
@@ -21,5 +24,7 @@ router.get(
     "/get-relationship-manager-list-by-company-id/:id",
     getRelationshipManagerListByCompanyIdController,
 );
+
+router.delete("/delete-relationship-manager/:rm_id", deleteRelationshipManagerController);
 
 module.exports = router;

@@ -39,6 +39,10 @@ exports.addRelationshipManagerController = async (req, res) => {
 
         const uuidRegex =
             /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+
+        if (!uuidRegex.test(company_id)) {
+            throw new Error(`Company ID is not a valid UUID`);
+        }
         region.forEach((id, index) => {
             if (!uuidRegex.test(id)) {
                 throw new Error(`Region ID at index ${index} is not a valid UUID`);
@@ -51,6 +55,81 @@ exports.addRelationshipManagerController = async (req, res) => {
         });
 
         const result = await relationshipManagerService.addRelationshipManager(
+            name,
+            contact_number.toString(), // Convert to string for database
+            region,
+            category,
+            company_id,
+        );
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+exports.updateRelationshipManagerController = async (req, res) => {
+    /*
+    #swagger.tags = ['Relationship-managers']
+    #swagger.description = 'Add a relationship-managers'
+    #swagger.parameters['body'] = {
+        in: 'body',
+        schema: {
+            "rm_id": "550e8400-e29b-41d4-a716-446655440000",
+            name: 'John Doe',
+            contact_number: 1234567890,
+            company_id: '550e8400-e29b-41d4-a716-446655440000',
+            region: ["39357ef5-e5b7-47d2-98ad-750e202bb49d","e26b14ae-66d0-4ce2-aaa4-fb2b3b82211d"],
+            category: ["50f9a13b-d878-454f-a84a-3a1ca0d7a843","7ca19a57-fdbc-4756-bcdb-b8f1623f36a9"]
+        }
+    }
+
+    */
+    try {
+        const { rm_id, name, contact_number, region, category, company_id } = req.body;
+
+        // Validation
+        if (!name || typeof name !== "string" || name.trim().length < 2) {
+            throw new Error("Name must be a string with at least 2 characters");
+        }
+        if (!contact_number || !/^\d{10}$/.test(contact_number.toString())) {
+            throw new Error("Contact number must be a 10-digit number");
+        }
+        if (!Array.isArray(region) || region.length === 0) {
+            throw new Error("Region must be a non-empty array of UUIDs");
+        }
+        if (!Array.isArray(category) || category.length === 0) {
+            throw new Error("Category must be a non-empty array of UUIDs");
+        }
+
+        const uuidRegex =
+            /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+
+        if (!uuidRegex.test(rm_id)) {
+            throw new Error(`RM ID is not a valid UUID`);
+        }
+        if (!uuidRegex.test(company_id)) {
+            throw new Error(`Company ID is not a valid UUID`);
+        }
+        region.forEach((id, index) => {
+            if (!uuidRegex.test(id)) {
+                throw new Error(`Region ID at index ${index} is not a valid UUID`);
+            }
+        });
+        category.forEach((id, index) => {
+            if (!uuidRegex.test(id)) {
+                throw new Error(`Category ID at index ${index} is not a valid UUID`);
+            }
+        });
+
+        const result = await relationshipManagerService.updateRelationshipManager(
+            rm_id,
             name,
             contact_number.toString(), // Convert to string for database
             region,
@@ -184,6 +263,35 @@ exports.relationshipManagerAssignToLeadController = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Relationship manager assigned to lead successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
+exports.deleteRelationshipManagerController = async (req, res) => {
+    /*
+    #swagger.tags = ['Relationship-managers']
+    #swagger.description = 'Delete Relationship Manager'
+    #swagger.parameters['rm_id'] = {
+        in: 'path',
+        type: 'string',
+        required: true,
+        description: 'Relationship Manager ID (UUID)'
+    }
+    */
+    try {
+        const { rm_id } = req.params;
+
+        const result = await relationshipManagerService.deleteRelationshipManagerService(rm_id);
+
+        return res.status(200).json({
+            success: true,
+            message: "Relationship manager deleted successfully.",
             data: result,
         });
     } catch (error) {

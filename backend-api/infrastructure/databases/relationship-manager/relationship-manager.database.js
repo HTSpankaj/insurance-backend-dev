@@ -38,6 +38,32 @@ class RelationshipManagerDatabase {
         }
     }
 
+    async updateRelationshipManager(rm_id, name, contact_number, company_id) {
+        try {
+            const { data, error } = await this.db
+                .from(relationshipManagerTableName)
+                .update({
+                    name,
+                    contact_number,
+                    company_id,
+                })
+                .eq("rm_id", rm_id)
+                .select()
+                .maybeSingle();
+
+            if (error) {
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in updateRelationshipManager:", error);
+            throw new Error(
+                `Failed to update relationship manager: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
     async createRegionRelations(relationship_manager_id, region) {
         try {
             const regionRelations = region.map(region_id => ({
@@ -60,6 +86,36 @@ class RelationshipManagerDatabase {
             console.error("Error in createRegionRelations:", error);
             throw new Error(
                 `Failed to insert region relations: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
+    async updateRegionRelations(relationship_manager_id, region) {
+        try {
+            const regionRelations = region.map(region_id => ({
+                relationship_manager_id,
+                region_id,
+            }));
+
+            await this.db
+                .from(regionRelationsTableName)
+                .delete()
+                .eq("relationship_manager_id", relationship_manager_id);
+
+            const { data, error } = await this.db
+                .from(regionRelationsTableName)
+                .insert(regionRelations)
+                .select();
+
+            if (error) {
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in updateRMRegionRelations:", error);
+            throw new Error(
+                `Failed to update region RM relations: ${error.message || JSON.stringify(error)}`,
             );
         }
     }
@@ -89,6 +145,35 @@ class RelationshipManagerDatabase {
             );
         }
     }
+    async updateCategoryRelations(relationship_manager_id, category) {
+        try {
+            const categoryRelations = category.map(category_id => ({
+                relationship_manager_id,
+                category_id,
+            }));
+
+            await this.db
+                .from(categoryRelationsTableName)
+                .delete()
+                .eq("relationship_manager_id", relationship_manager_id);
+
+            const { data, error } = await this.db
+                .from(categoryRelationsTableName)
+                .insert(categoryRelations)
+                .select();
+
+            if (error) {
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in updateRMCategoryRelations:", error);
+            throw new Error(
+                `Failed to Update RM category relations: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 
     async getRelationshipManagersWithPagination(company_id, offset, limit, search, region_id_val) {
         try {
@@ -110,7 +195,7 @@ class RelationshipManagerDatabase {
                 .order("created_at", { ascending: false })
                 .range(offset, offset + limit - 1);
 
-            const { data, count, error } = await query;
+            const { data, count, error } = await query.eq("is_delete", false);
 
             if (error) {
                 console.error("Supabase error in getRelationshipManagersWithPagination:", error);
@@ -125,6 +210,28 @@ class RelationshipManagerDatabase {
             console.error("Error in getRelationshipManagersWithPagination:", error);
             throw new Error(
                 `Failed to fetch relationship managers: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
+    async deleteRelationshipManagerDatabase(rm_id) {
+        try {
+            const { error } = await this.db
+                .from(relationshipManagerTableName)
+                .update({
+                    is_delete: true,
+                })
+                .eq("rm_id", rm_id)
+                .select()
+                .maybeSingle();
+
+            if (error) {
+                throw error;
+            }
+        } catch (error) {
+            console.error("Error in deleteRelationshipManagerDatabase:", error);
+            throw new Error(
+                `Failed to delete relationship manager: ${error.message || JSON.stringify(error)}`,
             );
         }
     }

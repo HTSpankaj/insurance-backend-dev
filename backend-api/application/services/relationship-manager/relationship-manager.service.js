@@ -46,6 +46,43 @@ class RelationshipManagerService {
             );
         }
     }
+    async updateRelationshipManager(rm_id, name, contact_number, region, category, company_id) {
+        try {
+            // Insert into relationship_manager table
+            const relationshipManager =
+                await this.relationshipManagerDatabase.updateRelationshipManager(
+                    rm_id,
+                    name,
+                    contact_number,
+                    company_id,
+                );
+
+            // Insert into relationship_manager_region_relations table
+            await this.relationshipManagerDatabase.updateRegionRelations(
+                relationshipManager.rm_id,
+                region,
+            );
+
+            // Insert into relationship_manager_category_relations table
+            await this.relationshipManagerDatabase.updateCategoryRelations(
+                relationshipManager.rm_id,
+                category,
+            );
+
+            return {
+                rm_id: relationshipManager.rm_id,
+                name,
+                contact_number,
+                region,
+                category,
+            };
+        } catch (error) {
+            console.error("Error in addRelationshipManager:", error);
+            throw new Error(
+                `Failed to add relationship manager: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 
     async getRelationshipManagerListByCompanyId(company_id, pageNumber, limit, search, region_id) {
         try {
@@ -97,6 +134,10 @@ class RelationshipManagerService {
                 `Failed to assign relationship manager to lead: ${error.message || JSON.stringify(error)}`,
             );
         }
+    }
+
+    async deleteRelationshipManagerService(rm_id) {
+        return await this.relationshipManagerDatabase.deleteRelationshipManagerDatabase(rm_id);
     }
 }
 
