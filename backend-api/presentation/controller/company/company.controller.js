@@ -396,6 +396,12 @@ exports.getCompanyListController = async (req, res) => {
       default: 10, 
       description: 'Number of records per page' 
     }
+    #swagger.parameters['is_publish'] = {
+      in: 'query',
+      type: 'boolean',
+      default: false,
+      description: 'Filter by is_publish == true // false means save as draft'
+    }
     #swagger.parameters['search'] = { 
       in: 'query', 
       type: 'string', 
@@ -407,6 +413,13 @@ exports.getCompanyListController = async (req, res) => {
     try {
         const { page_number = 1, limit = 10, search = "" } = req.query;
         const is_all = req.query.is_all === "true" ? true : false;
+        let is_publish = null;
+
+        if (req.query?.is_publish === "true") {
+            is_publish = true;
+        } else if (req.query?.is_publish === "false") {
+            is_publish = false;
+        }
 
         const pageNumber = parseInt(page_number);
         const perPage = parseInt(limit);
@@ -416,7 +429,13 @@ exports.getCompanyListController = async (req, res) => {
             throw new Error("Invalid page_number or limit");
         }
 
-        const result = await companyService.getCompanyList(pageNumber, perPage, search, is_all);
+        const result = await companyService.getCompanyList(
+            pageNumber,
+            perPage,
+            search,
+            is_all,
+            is_publish,
+        );
 
         return res.status(200).json({
             success: true,

@@ -3165,6 +3165,13 @@
             "description": "Number of records per page"
           },
           {
+            "name": "is_publish",
+            "in": "query",
+            "type": "boolean",
+            "default": false,
+            "description": "Filter by is_publish == true   false means save as draft"
+          },
+          {
             "name": "search",
             "in": "query",
             "type": "string",
@@ -4109,6 +4116,20 @@
             "type": "string",
             "required": false,
             "description": "Search term for product name, subcategory, or company name"
+          },
+          {
+            "name": "is_company_publish",
+            "in": "query",
+            "type": "boolean",
+            "required": false,
+            "description": "Filter by is_company_publish"
+          },
+          {
+            "name": "is_product_publish",
+            "in": "query",
+            "type": "boolean",
+            "required": false,
+            "description": "Filter by is_product_publish"
           }
         ],
         "responses": {

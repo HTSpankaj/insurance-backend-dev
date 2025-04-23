@@ -190,13 +190,14 @@ class CompanyService {
         }
     }
 
-    async getCompanyList(pageNumber, limit, search, is_all) {
+    async getCompanyList(pageNumber, limit, search, is_all, is_publish) {
         try {
             const { data, total_count } = await this.companyDatabase.getCompaniesWithStats(
                 pageNumber,
                 limit,
                 search,
                 is_all,
+                is_publish,
             );
             const total_pages = Math.ceil(total_count / limit);
 

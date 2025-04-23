@@ -203,13 +203,14 @@ class CompanyDatabase {
         }
     }
 
-    async getCompaniesWithStats(pageNumber, limit, search, is_all) {
+    async getCompaniesWithStats(pageNumber, limit, search, is_all, is_publish = null) {
         try {
             const { data, error } = await this.db.rpc("get_company_list_with_stats", {
                 p_page_number: pageNumber,
                 p_limit: limit,
                 p_search: search || "",
                 is_all,
+                is_publish_val: is_publish,
             });
             if (error) {
                 console.error("Supabase error in getCompaniesWithStats:", error);

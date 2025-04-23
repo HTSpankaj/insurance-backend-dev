@@ -13,6 +13,7 @@ class ProductService {
         company_id,
         description,
         financial_description,
+        is_publish,
         product_brochure_file,
         promotional_video_file,
         promotional_image_file,
@@ -25,6 +26,7 @@ class ProductService {
                 company_id,
                 description,
                 financial_description,
+                is_publish,
             );
 
             // Upload files to Supabase bucket
@@ -97,7 +99,15 @@ class ProductService {
         }
     }
 
-    async getProductsByCategoryId(page_number, limit, category_id, sub_category_id, search) {
+    async getProductsByCategoryId(
+        page_number,
+        limit,
+        category_id,
+        sub_category_id,
+        search,
+        is_company_publish,
+        is_product_publish,
+    ) {
         try {
             const { data, total_count } = await this.productDatabase.getProductsByCategoryId(
                 page_number,
@@ -105,6 +115,8 @@ class ProductService {
                 category_id,
                 sub_category_id,
                 search,
+                is_company_publish,
+                is_product_publish,
             );
             const total_pages = Math.ceil(total_count / limit);
             return { data, total_count, total_pages };

@@ -38,6 +38,12 @@ exports.addProductController = async (req, res) => {
       required: true, 
       description: 'Financial description of the product' 
     }
+    #swagger.parameters['is_publish'] = { 
+      in: 'formData',
+      type: 'boolean',
+      required: true,
+      description: 'Whether the product is published or not'
+    }
     #swagger.parameters['product_brochure_url'] = { 
       in: 'formData', 
       type: 'file', 
@@ -58,8 +64,14 @@ exports.addProductController = async (req, res) => {
     }
     */
     try {
-        const { product_name, sub_category_id, company_id, description, financial_description } =
-            req.body;
+        const {
+            product_name,
+            sub_category_id,
+            company_id,
+            description,
+            financial_description,
+            is_publish,
+        } = req.body;
 
         const product_brochure_file = req.files?.product_brochure_url?.[0];
         const promotional_video_file = req.files?.promotional_video_url?.[0];
@@ -117,6 +129,7 @@ exports.addProductController = async (req, res) => {
             company_id,
             description,
             financial_description,
+            is_publish,
             product_brochure_file,
             promotional_video_file,
             promotional_image_file,
@@ -241,9 +254,24 @@ exports.getProductsByCategoryIdController = async (req, res) => {
     #swagger.parameters['category_id'] = { in: 'query', type: 'string', required: false, description: 'Category ID (UUID) OR null' } 
     #swagger.parameters['sub_category_id'] = { in: 'query', type: 'string', required: false, description: 'sub-Category ID (UUID) OR null' }
     #swagger.parameters['search'] = { in: 'query', type: 'string', required: false, description: 'Search term for product name, subcategory, or company name' }
+    #swagger.parameters['is_company_publish'] = { in: 'query', type: 'boolean', required: false, description: 'Filter by is_company_publish' }
+    #swagger.parameters['is_product_publish'] = { in: 'query', type: 'boolean', required: false, description: 'Filter by is_product_publish' }
   */
     try {
         const { page_number, limit, category_id, sub_category_id, search } = req.query;
+        let is_company_publish = null;
+        if (req.query?.is_company_publish === "true") {
+            is_company_publish = true;
+        } else if (req.query?.is_company_publish === "false") {
+            is_company_publish = false;
+        }
+        let is_product_publish = null;
+        if (req.query?.is_product_publish === "true") {
+            is_product_publish = true;
+        } else if (req.query?.is_product_publish === "false") {
+            is_product_publish = false;
+        }
+
         const uuidRegex =
             /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 
@@ -266,6 +294,8 @@ exports.getProductsByCategoryIdController = async (req, res) => {
             category_id,
             sub_category_id,
             search?.trim(),
+            is_company_publish,
+            is_product_publish,
         );
 
         return res.status(200).json({
