@@ -17,7 +17,7 @@ const router = express.Router();
 router.get("/get-config", getMobileBannerController);
 router.post(
     "/insert-config",
-    authenticateToken,
+    // authenticateToken,
     mobileBannerMulter,
     insertMobileBannerValidator,
     insertMobileBannerController,

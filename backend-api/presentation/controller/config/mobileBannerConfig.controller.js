@@ -67,6 +67,9 @@ exports.insertMobileBannerController = async (req, res) => {
         const { title, description, is_active } = req.body;
         const file = req.files?.file?.[0] || null;
 
+        console.log({title, description, is_active});
+        
+
         const result = await mobileBannerService.insertUpdateMobileBannerService(
             null,
             title,
@@ -80,7 +83,7 @@ exports.insertMobileBannerController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        console.log(error);
+        console.log("Mobile banner error", error);
         return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },

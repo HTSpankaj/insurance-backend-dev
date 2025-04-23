@@ -3,8 +3,8 @@ const multer = require("multer");
 const storage = multer.memoryStorage(); // Store files in memory as buffer
 
 const fileFilter = (req, file, cb) => {
-    const allowedMimeTypes = ["image/jpeg", "image/png", "application/pdf"];
-    if (allowedMimeTypes.includes(file.mimetype)) {
+    const allowedMimeTypes = ["image/", "video/", "application/pdf"];
+    if (allowedMimeTypes.some(s => file.mimetype?.startsWith(s))) {
         cb(null, true);
     } else {
         cb(new Error("Invalid file type"), false);
