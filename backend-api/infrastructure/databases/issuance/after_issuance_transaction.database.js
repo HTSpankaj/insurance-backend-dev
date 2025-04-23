@@ -77,10 +77,24 @@ class AfterIssuanceTransactionDatabase {
     async getRemunerationDashboardCardStatisticsDatabase() {
         try {
             const { data, error } = await this.db.rpc("get_remuneration_dashboard_card_statistics");
-            return {
-                data,
-                error,
-            };
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(
+                `Failed to get remuneration dashboard card statistics: ${error.message}`,
+            );
+        }
+    }
+    async getRemunerationDashboardEarningBarStatisticsDatabase(company_id) {
+        try {
+            const { data, error } = await this.db.rpc(
+                "get_remuneration_dashboard_earning_bar_statistics",
+                {
+                    company_id_val: company_id,
+                },
+            );
+            if (error) throw error;
+            return data;
         } catch (error) {
             throw new Error(
                 `Failed to get remuneration dashboard card statistics: ${error.message}`,

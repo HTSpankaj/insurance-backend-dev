@@ -51,11 +51,14 @@ class LeadProductRelationshipManagerRelationDatabase {
         try {
             const { data, error } = await this.db
                 .from(tableName)
-                .insert({
-                    lead_product_relation_id,
-                    relationship_manager_id,
-                    relationship_manager_assign_by,
-                })
+                .upsert(
+                    {
+                        lead_product_relation_id,
+                        relationship_manager_id,
+                        relationship_manager_assign_by,
+                    },
+                    { onConflict: "lead_product_relation_id" },
+                )
                 .select()
                 .maybeSingle();
 

@@ -10,6 +10,12 @@ class RemunerationService {
     async getRemunerationDashboardCardStatisticsService() {
         return await this.afterIssuanceTransactionDatabase.getRemunerationDashboardCardStatisticsDatabase();
     }
+
+    async getRemunerationDashboardEarningBarStatisticsService(company_id) {
+        return await this.afterIssuanceTransactionDatabase.getRemunerationDashboardEarningBarStatisticsDatabase(
+            company_id,
+        );
+    }
 }
 
 module.exports = RemunerationService;

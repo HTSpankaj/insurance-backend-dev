@@ -180,6 +180,7 @@ exports.relationshipManagerAssignToLeadController = async (req, res) => {
             relationship_manager_id,
             relationship_manager_assign_by,
         );
+
         return res.status(200).json({
             success: true,
             message: "Relationship manager assigned to lead successfully.",

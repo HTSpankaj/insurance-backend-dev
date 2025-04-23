@@ -13,7 +13,10 @@ class MobileBannerDatabase {
 
     async getMobileBannerDatabase(is_active) {
         try {
-            let query = this.db.from(tableName).select("*", { count: "exact" }).eq("is_delete", false);
+            let query = this.db
+                .from(tableName)
+                .select("*", { count: "exact" })
+                .eq("is_delete", false);
 
             if (is_active) {
                 query = query.eq("is_active", is_active);
@@ -80,7 +83,6 @@ class MobileBannerDatabase {
             throw new Error(`Failed to delete mobile banner: ${error.message}`);
         }
     }
-    
 }
 
 module.exports = MobileBannerDatabase;

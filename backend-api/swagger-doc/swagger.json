@@ -666,6 +666,68 @@
         }
       }
     },
+    "/api/region/update-region": {
+      "put": {
+        "tags": [
+          "region"
+        ],
+        "description": "Update Region",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "region_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "title": {
+                  "type": "string",
+                  "example": "North Region"
+                },
+                "company_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "state": {
+                  "type": "array",
+                  "example": [
+                    "550e8400-e29b-41d4-a716-446655440000",
+                    "550e8400-e29b-41d4-a716-446655440001"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "city": {
+                  "type": "array",
+                  "example": [
+                    "550e8400-e29b-41d4-a716-446655440002",
+                    "550e8400-e29b-41d4-a716-446655440003"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/region/get-region-list-by-company-id/{id}": {
       "get": {
         "tags": [
@@ -700,6 +762,34 @@
             "type": "string",
             "required": false,
             "description": "Search term for region name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/region/delete-region/{region_id}": {
+      "delete": {
+        "tags": [
+          "region"
+        ],
+        "description": "Delete Region",
+        "parameters": [
+          {
+            "name": "region_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Region ID (UUID)"
           }
         ],
         "responses": {
@@ -5015,10 +5105,28 @@
     },
     "/api/remuneration/get-remuneration-dashboard-earning-bar": {
       "get": {
-        "description": "",
+        "tags": [
+          "Remuneration"
+        ],
+        "description": "Get remuneration dashboard earning bar statistics with company id",
+        "parameters": [
+          {
+            "name": "company_id",
+            "in": "query",
+            "type": "string",
+            "required": true,
+            "description": "Company ID"
+          }
+        ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "401": {
             "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }

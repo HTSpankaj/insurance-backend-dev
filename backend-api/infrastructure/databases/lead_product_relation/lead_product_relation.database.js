@@ -103,6 +103,21 @@ class LeadProductRelationDatabase {
             );
         }
     }
+
+    async SetAssignedLeadStatusByLeadProductRelationId(lead_product_id) {
+        try {
+            const { data, error } = await this.db
+                .from(tableName)
+                .update({ lead_status_id: 2 })
+                .eq("lead_product_id", lead_product_id)
+                .maybeSingle();
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error("Error in leadStatusSetToAssigned:", error);
+            throw new Error(`Failed to update lead status: ${error.message}`);
+        }
+    }
 }
 
 module.exports = LeadProductRelationDatabase;

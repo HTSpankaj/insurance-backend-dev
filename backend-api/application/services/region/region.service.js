@@ -27,6 +27,28 @@ class RegionService {
             throw new Error(`Failed to add region: ${error.message || JSON.stringify(error)}`);
         }
     }
+    async updateRegion(region_id, title, state, city, company_id) {
+        try {
+            // Insert into region table
+            const region = await this.regionDatabase.updateRegion(region_id, title, company_id);
+
+            // Insert into region_state table
+            await this.regionDatabase.updateRegionStates(region.region_id, state);
+
+            // Insert into region_city table
+            await this.regionDatabase.updateRegionCities(region.region_id, city);
+
+            return {
+                region_id: region.region_id,
+                title,
+                state,
+                city,
+            };
+        } catch (error) {
+            console.error("Error in  updateRegion:", error);
+            throw new Error(`Failed to update region: ${error.message || JSON.stringify(error)}`);
+        }
+    }
 
     async getRegionListByCompanyId(company_id, pageNumber, limit, search) {
         try {
@@ -50,6 +72,10 @@ class RegionService {
                 `Failed to fetch region list: ${error.message || JSON.stringify(error)}`,
             );
         }
+    }
+
+    async deleteRegion(region_id) {
+        return await this.regionDatabase.deleteRegion(region_id);
     }
 }
 

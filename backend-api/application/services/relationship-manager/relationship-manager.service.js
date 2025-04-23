@@ -1,3 +1,4 @@
+const LeadProductRelationDatabase = require("../../../infrastructure/databases/lead_product_relation/lead_product_relation.database");
 const LeadProductRelationshipManagerRelationDatabase = require("../../../infrastructure/databases/relationship-manager/lead_product_relationship_manager_relation.database");
 const RelationshipManagerDatabase = require("../../../infrastructure/databases/relationship-manager/relationship-manager.database");
 
@@ -6,6 +7,7 @@ class RelationshipManagerService {
         this.relationshipManagerDatabase = new RelationshipManagerDatabase(supabaseInstance);
         this.leadProductRelationshipManagerRelationDatabase =
             new LeadProductRelationshipManagerRelationDatabase(supabaseInstance);
+        this.leadProductRelationDatabase = new LeadProductRelationDatabase(supabaseInstance);
     }
 
     async addRelationshipManager(name, contact_number, region, category, company_id) {
@@ -77,11 +79,18 @@ class RelationshipManagerService {
         relationship_manager_assign_by,
     ) {
         try {
-            return await this.leadProductRelationshipManagerRelationDatabase.relationshipManagerAssignToLeadDatabase(
-                lead_product_relation_id,
-                relationship_manager_id,
-                relationship_manager_assign_by,
-            );
+            const result =
+                await this.leadProductRelationshipManagerRelationDatabase.relationshipManagerAssignToLeadDatabase(
+                    lead_product_relation_id,
+                    relationship_manager_id,
+                    relationship_manager_assign_by,
+                );
+            if (result?.lead_product_relation_id) {
+                await this.leadProductRelationDatabase.SetAssignedLeadStatusByLeadProductRelationId(
+                    result.lead_product_relation_id,
+                );
+            }
+            return result;
         } catch (error) {
             console.error("Error in relationshipManagerAssignToLeadService:", error);
             throw new Error(

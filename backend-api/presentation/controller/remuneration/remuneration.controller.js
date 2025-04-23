@@ -24,4 +24,28 @@ exports.getRemunerationDashboardCardStatisticsController = async (req, res) => {
     }
 };
 
-exports.getRemunerationDashboardEarningBarStatisticsController = async (req, res) => {};
+exports.getRemunerationDashboardEarningBarStatisticsController = async (req, res) => {
+    /*
+        #swagger.tags = ['Remuneration']
+        #swagger.description = 'Get remuneration dashboard earning bar statistics with company id'
+        #swagger.parameters['company_id'] = { in: 'query', type: 'string', required: true, description: 'Company ID' }
+    */
+
+    try {
+        const { company_id } = req.query;
+        const result =
+            await remunerationService.getRemunerationDashboardEarningBarStatisticsService(
+                company_id,
+            );
+        return res.status(200).json({
+            success: true,
+            message: "Get remuneration dashboard earning bar statistics successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error || "Something went wrong!" },
+        });
+    }
+};
