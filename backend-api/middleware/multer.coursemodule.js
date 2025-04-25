@@ -21,17 +21,20 @@ const fileFilter = (req, file, cb) => {
     const fileType = req.body.file_type;
 
     if (fieldName !== "file") {
-        return cb(new Error(`Unexpected field ${fieldName}`), false);
+        return cb(new Error(`multerError:Unexpected field ${fieldName}`), false);
     }
 
     if (!fileType || !["Video", "PDF", "Image", "Text"].includes(fileType)) {
-        return cb(new Error("file_type must be one of: Video, PDF, Image, Text"), false);
+        return cb(
+            new Error("multerError:file_type must be one of: Video, PDF, Image, Text"),
+            false,
+        );
     }
 
     if (allowedTypes[fieldName](file.mimetype, fileType)) {
         cb(null, true);
     } else {
-        cb(new Error(`Invalid file type for file_type: ${fileType}`), false);
+        cb(new Error(`multerError:Invalid file type for file_type: ${fileType}`), false);
     }
 };
 

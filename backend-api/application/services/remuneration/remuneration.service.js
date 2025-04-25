@@ -16,6 +16,14 @@ class RemunerationService {
             company_id,
         );
     }
+
+    async getRemunerationCompaniesWithFinancialStatisticsService(search, page_number, limit) {
+        return await this.afterIssuanceTransactionDatabase.getRemunerationCompaniesWithFinancialStatisticsDatabase(
+            search,
+            page_number,
+            limit,
+        );
+    }
 }
 
 module.exports = RemunerationService;

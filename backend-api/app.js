@@ -9,6 +9,7 @@ const cors = require("cors");
 var indexRouter = require("./routes/index");
 
 const dynamicCors = require("./configs/cors.config");
+const multer = require("multer");
 
 // Schedule job
 require("./scheduler/InvoiceCreation.scheduler");
@@ -43,8 +44,18 @@ app.use(function (req, res, next) {
 // error handler
 app.use(function (err, req, res, next) {
     // set locals, only providing error in development
+
+    if (err?.message?.startsWith("multerError:")) {
+        return res.status(402).json({
+            success: false,
+            isParameterError: true,
+            error: { message: err?.message || err },
+        });
+    }
+
     res.locals.message = err.message;
     res.locals.error = req.app.get("env") === "development" ? err : {};
+    console.error(err);
 
     // render the error page
     res.status(err.status || 500);

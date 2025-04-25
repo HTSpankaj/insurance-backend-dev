@@ -1,6 +1,6 @@
 exports.authConfig = {
     // accessTokenExpiry: '30m',
-    accessTokenExpiry: "1d",
+    accessTokenExpiry: "30d",
     refreshTokenExpiry: "1d",
     secretKey: "insurance-portal-secret-key",
 

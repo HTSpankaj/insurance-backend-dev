@@ -20,7 +20,6 @@ const {
     resubmitAdvisorRegistrationController,
     getAdvisorStatisticsByAdvisorIdController,
 } = require("../../../presentation/controller/advisor/advisor.controller");
-const upload = require("../../../middleware/multer.middleware");
 
 const {
     advisorRegistrationValidateInput,
@@ -36,6 +35,7 @@ const {
 } = require("../../../validator/advisor/advisor.validator");
 
 const { authenticateToken } = require("../../../middleware/auth");
+const { upload } = require("../../../middleware/multer.middleware");
 
 const router = express.Router();
 

@@ -54,7 +54,7 @@ router.use("/course", courseRouter);
 router.use("/course", coursemoduleRoutes);
 
 router.use("/issuance", authenticateToken, issuanceRouter);
-router.use("/remuneration", authenticateToken, remunerationRouter);
+router.use("/remuneration", remunerationRouter);
 router.use("/config", configRoutes);
 
 module.exports = router;

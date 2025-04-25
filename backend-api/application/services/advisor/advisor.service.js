@@ -22,8 +22,10 @@ class AdvisorService {
         bank_ifsc_code,
         bank_branch,
         bank_account_number,
-        aadhar_card_file,
-        pan_card_file,
+        front_aadhar_card_file,
+        back_aadhar_card_file,
+        front_pan_card_file,
+        back_pan_card_file,
     ) {
         try {
             const advisor = await this.advisorDatabase.createAdvisor(
@@ -44,38 +46,15 @@ class AdvisorService {
                 bank_account_number,
             );
 
-            let aadharPublicUrl = "";
-            let panPublicUrl = "";
-
-            // Todo: aadhar and pan card file upload
-            const _aadharFilePath = `${advisor.advisor_id}/document/aadharCard.${aadhar_card_file?.mimetype.split("/")[1]}`;
-            const aadharUploadResult = await this.advisorStorage.uploadFile(
-                _aadharFilePath,
-                aadhar_card_file.buffer,
-                aadhar_card_file.mimetype,
-                false,
-            );
-            if (aadharUploadResult) {
-                aadharPublicUrl = await this.advisorStorage.getPublicUrl(aadharUploadResult?.path);
-            }
-
-            const _panFilePath = `${advisor.advisor_id}/document/panCard.${pan_card_file?.mimetype.split("/")[1]}`;
-            const panUploadResult = await this.advisorStorage.uploadFile(
-                _panFilePath,
-                pan_card_file.buffer,
-                pan_card_file.mimetype,
-            );
-            if (panUploadResult) {
-                panPublicUrl = await this.advisorStorage.getPublicUrl(panUploadResult?.path);
-            }
-
-            const updatedAdvisor = await this.advisorDatabase.updateAdvisorFiles(
+            const aadharAndPanCardUploadRes = this.aadharAndPanCardUpload(
                 advisor.advisor_id,
-                aadharPublicUrl,
-                panPublicUrl,
+                front_aadhar_card_file,
+                back_aadhar_card_file,
+                front_pan_card_file,
+                back_pan_card_file,
             );
 
-            return updatedAdvisor;
+            return aadharAndPanCardUploadRes ? aadharAndPanCardUploadRes : advisor;
         } catch (error) {
             console.error("Error in createAdvisor:", error);
             throw new Error(
@@ -98,8 +77,10 @@ class AdvisorService {
         bank_ifsc_code,
         bank_branch,
         bank_account_number,
-        aadhar_card_file,
-        pan_card_file,
+        front_aadhar_card_file,
+        back_aadhar_card_file,
+        front_pan_card_file,
+        back_pan_card_file,
     ) {
         try {
             const advisor = await this.advisorDatabase.updateResubmitAdvisor(
@@ -113,55 +94,114 @@ class AdvisorService {
                 qualification,
             );
 
-            await this.advisorDatabase.createBankDetails(
+            await this.advisorDatabase.updateBankDetails(
                 bank_details_id,
+                advisor_id,
                 bank_name,
                 bank_ifsc_code,
                 bank_branch,
                 bank_account_number,
             );
 
-            let aadharPublicUrl = "";
-            let panPublicUrl = "";
-
-            // Todo: aadhar and pan card file upload
-            const _aadharFilePath = `${advisor.advisor_id}/document/aadharCard.${aadhar_card_file?.mimetype.split("/")[1]}`;
-            const aadharUploadResult = await this.advisorStorage.uploadFile(
-                _aadharFilePath,
-                aadhar_card_file.buffer,
-                aadhar_card_file.mimetype,
-                true,
-            );
-            if (aadharUploadResult) {
-                aadharPublicUrl = await this.advisorStorage.getPublicUrl(aadharUploadResult?.path);
-                aadharPublicUrl = aadharPublicUrl + `?dt=${Date.now()}`;
-            }
-
-            const _panFilePath = `${advisor.advisor_id}/document/panCard.${pan_card_file?.mimetype.split("/")[1]}`;
-            const panUploadResult = await this.advisorStorage.uploadFile(
-                _panFilePath,
-                pan_card_file.buffer,
-                pan_card_file.mimetype,
-                true,
-            );
-            if (panUploadResult) {
-                panPublicUrl = await this.advisorStorage.getPublicUrl(panUploadResult?.path);
-                panPublicUrl = panPublicUrl + `?dt=${Date.now()}`;
-            }
-
-            const updatedAdvisor = await this.advisorDatabase.updateAdvisorFiles(
+            const aadharAndPanCardUploadRes = this.aadharAndPanCardUpload(
                 advisor.advisor_id,
-                aadharPublicUrl,
-                panPublicUrl,
+                front_aadhar_card_file,
+                back_aadhar_card_file,
+                front_pan_card_file,
+                back_pan_card_file,
             );
 
-            return updatedAdvisor;
+            return aadharAndPanCardUploadRes ? aadharAndPanCardUploadRes : advisor;
         } catch (error) {
             console.error("Error in reSubmitAdvisor:", error);
             throw new Error(
                 `Failed to re-submit advisor: ${error.message || JSON.stringify(error)}`,
             );
         }
+    }
+
+    async aadharAndPanCardUpload(
+        advisor_id,
+        front_aadhar_card_file,
+        back_aadhar_card_file,
+        front_pan_card_file,
+        back_pan_card_file,
+    ) {
+        let frontAadharPublicUrl = null;
+        let backAadharPublicUrl = null;
+
+        if (front_aadhar_card_file) {
+            const _frontAadharFilePath = `${advisor_id}/document/frontAadharCard.${front_aadhar_card_file?.mimetype.split("/")[1]}`;
+            const frontAadharUploadResult = await this.advisorStorage.uploadFile(
+                _frontAadharFilePath,
+                front_aadhar_card_file.buffer,
+                front_aadhar_card_file.mimetype,
+                false,
+            );
+            if (frontAadharUploadResult) {
+                frontAadharPublicUrl = await this.advisorStorage.getPublicUrl(
+                    frontAadharUploadResult?.path,
+                );
+            }
+        }
+
+        if (back_aadhar_card_file) {
+            const _backAadharFilePath = `${advisor_id}/document/backAadharCard.${back_aadhar_card_file?.mimetype.split("/")[1]}`;
+            const backAadharUploadResult = await this.advisorStorage.uploadFile(
+                _backAadharFilePath,
+                back_aadhar_card_file.buffer,
+                back_aadhar_card_file.mimetype,
+                false,
+            );
+            if (backAadharUploadResult) {
+                backAadharPublicUrl = await this.advisorStorage.getPublicUrl(
+                    backAadharUploadResult?.path,
+                );
+            }
+        }
+
+        let frontPanPublicUrl = null;
+        let backPanPublicUrl = null;
+
+        if (front_pan_card_file) {
+            const _frontPanFilePath = `${advisor_id}/document/frontPanCard.${front_pan_card_file?.mimetype.split("/")[1]}`;
+            const frontPanUploadResult = await this.advisorStorage.uploadFile(
+                _frontPanFilePath,
+                front_pan_card_file.buffer,
+                front_pan_card_file.mimetype,
+            );
+            if (frontPanUploadResult) {
+                frontPanPublicUrl = await this.advisorStorage.getPublicUrl(
+                    frontPanUploadResult?.path,
+                );
+            }
+        }
+
+        if (back_pan_card_file) {
+            const _backPanFilePath = `${advisor_id}/document/backPanCard.${back_pan_card_file?.mimetype.split("/")[1]}`;
+            const backPanUploadResult = await this.advisorStorage.uploadFile(
+                _backPanFilePath,
+                back_pan_card_file.buffer,
+                back_pan_card_file.mimetype,
+            );
+            if (backPanUploadResult) {
+                backPanPublicUrl = await this.advisorStorage.getPublicUrl(
+                    backPanUploadResult?.path,
+                );
+            }
+        }
+
+        let updatedAdvisor = null;
+        if (frontAadharPublicUrl || backAadharPublicUrl || frontPanPublicUrl || backPanPublicUrl) {
+            updatedAdvisor = await this.advisorDatabase.updateAdvisorFiles(
+                advisor_id,
+                frontAadharPublicUrl,
+                backAadharPublicUrl,
+                frontPanPublicUrl,
+                backPanPublicUrl,
+            );
+        }
+        return updatedAdvisor;
     }
 
     async sendAdvisorOtp(mobile_number, purpose_for) {

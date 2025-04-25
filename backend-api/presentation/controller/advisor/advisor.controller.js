@@ -24,16 +24,10 @@ exports.createAdvisorController = async (req, res) => {
     #swagger.parameters['bank_ifsc_code'] = { in: 'formData', type: 'string', required: true, description: '11-character IFSC code (e.g., HDFC0001234)' }
     #swagger.parameters['bank_branch'] = { in: 'formData', type: 'string', required: true, description: 'Bank branch' }
     #swagger.parameters['bank_account_number'] = { in: 'formData', type: 'string', required: true, description: '9-18 digit bank account number' }
-    #swagger.parameters['aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (JPEG or PDF)' }
-    #swagger.parameters['pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (JPEG or PDF)' }
-    #swagger.responses[200] = {
-      description: 'Advisor registered successfully',
-      schema: { success: true, data: { advisor_id: 'uuid', name: 'string', email: 'string', aadhar_card_image_url: 'string', pan_card_image_url: 'string' } }
-    }
-    #swagger.responses[400] = {
-      description: 'Invalid input',
-      schema: { success: false, error: { message: 'string' } }
-    }
+    #swagger.parameters['front_aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (JPEG or PDF)' }
+    #swagger.parameters['back_aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (JPEG or PDF)' }
+    #swagger.parameters['front_pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (JPEG or PDF)' }
+    #swagger.parameters['back_pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (JPEG or PDF)' }
   */
     try {
         const {
@@ -50,13 +44,20 @@ exports.createAdvisorController = async (req, res) => {
             bank_account_number,
         } = req.body;
 
-        const aadhar_card_file = req.files?.aadhar_card_file?.[0];
-        const pan_card_file = req.files?.pan_card_file?.[0];
+        const front_aadhar_card_file = req.files?.front_aadhar_card_file?.[0];
+        const back_aadhar_card_file = req.files?.back_aadhar_card_file?.[0];
+        const front_pan_card_file = req.files?.front_pan_card_file?.[0];
+        const back_pan_card_file = req.files?.back_pan_card_file?.[0];
 
-        if (!aadhar_card_file || !pan_card_file) {
+        if (
+            !front_aadhar_card_file ||
+            !back_aadhar_card_file ||
+            !front_pan_card_file ||
+            !back_pan_card_file
+        ) {
             return res.status(500).json({
                 success: false,
-                error: { message: "Aadhar and PAN card files are required" },
+                error: { message: "Aadhar and PAN card both side files are required" },
             });
         }
 
@@ -72,8 +73,10 @@ exports.createAdvisorController = async (req, res) => {
             bank_ifsc_code,
             bank_branch,
             bank_account_number,
-            aadhar_card_file,
-            pan_card_file,
+            front_aadhar_card_file,
+            back_aadhar_card_file,
+            front_pan_card_file,
+            back_pan_card_file,
         );
 
         return res.status(200).json({
@@ -82,6 +85,7 @@ exports.createAdvisorController = async (req, res) => {
             data: result,
         });
     } catch (error) {
+        console.error(error);
         return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
@@ -108,8 +112,10 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
     #swagger.parameters['bank_ifsc_code'] = { in: 'formData', type: 'string', required: true, description: '11-character IFSC code (e.g., HDFC0001234)' }
     #swagger.parameters['bank_branch'] = { in: 'formData', type: 'string', required: true, description: 'Bank branch' }
     #swagger.parameters['bank_account_number'] = { in: 'formData', type: 'string', required: true, description: '9-18 digit bank account number' }
-    #swagger.parameters['aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (JPEG or PDF)' }
-    #swagger.parameters['pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (JPEG or PDF)' }
+    #swagger.parameters['front_aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (JPEG or PDF)' }
+    #swagger.parameters['back_aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (JPEG or PDF)' }
+    #swagger.parameters['front_pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (JPEG or PDF)' }
+    #swagger.parameters['back_pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (JPEG or PDF)' }
   */
     try {
         const {
@@ -128,13 +134,20 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
             bank_account_number,
         } = req.body;
 
-        const aadhar_card_file = req.files?.aadhar_card_file?.[0];
-        const pan_card_file = req.files?.pan_card_file?.[0];
+        const front_aadhar_card_file = req.files?.front_aadhar_card_file?.[0];
+        const back_aadhar_card_file = req.files?.back_aadhar_card_file?.[0];
+        const front_pan_card_file = req.files?.front_pan_card_file?.[0];
+        const back_pan_card_file = req.files?.back_pan_card_file?.[0];
 
-        if (!aadhar_card_file || !pan_card_file) {
+        if (
+            !front_aadhar_card_file ||
+            !back_aadhar_card_file ||
+            !front_pan_card_file ||
+            !back_pan_card_file
+        ) {
             return res.status(500).json({
                 success: false,
-                error: { message: "Aadhar and PAN card files are required" },
+                error: { message: "Aadhar and PAN card both side files are required" },
             });
         }
 
@@ -152,8 +165,10 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
             bank_ifsc_code,
             bank_branch,
             bank_account_number,
-            aadhar_card_file,
-            pan_card_file,
+            front_aadhar_card_file,
+            back_aadhar_card_file,
+            front_pan_card_file,
+            back_pan_card_file,
         );
 
         return res.status(200).json({
@@ -162,6 +177,7 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
             data: result,
         });
     } catch (error) {
+        console.log(error);
         return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },

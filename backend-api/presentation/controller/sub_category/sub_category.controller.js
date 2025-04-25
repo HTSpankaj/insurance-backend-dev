@@ -7,22 +7,23 @@ exports.createSubCategoryController = async (req, res) => {
     /*
     #swagger.tags = ['SubCategory']
     #swagger.description = 'Create a new sub-category'
+    #swagger.consumes = ['multipart/form-data']
+    #swagger.parameters['title'] = { in: 'formData', type: 'string', required: true, description: 'Title of the subcategory' }
+    #swagger.parameters['description'] = { in: 'formData', type: 'string', required: true, description: 'Description of the subcategory' }
+    #swagger.parameters['category_id'] = { in: 'formData', type: 'string', required: true, description: 'Id of the category' }
+    #swagger.parameters['file'] = { in: 'formData', type: 'file', required: true, description: 'subcategory image' }
   */
     try {
         const { title, description, category_id } = req.body;
-        // Assuming created_by_user_id comes from authentication middleware
-        const created_by_user_id = res?.locals?.tokenData?.user_id; //up
-        if (!created_by_user_id) {
-            return res.status(401).json({
-                success: false,
-                error: { message: "Unauthorized: User ID not found" },
-            });
-        }
+        const file = req.files?.file?.[0];
+        const created_by_user_id = res?.locals?.tokenData?.user_id;
+
         const result = await subCategoryService.createSubCategory(
             title,
             description,
             category_id,
             created_by_user_id,
+            file,
         );
         return res.status(result.success ? 201 : 400).json(result);
     } catch (error) {
@@ -158,23 +159,23 @@ exports.updateSubCategoryController = async (req, res) => {
     /*
     #swagger.tags = ['SubCategory']
     #swagger.description = 'Update sub-category'
-    #swagger.parameters['body'] ={
-        in: 'body',
-        schema: {
-          "sub_category_id": "",
-          "category_id": "",
-          "title": "",
-          "description": "",
-        }
-    }
+    #swagger.consumes = ['multipart/form-data']
+    #swagger.parameters['sub_category_id'] = { in: 'formData', type: 'string', required: true, description: 'Id of the subcategory' }
+    #swagger.parameters['title'] = { in: 'formData', type: 'string', required: true, description: 'Title of the subcategory' }
+    #swagger.parameters['description'] = { in: 'formData', type: 'string', required: true, description: 'Description of the subcategory' }
+    #swagger.parameters['category_id'] = { in: 'formData', type: 'string', required: true, description: 'Id of the category' }
+    #swagger.parameters['file'] = { in: 'formData', type: 'file', required: true, description: 'subcategory image' }
   */
     try {
         const { sub_category_id, category_id, title, description } = req.body;
+        const file = req.files?.file?.[0];
+
         const result = await subCategoryService.updateSubCategoryService(
             sub_category_id,
             category_id,
             title,
             description,
+            file,
         );
         return res.status(result.success ? 200 : 400).json(result);
     } catch (error) {

@@ -1,26 +1,5 @@
-/*st CategoryDatabase = require("../../../infrastructure/databases/category/category.database");
-const { SupabaseClient } = require("@supabase/supabase-js");
-
-class CategoryService {
-    /**
-     * Constructor for initializing the UserService
-     * @param {SupabaseClient} supabaseInstance - The supabase instance
-     */
-/*nstructor(supabaseInstance) {
-        this.categoryDatabase = new CategoryDatabase(supabaseInstance);
-    }
-
-    async addCategoryService(payload) {
-        const categoryRes = await this.categoryDatabase.addCategoryDb(payload);
-        if (categoryRes) {
-            return categoryRes;
-        }
-    }
-}
-
-module.exports = { CategoryService };*/
-
 const CategoryDatabase = require("../../../infrastructure/databases/category/category.database");
+const BucketNameStorage = require("../../../infrastructure/storage/bucketName.storage");
 
 class CategoryService {
     /**
@@ -29,11 +8,21 @@ class CategoryService {
      */
     constructor(supabaseInstance) {
         this.categoryDatabase = new CategoryDatabase(supabaseInstance);
+        this.configStorage = new BucketNameStorage(supabaseInstance, "config");
     }
 
-    async createCategory(title, description) {
+    async createCategory(title, description, file, created_by_user_id) {
         try {
-            const category = await this.categoryDatabase.createCategory(title, description);
+            let category = await this.categoryDatabase.createCategory(
+                title,
+                description,
+                created_by_user_id,
+            );
+
+            if (file && category?.category_id) {
+                category = await this.uploadCategoryLogo(category?.category_id, file);
+            }
+
             return {
                 success: true,
                 data: category,
@@ -46,6 +35,31 @@ class CategoryService {
                 },
             };
         }
+    }
+
+    async uploadCategoryLogo(category_id, file) {
+        let updatedCategory = null;
+        const fileExtension = file.mimetype.split("/")[1];
+        const filePath = `category/${category_id}/logo.${fileExtension}`;
+
+        const uploadFileResponse = await this.configStorage.uploadFile(
+            filePath,
+            file.buffer,
+            file.mimetype,
+            true,
+        );
+        if (uploadFileResponse) {
+            const logo_url = await this.configStorage.getPublicUrl(
+                uploadFileResponse?.path + "?" + new Date().getTime(),
+            );
+            updatedCategory = await this.categoryDatabase.updateCategoryDatabase(
+                category_id,
+                null,
+                null,
+                logo_url,
+            );
+        }
+        return updatedCategory;
     }
 
     async getCategories(pageNumber, limit, is_all) {
@@ -156,13 +170,17 @@ class CategoryService {
         }
     }
 
-    async updateCategoryService(category_id, title, description) {
+    async updateCategoryService(category_id, title, description, file) {
         try {
-            const category = await this.categoryDatabase.updateCategoryDatabase(
+            let category = await this.categoryDatabase.updateCategoryDatabase(
                 category_id,
                 title,
                 description,
             );
+
+            if (file && category_id) {
+                category = await this.uploadCategoryLogo(category_id, file);
+            }
             return {
                 success: true,
                 data: category,

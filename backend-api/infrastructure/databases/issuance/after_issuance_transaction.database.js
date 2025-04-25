@@ -101,6 +101,23 @@ class AfterIssuanceTransactionDatabase {
             );
         }
     }
+
+    async getRemunerationCompaniesWithFinancialStatisticsDatabase(search, page_number, limit) {
+        try {
+            const offset = (page_number - 1) * limit;
+            const { data, error } = await this.db.rpc("get_companies_with_financial_statistics", {
+                search_val: search || null,
+                offset_val: offset || 0,
+                limit_val: limit || 10,
+            });
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(
+                `Failed to get Remuneration Companies with Financial Statistics: ${error.message}`,
+            );
+        }
+    }
 }
 
 module.exports = AfterIssuanceTransactionDatabase;

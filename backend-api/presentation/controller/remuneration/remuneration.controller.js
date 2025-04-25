@@ -49,3 +49,39 @@ exports.getRemunerationDashboardEarningBarStatisticsController = async (req, res
         });
     }
 };
+
+exports.getRemunerationCompaniesWithFinancialStatisticsController = async (req, res) => {
+    /*
+        #swagger.tags = ['Remuneration']
+        #swagger.description = 'Get remuneration companies with financial statistics'
+        #swagger.parameters['page_number'] = { in: 'query', description: 'Page number', type: 'integer', required: true, default: 1 }
+        #swagger.parameters['limit'] = { in: 'query', description: 'Number of records per page', type: 'integer', required: true, default: 10 }
+        #swagger.parameters['search'] = { in: 'query', type: 'string', required: false, description: 'Search on company name' }
+    */
+
+    try {
+        const { search, page_number, limit } = req.query;
+        const result =
+            await remunerationService.getRemunerationCompaniesWithFinancialStatisticsService(
+                search,
+                page_number,
+                limit,
+            );
+        return res.status(200).json({
+            success: true,
+            message: "Get remuneration companies with financial statistics successfully.",
+            data: result,
+
+            metadata: {
+                current_page_count: result?.length || 0,
+                page: page_number,
+                per_page: limit,
+            },
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};

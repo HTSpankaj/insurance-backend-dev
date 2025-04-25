@@ -1,4 +1,5 @@
 const SubCategoryDatabase = require("../../../infrastructure/databases/sub_category/sub_category.database");
+const BucketNameStorage = require("../../../infrastructure/storage/bucketName.storage");
 
 class SubCategoryService {
     /**
@@ -7,16 +8,21 @@ class SubCategoryService {
      */
     constructor(supabaseInstance) {
         this.subCategoryDatabase = new SubCategoryDatabase(supabaseInstance);
+        this.configStorage = new BucketNameStorage(supabaseInstance, "config");
     }
 
-    async createSubCategory(title, description, category_id, created_by_user_id) {
+    async createSubCategory(title, description, category_id, created_by_user_id, file) {
         try {
-            const subCategory = await this.subCategoryDatabase.createSubCategory(
+            let subCategory = await this.subCategoryDatabase.createSubCategory(
                 title,
                 description,
                 category_id,
                 created_by_user_id,
             );
+
+            if (file && subCategory?.sub_category_id) {
+                subCategory = await this.uploadCategoryLogo(subCategory?.sub_category_id, file);
+            }
             return {
                 success: true,
                 data: subCategory,
@@ -29,6 +35,32 @@ class SubCategoryService {
                 },
             };
         }
+    }
+
+    async uploadCategoryLogo(sub_category_id, file) {
+        let updatedSubCategory = null;
+        const fileExtension = file.mimetype.split("/")[1];
+        const filePath = `subcategory/${sub_category_id}/logo.${fileExtension}`;
+
+        const uploadFileResponse = await this.configStorage.uploadFile(
+            filePath,
+            file.buffer,
+            file.mimetype,
+            true,
+        );
+        if (uploadFileResponse) {
+            const logo_url = await this.configStorage.getPublicUrl(
+                uploadFileResponse?.path + "?" + new Date().getTime(),
+            );
+            updatedSubCategory = await this.subCategoryDatabase.updateSubCategoryDatabase(
+                sub_category_id,
+                null,
+                null,
+                null,
+                logo_url,
+            );
+        }
+        return updatedSubCategory;
     }
 
     async getSubCategories(id, pageNumber, limit, is_all) {
@@ -115,14 +147,17 @@ class SubCategoryService {
         }
     }
 
-    async updateSubCategoryService(sub_category_id, category_id, title, description) {
+    async updateSubCategoryService(sub_category_id, category_id, title, description, file) {
         try {
-            const subCategory = await this.subCategoryDatabase.updateSubCategoryDatabase(
+            let subCategory = await this.subCategoryDatabase.updateSubCategoryDatabase(
                 sub_category_id,
                 category_id,
                 title,
                 description,
             );
+            if (file && subCategory?.sub_category_id) {
+                subCategory = await this.uploadCategoryLogo(subCategory?.sub_category_id, file);
+            }
             return {
                 success: true,
                 data: subCategory,

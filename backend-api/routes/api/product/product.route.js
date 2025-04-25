@@ -3,7 +3,7 @@ const {
     addProductController,
     getProductsByCategoryIdController,
 } = require("../../../presentation/controller/product/product.controller");
-const upload = require("../../../middleware/multer.middleware");
+const { upload } = require("../../../middleware/multer.middleware");
 const {
     getProductListByCompanyIdController,
 } = require("../../../presentation/controller/product/product.controller");

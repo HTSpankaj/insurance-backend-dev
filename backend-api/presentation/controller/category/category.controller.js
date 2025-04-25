@@ -1,39 +1,3 @@
-/*const { CategoryService } = require("../../../application/services/category/category.service.js");
-var { supabaseInstance } = require("../../../supabase-db/index.js");
-
-const categorySService = new CategoryService(supabaseInstance);
-exports.addCategoryController = async (req, res) => {
-    /*
-    #swagger.tags = ['Category']
-
-    #swagger.description = 'Add Category'
-    #swagger.parameters['body'] ={
-        in: 'body',
-        description: 'Add User',
-        schema: {
-          "title": "",
-          "description": "",
-        }
-    }
-  */
-
-/* {
-        const payload = {
-            title: req.body.title,
-            description: req.body.description,
-        };
-        const serviceResponse = await categoryService.addCategoryService(payload);
-
-        return res.status(200).json({
-            success: true,
-            message: "user profile fetch successfully",
-            data: serviceResponse,
-        });
-    } catch (error) {
-        return res.status(500).json({ success: false, error: error || "Something went wrong!" });
-    }
-}; */
-
 const CategoryService = require("../../../application/services/category/category.service");
 const { supabaseInstance } = require("../../../supabase-db/index.js");
 
@@ -43,10 +7,22 @@ exports.createCategoryController = async (req, res) => {
     /*
     #swagger.tags = ['Category']
     #swagger.description = 'Create a new category'
+    #swagger.consumes = ['multipart/form-data']
+    #swagger.parameters['title'] = { in: 'formData', type: 'string', required: true, description: 'Title of the category' }
+    #swagger.parameters['description'] = { in: 'formData', type: 'string', required: true, description: 'Description of the category' }
+    #swagger.parameters['file'] = { in: 'formData', type: 'file', required: true, description: 'category image' }
   */
     try {
         const { title, description } = req.body;
-        const result = await categoryService.createCategory(title, description);
+        const file = req.files?.file?.[0];
+        const created_by_user_id = res?.locals?.tokenData?.user_id;
+
+        const result = await categoryService.createCategory(
+            title,
+            description,
+            file,
+            created_by_user_id,
+        );
         return res.status(result.success ? 201 : 400).json(result);
     } catch (error) {
         return res
@@ -184,18 +160,23 @@ exports.updateCategoryController = async (req, res) => {
     /*
     #swagger.tags = ['Category']
     #swagger.description = 'Update category.'
-    #swagger.parameters['body'] ={
-        in: 'body',
-        schema: {
-          "category_id": "",
-          "title": "",
-          "description": "",
-        }
-    }
+    #swagger.consumes = ['multipart/form-data']
+    #swagger.parameters['category_id'] = { in: 'formData', type: 'string', required: true, description: 'Id of the category' }
+    #swagger.parameters['title'] = { in: 'formData', type: 'string', required: true, description: 'Title of the category' }
+    #swagger.parameters['description'] = { in: 'formData', type: 'string', required: true, description: 'Description of the category' }
+    #swagger.parameters['file'] = { in: 'formData', type: 'file', required: true, description: 'category image' }
+  
   */
     try {
         const { category_id, title, description } = req.body;
-        const result = await categoryService.updateCategoryService(category_id, title, description);
+        const file = req.files?.file?.[0];
+
+        const result = await categoryService.updateCategoryService(
+            category_id,
+            title,
+            description,
+            file,
+        );
         return res.status(result.success ? 200 : 400).json(result);
     } catch (error) {
         return res

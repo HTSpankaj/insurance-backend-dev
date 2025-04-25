@@ -89,11 +89,16 @@ class SubCategoryDatabase {
         }
     }
 
-    async updateSubCategoryDatabase(sub_category_id, category_id, title, description) {
+    async updateSubCategoryDatabase(sub_category_id, category_id, title, description, logo_url) {
         try {
+            let postBody = {};
+            if (category_id) postBody.category_id = category_id;
+            if (title) postBody.title = title;
+            if (description) postBody.description = description;
+            if (logo_url) postBody.logo_url = logo_url;
             const { data, error } = await this.db
                 .from(tableName)
-                .update({ title: title, description: description, category_id: category_id })
+                .update(postBody)
                 .eq("sub_category_id", sub_category_id)
                 .select()
                 .maybeSingle();

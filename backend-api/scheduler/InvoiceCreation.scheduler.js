@@ -9,6 +9,7 @@ const afterIssuanceTransactionDatabase = new AfterIssuanceTransactionDatabase(su
 const issuanceTransactionInvoiceDatabase = new IssuanceTransactionInvoiceDatabase(supabaseInstance);
 
 cron.schedule("0 0 20 * *", () => {
+    // cron.schedule("0 1 * * *", () => {
     console.log("Invoice creation cron job is running on date time : ", new Date());
     createInvoice();
 });
@@ -16,7 +17,6 @@ cron.schedule("0 0 20 * *", () => {
 async function createInvoice() {
     const { data: transactions, error } =
         await afterIssuanceTransactionDatabase.getAfterIssuanceTransactionDatabase();
-
     console.log("Create invoice Function: Fetched transactions:", transactions);
 
     if (error) {
@@ -25,69 +25,81 @@ async function createInvoice() {
     }
 
     for (const tx of transactions) {
-        //* 1. check invoice creation is complete or not.
-        if (tx.current_number_invoice_created >= tx.actual_number_transaction) continue;
+        //TODO: check transaction is complted or not
+        if (tx.current_number_invoice_created >= tx.actual_number_transaction) {
+            continue;
+        }
 
-        //* 2. Ensure commission_start_date < now
+        //TODO: conform commission_start_date < now
         const now = moment();
         const commissionStart = moment(tx.commission_start_date);
-        if (now.isBefore(commissionStart, "month")) continue;
+        if (now.isBefore(commissionStart, "month")) {
+            continue;
+        }
 
-        //* 3. Get latest invoice
+        //TODO: latest invoice || SORT by previous invoise
+        //!   Change here sort to [issuance_date, profit_book_date, loan_disbursed_date]
         const latestInvoice = tx.issuance_transaction_invoice?.sort(
             (a, b) => new Date(b.created_at) - new Date(a.created_at),
         )[0];
 
-        const lastInvoiceDate = latestInvoice ? moment(latestInvoice.created_at) : null;
+        const lastGeneratedInvoiceDate = latestInvoice ? moment(latestInvoice.created_at) : null;
 
-        let shouldCreate = false;
+        let checkIsPossibleTOCreateInvoice = false;
 
-        if (!lastInvoiceDate) {
+        if (!lastGeneratedInvoiceDate) {
             // First invoice: ensure enough time passed since commission_start_date
             const diffMonths = now.diff(commissionStart, "months");
-            shouldCreate = checkByPayout(tx.payout_type, diffMonths);
+            checkIsPossibleTOCreateInvoice = checkByPayout(tx.payout_type, diffMonths);
         } else {
             // Prevent invoice in same month
             const isSameMonth =
-                now.isSame(lastInvoiceDate, "month") && now.isSame(lastInvoiceDate, "year");
+                now.isSame(lastGeneratedInvoiceDate, "month") &&
+                now.isSame(lastGeneratedInvoiceDate, "year");
             if (isSameMonth) continue;
 
             const diffMonths = now.diff(commissionStart, "months");
             const expectedInvoices = getExpectedInvoiceCount(tx.payout_type, diffMonths);
 
             if (tx.current_number_invoice_created < expectedInvoices) {
-                shouldCreate = true;
+                checkIsPossibleTOCreateInvoice = true;
             }
         }
 
-        if (!shouldCreate) continue;
-
-        //* 4. Create invoice
-        const { data: invoice, error: insertError } =
-            await issuanceTransactionInvoiceDatabase.addIssuanceTransactionInvoiceDb(tx.id);
-
-        if (insertError) {
-            console.error(
-                `Create invoice Function: Failed to insert invoice for transaction ${tx.id}:`,
-                insertError,
-            );
+        if (!checkIsPossibleTOCreateInvoice) {
             continue;
         }
 
-        //* 5. Update current_number_invoice_created
-        const { error: updateError } =
-            await afterIssuanceTransactionDatabase.updateAfterIssuanceTransactionDatabase(
-                tx.current_number_invoice_created + 1,
+        //TODO; Create invoice
+        const addIssuanceTransactionInvoiceResponse =
+            await issuanceTransactionInvoiceDatabase.addIssuanceTransactionInvoiceDb(
                 tx.id,
+                tx.commission_amount,
+                tx.advisor_id,
             );
 
-        if (updateError) {
-            console.error(
-                `Create invoice Function: Failed to update transaction ${tx.id}:`,
-                updateError,
-            );
+        if (addIssuanceTransactionInvoiceResponse?.success) {
+            //TODO: increse current_number_invoice_created
+            const { error: updateError } =
+                await afterIssuanceTransactionDatabase.updateAfterIssuanceTransactionDatabase(
+                    tx.current_number_invoice_created + 1,
+                    tx.id,
+                );
+
+            if (updateError) {
+                console.error(
+                    `Create invoice Function: Failed to update transaction ${tx.id}:`,
+                    updateError,
+                );
+            } else {
+                console.log(`✅ Invoice successfully created for transaction ${tx.id}`);
+            }
         } else {
-            console.log(`✅ Invoice successfully created for transaction ${tx.id}`);
+            console.error(
+                `Create invoice Function: Failed to insert invoice for transaction ${tx.id}:`,
+                addIssuanceTransactionInvoiceResponse,
+            );
+            continue;
         }
     }
 }

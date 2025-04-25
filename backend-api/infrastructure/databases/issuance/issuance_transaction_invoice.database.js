@@ -1,6 +1,8 @@
 const { SupabaseClient } = require("@supabase/supabase-js");
+const moment = require("moment");
 
-const tableName = "issuance_transaction_invoice";
+const issuanceTransactionInvoice_tableName = "issuance_transaction_invoice";
+const invoice_tableName = "invoice";
 
 class IssuanceTransactionInvoiceDatabase {
     /**
@@ -11,18 +13,150 @@ class IssuanceTransactionInvoiceDatabase {
         this.db = supabaseInstance;
     }
 
-    async addIssuanceTransactionInvoiceDb(after_issuance_transaction_id) {
-        const { data, error } = await this.db
-            .from("issuance_transaction_invoice")
-            .insert({
-                after_issuance_transaction_id: after_issuance_transaction_id,
-            })
-            .select()
-            .maybeSingle();
-        return {
-            data,
-            error,
-        };
+    async addIssuanceTransactionInvoiceDb(
+        after_issuance_transaction_id,
+        commission_amount,
+        advisor_id,
+    ) {
+        return new Promise(async (resolve, reject) => {
+            const now = moment();
+            const startOfMonth = now.startOf("month").format("YYYY-MM-DD");
+            const endOfMonth = now.endOf("month").format("YYYY-MM-DD");
+
+            let invoice_id = null;
+
+            const { data: invoiceData, error: invoiceError } = await this.db
+                .from(invoice_tableName)
+                .select()
+                .eq("advisor_id", advisor_id)
+                .eq("created_at", startOfMonth)
+                .eq("created_at", endOfMonth)
+                .maybeSingle();
+
+            if (invoiceData) {
+                invoice_id = invoiceData?.invoice_id;
+            } else if (!invoiceError) {
+                const { data: invoiceCreateData, error: invoiceCreateError } = await this.db
+                    .from(invoice_tableName)
+                    .insert({
+                        advisor_id: advisor_id,
+                    })
+                    .select("*")
+                    .maybeSingle();
+                if (invoiceCreateData) {
+                    invoice_id = invoiceCreateData?.invoice_id;
+                }
+                if (invoiceCreateError) {
+                    resolve({
+                        success: false,
+                        variable: "invoiceCreateError",
+                        error: invoiceCreateError,
+                    });
+                }
+            }
+            if (invoiceError) {
+                resolve({
+                    success: false,
+                    variable: "invoiceError",
+                    error: invoiceError,
+                });
+            }
+
+            if (invoice_id) {
+                const { data, error } = await this.db
+                    .from(issuanceTransactionInvoice_tableName)
+                    .insert({
+                        after_issuance_transaction_id: after_issuance_transaction_id,
+                        amount: commission_amount,
+                        invoice_id: invoice_id,
+                    })
+                    .select("*")
+                    .maybeSingle();
+                if (data) {
+                    resolve({
+                        success: true,
+                        data: data,
+                    });
+                }
+                if (error) {
+                    resolve({
+                        success: false,
+                        variable: "error",
+                        error: error,
+                    });
+                }
+            }
+        });
+    }
+
+    async getInvoiceByAdvisorIdDatabase(advisor_id, pageNumber, limit, start_date, end_date) {
+        try {
+            const offset = (pageNumber - 1) * limit;
+            let query = this.db
+                .from(invoice_tableName)
+                .select("*, issuance_transaction_invoice(*)", { count: "exact" })
+                .eq("advisor_id", advisor_id);
+
+            if (start_date && end_date) {
+                query = query.gte("created_at", start_date).lte("created_at", end_date);
+            }
+
+            if (!isNaN(pageNumber) && !isNaN(limit)) {
+                query = query.range(offset, offset + limit - 1);
+            }
+
+            const { data, error, count } = await query;
+            if (error) throw error;
+            return { data, count };
+        } catch (error) {
+            throw new Error(`Failed to get invoice: ${error.message}`);
+        }
+    }
+
+    async approveInvoiceDatabase(invoice_id) {
+        try {
+            const { data, error } = await this.db
+                .from(invoice_tableName)
+                .update({ advisor_invoice_status: "Accepted" })
+                .eq("invoice_id", invoice_id)
+                .select("*")
+                .maybeSingle();
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to approve invoice: ${error.message}`);
+        }
+    }
+
+    async rejectionInvoiceDatabase(invoice_id, rejection_reason) {
+        try {
+            const { data: getData, error: getError } = await this.db
+                .from(invoice_tableName)
+                .select("*")
+                .eq("invoice_id", invoice_id)
+                .maybeSingle();
+            if (getError) throw getError;
+
+            const { data, error } = await this.db
+                .from(invoice_tableName)
+                .update({
+                    advisor_invoice_status: "Rejected",
+                    rejection_remark: [
+                        ...getData?.rejection_remark,
+                        {
+                            rejection_reason,
+                            created_at: new Date().toISOString(),
+                        },
+                    ],
+                })
+                .eq("invoice_id", invoice_id)
+                .select("*")
+                .maybeSingle();
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to reject invoice: ${error.message}`);
+        }
     }
 }
 

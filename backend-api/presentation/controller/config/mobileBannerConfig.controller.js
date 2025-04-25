@@ -67,8 +67,7 @@ exports.insertMobileBannerController = async (req, res) => {
         const { title, description, is_active } = req.body;
         const file = req.files?.file?.[0] || null;
 
-        console.log({title, description, is_active});
-        
+        console.log({ title, description, is_active });
 
         const result = await mobileBannerService.insertUpdateMobileBannerService(
             null,

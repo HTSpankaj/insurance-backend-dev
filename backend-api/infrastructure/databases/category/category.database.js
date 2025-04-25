@@ -38,7 +38,7 @@ class CategoryDatabase {
         try {
             const { data, error } = await this.db
                 .from(tableName)
-                .insert({ title, description }) // Include description
+                .insert({ title, description, created_by_user_id }) // Include description
                 .select()
                 .maybeSingle();
 
@@ -126,11 +126,16 @@ class CategoryDatabase {
         }
     }
 
-    async updateCategoryDatabase(category_id, title, description) {
+    async updateCategoryDatabase(category_id, title, description, logo_url) {
         try {
+            let postBody = {};
+            if (title) postBody.title = title;
+            if (description) postBody.description = description;
+            if (logo_url) postBody.logo_url = logo_url;
+
             const { data, error } = await this.db
                 .from(tableName)
-                .update({ title: title, description: description })
+                .update(postBody)
                 .eq("category_id", category_id)
                 .select()
                 .maybeSingle();

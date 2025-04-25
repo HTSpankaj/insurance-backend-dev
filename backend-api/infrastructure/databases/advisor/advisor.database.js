@@ -160,14 +160,22 @@ class AdvisorDatabase {
         }
     }
 
-    async updateAdvisorFiles(advisor_id, aadhar_card_image_url, pan_card_image_url) {
+    async updateAdvisorFiles(
+        advisor_id,
+        frontAadharPublicUrl,
+        backAadharPublicUrl,
+        frontPanPublicUrl,
+        backPanPublicUrl,
+    ) {
         try {
+            let postBody = {};
+            if (frontAadharPublicUrl) postBody.front_aadhar_card_image_url = frontAadharPublicUrl;
+            if (backAadharPublicUrl) postBody.back_aadhar_card_image_url = backAadharPublicUrl;
+            if (frontPanPublicUrl) postBody.front_pan_card_image_url = frontPanPublicUrl;
+            if (backPanPublicUrl) postBody.back_pan_card_image_url = backPanPublicUrl;
             const { data, error } = await this.db
                 .from(tableName)
-                .update({
-                    aadhar_card_image_url,
-                    pan_card_image_url,
-                })
+                .update(postBody)
                 .eq("advisor_id", advisor_id)
                 .select()
                 .maybeSingle();

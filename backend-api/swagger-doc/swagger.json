@@ -811,7 +811,31 @@
           "Category"
         ],
         "description": "Create a new category",
+        "consumes": [
+          "multipart/form-data"
+        ],
         "parameters": [
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Title of the category"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Description of the category"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "category image"
+          },
           {
             "name": "body",
             "in": "body",
@@ -887,13 +911,44 @@
         }
       }
     },
-    "/api/category/active-inactive-category": {
+    "/api/category/update-category": {
       "put": {
         "tags": [
           "Category"
         ],
-        "description": "Active/Inactive category.",
+        "description": "Update category.",
+        "consumes": [
+          "multipart/form-data"
+        ],
         "parameters": [
+          {
+            "name": "category_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Id of the category"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Title of the category"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Description of the category"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "category image"
+          },
           {
             "name": "body",
             "in": "body",
@@ -901,12 +956,13 @@
               "type": "object",
               "properties": {
                 "category_id": {
-                  "type": "string",
-                  "example": ""
+                  "example": "any"
                 },
-                "is_active": {
-                  "type": "boolean",
-                  "example": true
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
                 }
               }
             }
@@ -928,12 +984,12 @@
         }
       }
     },
-    "/api/category/update-category": {
+    "/api/category/active-inactive-category": {
       "put": {
         "tags": [
           "Category"
         ],
-        "description": "Update category.",
+        "description": "Active/Inactive category.",
         "parameters": [
           {
             "name": "body",
@@ -945,13 +1001,9 @@
                   "type": "string",
                   "example": ""
                 },
-                "title": {
-                  "type": "string",
-                  "example": ""
-                },
-                "description": {
-                  "type": "string",
-                  "example": ""
+                "is_active": {
+                  "type": "boolean",
+                  "example": true
                 }
               }
             }
@@ -1102,7 +1154,38 @@
           "SubCategory"
         ],
         "description": "Create a new sub-category",
+        "consumes": [
+          "multipart/form-data"
+        ],
         "parameters": [
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Title of the subcategory"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Description of the subcategory"
+          },
+          {
+            "name": "category_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Id of the category"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "subcategory image"
+          },
           {
             "name": "body",
             "in": "body",
@@ -1138,13 +1221,51 @@
         }
       }
     },
-    "/api/sub-category/active-inactive-sub-category": {
+    "/api/sub-category/update-sub-category": {
       "put": {
         "tags": [
           "SubCategory"
         ],
-        "description": "Active/Inactive subcategory.",
+        "description": "Update sub-category",
+        "consumes": [
+          "multipart/form-data"
+        ],
         "parameters": [
+          {
+            "name": "sub_category_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Id of the subcategory"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Title of the subcategory"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Description of the subcategory"
+          },
+          {
+            "name": "category_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Id of the category"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "subcategory image"
+          },
           {
             "name": "body",
             "in": "body",
@@ -1152,12 +1273,16 @@
               "type": "object",
               "properties": {
                 "sub_category_id": {
-                  "type": "string",
-                  "example": ""
+                  "example": "any"
                 },
-                "is_active": {
-                  "type": "boolean",
-                  "example": true
+                "category_id": {
+                  "example": "any"
+                },
+                "title": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
                 }
               }
             }
@@ -1179,12 +1304,12 @@
         }
       }
     },
-    "/api/sub-category/update-sub-category": {
+    "/api/sub-category/active-inactive-sub-category": {
       "put": {
         "tags": [
           "SubCategory"
         ],
-        "description": "Update sub-category",
+        "description": "Active/Inactive subcategory.",
         "parameters": [
           {
             "name": "body",
@@ -1196,17 +1321,9 @@
                   "type": "string",
                   "example": ""
                 },
-                "category_id": {
-                  "type": "string",
-                  "example": ""
-                },
-                "title": {
-                  "type": "string",
-                  "example": ""
-                },
-                "description": {
-                  "type": "string",
-                  "example": ""
+                "is_active": {
+                  "type": "boolean",
+                  "example": true
                 }
               }
             }
@@ -1833,14 +1950,28 @@
             "description": "9-18 digit bank account number"
           },
           {
-            "name": "aadhar_card_file",
+            "name": "front_aadhar_card_file",
             "in": "formData",
             "type": "file",
             "required": true,
             "description": "Aadhar card file (JPEG or PDF)"
           },
           {
-            "name": "pan_card_file",
+            "name": "back_aadhar_card_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Aadhar card file (JPEG or PDF)"
+          },
+          {
+            "name": "front_pan_card_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "PAN card file (JPEG or PDF)"
+          },
+          {
+            "name": "back_pan_card_file",
             "in": "formData",
             "type": "file",
             "required": true,
@@ -1849,68 +1980,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Advisor registered successfully",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "advisor_id": {
-                      "type": "string",
-                      "example": "uuid"
-                    },
-                    "name": {
-                      "type": "string",
-                      "example": "string"
-                    },
-                    "email": {
-                      "type": "string",
-                      "example": "string"
-                    },
-                    "aadhar_card_image_url": {
-                      "type": "string",
-                      "example": "string"
-                    },
-                    "pan_card_image_url": {
-                      "type": "string",
-                      "example": "string"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "error": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "string"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -2023,14 +2093,28 @@
             "description": "9-18 digit bank account number"
           },
           {
-            "name": "aadhar_card_file",
+            "name": "front_aadhar_card_file",
             "in": "formData",
             "type": "file",
             "required": true,
             "description": "Aadhar card file (JPEG or PDF)"
           },
           {
-            "name": "pan_card_file",
+            "name": "back_aadhar_card_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "Aadhar card file (JPEG or PDF)"
+          },
+          {
+            "name": "front_pan_card_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "PAN card file (JPEG or PDF)"
+          },
+          {
+            "name": "back_pan_card_file",
             "in": "formData",
             "type": "file",
             "required": true,
@@ -3954,6 +4038,13 @@
             "description": "Financial description of the product"
           },
           {
+            "name": "is_publish",
+            "in": "formData",
+            "type": "boolean",
+            "required": true,
+            "description": "Whether the product is published or not"
+          },
+          {
             "name": "product_brochure_url",
             "in": "formData",
             "type": "file",
@@ -3993,6 +4084,9 @@
                   "example": "any"
                 },
                 "financial_description": {
+                  "example": "any"
+                },
+                "is_publish": {
                   "example": "any"
                 }
               }
@@ -5231,6 +5325,167 @@
             "type": "string",
             "required": true,
             "description": "Company ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/remuneration/get-remuneration-company-with-financial-statistics": {
+      "get": {
+        "tags": [
+          "Remuneration"
+        ],
+        "description": "Get remuneration companies with financial statistics",
+        "parameters": [
+          {
+            "name": "page_number",
+            "in": "query",
+            "description": "Page number",
+            "type": "integer",
+            "required": true,
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of records per page",
+            "type": "integer",
+            "required": true,
+            "default": 10
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Search on company name"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/remuneration/invoice/get-advisor-invoice": {
+      "get": {
+        "tags": [
+          "Remuneration"
+        ],
+        "description": "Get Advisor Invoice for login advisor only",
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Start date format: YYYY-MM-DD"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "End date format: YYYY-MM-DD"
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/remuneration/invoice/approve-invoice": {
+      "put": {
+        "tags": [
+          "Remuneration"
+        ],
+        "description": "Approve Invoice for login advisor only",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "invoice_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/remuneration/invoice/reject-invoice": {
+      "put": {
+        "tags": [
+          "Remuneration"
+        ],
+        "description": "Rejection Invoice for login advisor only",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "invoice_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "rejection_reason": {
+                  "type": "string",
+                  "example": "Reason for rejection"
+                }
+              }
+            }
           }
         ],
         "responses": {
