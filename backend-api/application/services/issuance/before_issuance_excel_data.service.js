@@ -68,6 +68,9 @@ class BeforeIssuanceExcelDataService {
                 continue;
             }
 
+            //Todo: check is Assigned or not
+            //TODO: Duplicate Error 
+
             const excelData =
                 await this.beforeIssuanceExcelDataDatabase.addBeforeIssuanceExcelDataDatabase(
                     element,

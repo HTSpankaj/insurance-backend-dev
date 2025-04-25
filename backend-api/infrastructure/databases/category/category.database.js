@@ -34,7 +34,7 @@ class CategoryDatabase {
         this.db = supabaseInstance;
     }
 
-    async createCategory(title, description) {
+    async createCategory(title, description, created_by_user_id) {
         try {
             const { data, error } = await this.db
                 .from(tableName)
