@@ -41,21 +41,63 @@ class ProductDatabase {
         }
     }
 
-    async createSupportingDocuments(
+    async updateProduct(
+        product_id,
+        product_name,
+        sub_category_id,
+        company_id,
+        description,
+        financial_description,
+        is_publish,
+    ) {
+        try {
+            let postBody = {};
+            if(product_name)
+                postBody.product_name = product_name;
+            if(sub_category_id)
+                postBody.sub_category_id = sub_category_id;
+            if(company_id)
+                postBody.company_id = company_id;
+            if(description)
+                postBody.description = description;
+            if(financial_description)
+                postBody.financial_description = financial_description;
+            if(is_publish === true || is_publish === false)
+                postBody.is_publish = is_publish;
+
+            const { data, error } = await this.db
+                .from(productTableName)
+                .update(postBody)
+                .eq("product_id", product_id)
+                .select()
+                .maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to update product: ${error.message || JSON.stringify(error)}`);
+        }
+    }
+
+    async upsertSupportingDocuments(
         product_id,
         product_brochure_url,
         promotional_video_url,
         promotional_image_url,
     ) {
         try {
+
+            let postBody = {product_id: product_id};
+            if(product_brochure_url)
+                postBody.product_brochure_url = product_brochure_url;
+            if(promotional_video_url)
+                postBody.promotional_video_url = promotional_video_url;
+            if(promotional_image_url)
+                postBody.promotional_image_url = promotional_image_url;
+
             const { data, error } = await this.db
                 .from(supportingDocTableName)
-                .insert({
-                    product_id,
-                    product_brochure_url,
-                    promotional_video_url,
-                    promotional_image_url,
-                })
+                .upsert(postBody, {onConflict: "product_id"})
                 .select()
                 .maybeSingle();
 
@@ -163,10 +205,11 @@ class ProductDatabase {
 
     async deleteProductByIdDatabase(product_id) {
         try {
-            const {data, error} = this.db.from(productTableName).update({
+            
+            const {data, error} = await this.db.from(productTableName).update({
                 is_delete: true
             }).eq("product_id", product_id).select("*").maybeSingle();
-
+            
             if (error) throw error;
             return data;
         } catch (error) {

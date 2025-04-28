@@ -147,6 +147,172 @@ exports.addProductController = async (req, res) => {
     }
 };
 
+exports.updateProductController = async (req, res) => {
+    /*
+    #swagger.tags = ['Product']
+    #swagger.description = 'Update product'
+    #swagger.consumes = ['multipart/form-data']
+    #swagger.parameters['product_id'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'UUID of the product' 
+    }
+    #swagger.parameters['product_name'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'Name of the product' 
+    }
+    #swagger.parameters['sub_category_id'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'UUID of the subcategory' 
+    }
+    #swagger.parameters['company_id'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'UUID of the company' 
+    }
+    #swagger.parameters['description'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'Description of the product' 
+    }
+    #swagger.parameters['financial_description'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'Financial description of the product' 
+    }
+    #swagger.parameters['is_publish'] = { 
+      in: 'formData',
+      type: 'boolean',
+      required: true,
+      description: 'Whether the product is published or not'
+    }
+    #swagger.parameters['product_brochure_url'] = { 
+      in: 'formData', 
+      type: 'file', 
+      required: false, 
+      description: 'Product brochure file (PDF only)' 
+    }
+    #swagger.parameters['promotional_video_url'] = { 
+      in: 'formData', 
+      type: 'file', 
+      required: false, 
+      description: 'Promotional video file (MP4, AVI, MPEG)' 
+    }
+    #swagger.parameters['promotional_image_url'] = { 
+      in: 'formData', 
+      type: 'file', 
+      required: false, 
+      description: 'Promotional image file (JPEG, PNG, GIF)' 
+    }
+    */
+    try {
+        const {
+            product_id,
+            product_name,
+            sub_category_id,
+            company_id,
+            description,
+            financial_description,
+            is_publish,
+        } = req.body;
+
+        const product_brochure_file = req.files?.product_brochure_url?.[0] || null;
+        const promotional_video_file = req.files?.promotional_video_url?.[0] || null;
+        const promotional_image_file = req.files?.promotional_image_url?.[0] || null;
+
+        // Validation
+        if (!product_name || product_name.trim().length < 2) {
+            throw new Error("Product name must be a string with at least 2 characters");
+        }
+        if (
+            !sub_category_id ||
+            !/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
+                sub_category_id,
+            )
+        ) {
+            throw new Error("Invalid sub_category_id (must be UUID)");
+        }
+        if (
+            !product_id ||
+            !/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
+                product_id,
+            )
+        ) {
+            throw new Error("Invalid product_id (must be UUID)");
+        }
+        if (
+            !company_id ||
+            !/^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/.test(
+                company_id,
+            )
+        ) {
+            throw new Error("Invalid company_id (must be UUID)");
+        }
+        if (!description || description.trim().length < 5) {
+            throw new Error("Description must be a string with at least 5 characters");
+        }
+        if (!financial_description || financial_description.trim().length < 5) {
+            throw new Error("Financial description must be a string with at least 5 characters");
+        }
+
+        const validateFile = (file, fieldName, allowedTypes) => {
+            if (!file) throw new Error(`${fieldName} is required`);
+            if (!allowedTypes.includes(file.mimetype)) {
+                throw new Error(`${fieldName} must be ${allowedTypes.join(", ")}`);
+            }
+        };
+
+        if (product_brochure_file) {
+            validateFile(product_brochure_file, "product_brochure_url", ["application/pdf"]);
+        }
+        if (promotional_video_file) {
+            validateFile(promotional_video_file, "promotional_video_url", [
+                "video/mp4",
+                "video/avi",
+                "video/mpeg",
+            ]);
+        }
+        if (promotional_image_file) {
+            validateFile(promotional_image_file, "promotional_image_url", [
+                "image/jpeg",
+                "image/png",
+                "image/gif",
+            ]);
+        }
+
+        const result = await productService.updateProduct(
+            product_id,
+            product_name,
+            sub_category_id,
+            company_id,
+            description,
+            financial_description,
+            is_publish,
+            product_brochure_file,
+            promotional_video_file,
+            promotional_image_file,
+        );
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
 exports.getProductListByCompanyIdController = async (req, res) => {
     /*
     #swagger.tags = ['Product']
@@ -325,7 +491,7 @@ exports.deleteProductByIdController = async (req, res) => {
 
     const { product_id } = req.params;
     try {
-        const result = productService.deleteProductByIdService(product_id);
+        const result = await productService.deleteProductByIdService(product_id);
 
         return res.status(200).json({ success: true, data: result });
     } catch (error) {

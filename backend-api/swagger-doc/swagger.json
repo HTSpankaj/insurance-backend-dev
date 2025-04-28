@@ -4106,6 +4106,130 @@
         }
       }
     },
+    "/api/product/update-product": {
+      "put": {
+        "tags": [
+          "Product"
+        ],
+        "description": "Update product",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "UUID of the product"
+          },
+          {
+            "name": "product_name",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Name of the product"
+          },
+          {
+            "name": "sub_category_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "UUID of the subcategory"
+          },
+          {
+            "name": "company_id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "UUID of the company"
+          },
+          {
+            "name": "description",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Description of the product"
+          },
+          {
+            "name": "financial_description",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Financial description of the product"
+          },
+          {
+            "name": "is_publish",
+            "in": "formData",
+            "type": "boolean",
+            "required": true,
+            "description": "Whether the product is published or not"
+          },
+          {
+            "name": "product_brochure_url",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "Product brochure file (PDF only)"
+          },
+          {
+            "name": "promotional_video_url",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "Promotional video file (MP4, AVI, MPEG)"
+          },
+          {
+            "name": "promotional_image_url",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "Promotional image file (JPEG, PNG, GIF)"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "product_id": {
+                  "example": "any"
+                },
+                "product_name": {
+                  "example": "any"
+                },
+                "sub_category_id": {
+                  "example": "any"
+                },
+                "company_id": {
+                  "example": "any"
+                },
+                "description": {
+                  "example": "any"
+                },
+                "financial_description": {
+                  "example": "any"
+                },
+                "is_publish": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/product/get-product-list-by-company-id/{id}": {
       "get": {
         "tags": [
@@ -4235,6 +4359,35 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/product/delete-product/{product_id}": {
+      "delete": {
+        "tags": [
+          "Product"
+        ],
+        "description": "Delete product by ID",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "product UUID",
+            "example": "550e8400-e29b-41d4-a716-446655440000"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -5264,6 +5417,77 @@
                       "emi_amount": {
                         "type": "string",
                         "example": ""
+                      },
+                      "file_name": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "row_number": {
+                        "type": "string",
+                        "example": ""
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/issuance/bank-mis/insert-excel-data": {
+      "post": {
+        "tags": [
+          "Issuance"
+        ],
+        "description": "add after issuance excel data",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "add after issuance excel data",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "data": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "advisor_id": {
+                        "type": "string",
+                        "example": "ADV-00"
+                      },
+                      "advisor_name": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "commission_paid": {
+                        "type": "number",
+                        "example": 0
+                      },
+                      "transaction_reference_number": {
+                        "type": "string",
+                        "example": ""
+                      },
+                      "payment_date": {
+                        "type": "string",
+                        "example": "YYYY-MM-DD"
+                      },
+                      "payment_mode": {
+                        "type": "string",
+                        "example": "Bank Transfer / UPI / Cheque"
                       },
                       "file_name": {
                         "type": "string",
