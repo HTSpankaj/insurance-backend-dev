@@ -158,6 +158,90 @@ class IssuanceTransactionInvoiceDatabase {
             throw new Error(`Failed to reject invoice: ${error.message}`);
         }
     }
+
+    async getProductInvoiceForBankMisByAdvisorIdDatabase(advisor_id) {
+        return new Promise(async (resolve, reject) => {
+            const { data, error } = await this.db.rpc("get_product_invoice_for_bank_mis", {
+                advisor_id_val: advisor_id,
+            });
+            if (error) {
+                resolve({
+                    success: false,
+                    variable: "error",
+                    error: error,
+                });
+            }
+            if (data) {
+                resolve({
+                    success: true,
+                    data: data,
+                });
+            }
+        });
+    }
+
+    async updatePaidAmountToIssuanceTransactionInvoice(
+        issuance_transaction_invoice_id,
+        paid_amount,
+    ) {
+        return new Promise(async (resolve, reject) => {
+            const { data, error } = await this.db
+                .from(issuanceTransactionInvoice_tableName)
+                .update({
+                    paid_amount,
+                })
+                .eq("id", issuance_transaction_invoice_id)
+                .select("*")
+                .maybeSingle();
+            if (error) {
+                resolve({
+                    success: false,
+                    variable: "error",
+                    error: error,
+                });
+            }
+            if (data) {
+                resolve({
+                    success: true,
+                    data: data,
+                });
+            }
+        });
+    }
+
+    async invoiceStatusSettlementDatabase(invoice_id) {
+        return new Promise(async (resolve, reject) => {
+            const { data, error } = await this.db
+                .from(invoice_tableName)
+                .select("*", { count: "exact" })
+                .eq("invoice_id", invoice_id)
+                .maybeSingle();
+            if (data) {
+                let _status = null;
+                if (data?.generated_amount === data?.paid_amount) {
+                    _status = "Done";
+                } else if (data?.generated_amount > data?.paid_amount) {
+                    _status = "Partial";
+                }
+                if (_status) {
+                    await this.db
+                        .from(invoice_tableName)
+                        .update({ invoice_payment_status: _status })
+                        .eq("invoice_id", invoice_id);
+                }
+                resolve({
+                    success: true,
+                });
+            }
+            if (error) {
+                resolve({
+                    success: false,
+                    variable: `function invoiceStatusSettlementDatabase(${invoice_id})`,
+                    error: error,
+                });
+            }
+        });
+    }
 }
 
 module.exports = IssuanceTransactionInvoiceDatabase;

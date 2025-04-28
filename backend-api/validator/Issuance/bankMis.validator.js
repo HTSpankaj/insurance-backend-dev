@@ -25,10 +25,8 @@ const remunerationBankMisUploadExcelValidator = [
     body("data.*.transaction_reference_number")
         .notEmpty()
         .withMessage("transaction_reference_number is required")
-        .matches(/^[A-Z0-9\-]{6,30}$/)
-        .withMessage(
-            "transaction_reference_number must be 6–30 characters, alphanumeric and may include dashes",
-        ),
+        .isString()
+        .withMessage("transaction_reference_number must be a string"),
 
     body("data.*.payment_date")
         .notEmpty()
@@ -43,6 +41,10 @@ const remunerationBankMisUploadExcelValidator = [
         .withMessage("payment_mode is required")
         .isIn(["Bank Transfer", "UPI", "Cheque"])
         .withMessage("payment_mode must be one of: Bank Transfer, UPI, Cheque"),
+    body("data.*.file_name").isString().notEmpty().withMessage("file_name is required"),
+    body("data.*.row_number")
+        .isInt({ min: 1 })
+        .withMessage("row_number must be a positive integer"),
     validateClientParametersAndSendResponse,
 ];
 

@@ -29,12 +29,15 @@ class ProductService {
                 is_publish,
             );
 
-            await this.uploadSupportingDocuments(product.product_id, product_brochure_file,
+            await this.uploadSupportingDocuments(
+                product.product_id,
+                product_brochure_file,
                 promotional_video_file,
-                promotional_image_file)
+                promotional_image_file,
+            );
 
             return {
-                ...product
+                ...product,
             };
         } catch (error) {
             throw new Error(`Failed to add product: ${error.message || JSON.stringify(error)}`);
@@ -66,46 +69,49 @@ class ProductService {
 
             // Upload files to Supabase bucket
 
-            await this.uploadSupportingDocuments(product_id, product_brochure_file,
+            await this.uploadSupportingDocuments(
+                product_id,
+                product_brochure_file,
                 promotional_video_file,
-                promotional_image_file)
+                promotional_image_file,
+            );
 
             return {
-                ...product
+                ...product,
             };
         } catch (error) {
             throw new Error(`Failed to add product: ${error.message || JSON.stringify(error)}`);
         }
     }
 
-    async uploadSupportingDocuments(product_id, product_brochure_file, promotional_video_file,promotional_image_file) {
-        
+    async uploadSupportingDocuments(
+        product_id,
+        product_brochure_file,
+        promotional_video_file,
+        promotional_image_file,
+    ) {
         const uploadFile = async (file, fileName) => {
             const fileExtension = file.mimetype.split("/")[1];
 
             const filePath = `company_id/product_id/${product_id}/${fileName}-${Date.now()}.${fileExtension}`;
-            const { error } = await this.storage.uploadFile(
-                filePath,
-                file.buffer,
-                file.mimetype,
-            );
+            const { error } = await this.storage.uploadFile(filePath, file.buffer, file.mimetype);
             if (error) throw error;
             return this.storage.getPublicUrl(filePath);
         };
 
         let product_brochure_url = null;
-        if(product_brochure_file){
-            product_brochure_url = await uploadFile(product_brochure_file, "brochure")
+        if (product_brochure_file) {
+            product_brochure_url = await uploadFile(product_brochure_file, "brochure");
         }
-        
+
         let promotional_video_url = null;
-        if(promotional_video_file){
-            promotional_video_url = await uploadFile(promotional_video_file, "video")
+        if (promotional_video_file) {
+            promotional_video_url = await uploadFile(promotional_video_file, "video");
         }
 
         let promotional_image_url = null;
-        if(promotional_image_file){
-            promotional_image_url = await uploadFile(promotional_image_file, "image")
+        if (promotional_image_file) {
+            promotional_image_url = await uploadFile(promotional_image_file, "image");
         }
 
         // Insert file URLs into product_supporting_document table

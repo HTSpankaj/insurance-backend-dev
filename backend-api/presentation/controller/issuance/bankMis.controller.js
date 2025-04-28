@@ -32,15 +32,13 @@ exports.afterBankMisExcelDataController = async (req, res) => {
         const { data } = req.body;
         const transaction_created_by_user_id = res.locals.tokenData?.user_id;
 
-        
-
         const result = await bankMisExcelDataService.addBankMisExcelDataInBulkDatabase(
             data,
             transaction_created_by_user_id,
         );
-        return res.status(201).json({
+        return res.status(200).json({
             success: true,
-            message: "Add after issuance excel data successfully.",
+            message: "Bank MIS excel data successfully.",
             data: result,
         });
     } catch (error) {

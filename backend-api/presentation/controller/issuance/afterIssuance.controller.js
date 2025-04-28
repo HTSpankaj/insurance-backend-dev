@@ -67,7 +67,7 @@ exports.afterIssuanceExcelDataController = async (req, res) => {
             data,
             transaction_created_by_user_id,
         );
-        return res.status(201).json({
+        return res.status(200).json({
             success: true,
             message: "Add after issuance excel data successfully.",
             data: result,

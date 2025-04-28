@@ -522,6 +522,22 @@ class AdvisorDatabase {
             );
         }
     }
+
+    async getAdvisorDetailsFromDisplayIdDatabase(display_id) {
+        return new Promise(async (resolve, reject) => {
+            const { data, error } = await this.db
+                .from(tableName)
+                .select("*")
+                .eq("advisor_display_id", display_id)
+                .maybeSingle();
+
+            if (data) {
+                resolve(data);
+            } else {
+                resolve(error || null);
+            }
+        });
+    }
 }
 
 module.exports = AdvisorDatabase;

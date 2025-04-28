@@ -85,9 +85,8 @@ class BeforeIssuanceExcelDataService {
                     error: leadProduct?.error,
                     data: element,
                     message: "Lead is already sold.",
-                })
+                });
             }
-            
 
             const excelData =
                 await this.beforeIssuanceExcelDataDatabase.addBeforeIssuanceExcelDataDatabase(
@@ -125,7 +124,7 @@ class BeforeIssuanceExcelDataService {
         return {
             success_count,
             total: list.length,
-            
+
             error_result: Array.from(error_result),
             error_count: error_result.size,
 

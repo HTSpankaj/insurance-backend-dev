@@ -4676,6 +4676,14 @@
             "description": "Category UUID"
           },
           {
+            "name": "su_category_id",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "description": "SubCategory UUID pass in comma separated",
+            "example": "sub_category_id1,sub_category_id2"
+          },
+          {
             "name": "access_for_all_user",
             "in": "formData",
             "type": "boolean",
@@ -4777,6 +4785,14 @@
             "type": "string",
             "required": true,
             "description": "Category UUID"
+          },
+          {
+            "name": "su_category_id",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "description": "SubCategory UUID pass in comma separated",
+            "example": "sub_category_id1,sub_category_id2"
           },
           {
             "name": "access_for_all_user",
@@ -5303,8 +5319,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -5434,8 +5450,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -5505,8 +5521,8 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Created"
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"

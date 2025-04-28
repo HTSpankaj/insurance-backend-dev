@@ -1,6 +1,7 @@
 const { SupabaseClient } = require("@supabase/supabase-js");
 
 const courseTableName = "course";
+const course_sub_category_relationTableName = "course_sub_category_relation";
 
 class CourseDatabase {
     /**
@@ -15,6 +16,7 @@ class CourseDatabase {
         title,
         description,
         category_id,
+        su_category_id_array = [],
         access_for_all_user,
         access_for_verified_user,
         availability_schedule,
@@ -38,6 +40,18 @@ class CourseDatabase {
                 .maybeSingle();
 
             if (error) throw error;
+
+            if (data) {
+                await this.db.from(course_sub_category_relationTableName).insert(
+                    su_category_id_array.map(su_category_id => {
+                        return {
+                            course_id: data.id,
+                            sub_category_id: su_category_id,
+                        };
+                    }),
+                );
+            }
+
             return data;
         } catch (error) {
             console.error("Error in createCourse:", error);
@@ -50,6 +64,7 @@ class CourseDatabase {
         title,
         description,
         category_id,
+        su_category_id_array = [],
         access_for_all_user,
         access_for_verified_user,
         availability_schedule,
@@ -74,6 +89,21 @@ class CourseDatabase {
                 .maybeSingle();
 
             if (error) throw error;
+
+            if (data) {
+                await this.db
+                    .from(course_sub_category_relationTableName)
+                    .delete()
+                    .eq("course_id", id);
+                await this.db.from(course_sub_category_relationTableName).insert(
+                    su_category_id_array.map(su_category_id => {
+                        return {
+                            course_id: data.id,
+                            sub_category_id: su_category_id,
+                        };
+                    }),
+                );
+            }
             return data;
         } catch (error) {
             console.error("Error in createCourse:", error);
