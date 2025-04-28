@@ -212,7 +212,7 @@ class AdvisorDatabase {
         try {
             const { data, error } = await this.db
                 .from(tableName)
-                .select("*")
+                .select("*, advisor_onboarding_status_id(title)")
                 .eq("mobile_number", mobile_number)
                 .maybeSingle();
 

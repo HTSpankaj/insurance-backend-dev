@@ -1,3 +1,5 @@
+const { SupabaseClient } = require("@supabase/supabase-js");
+
 const productTableName = "products";
 const supportingDocTableName = "product_supporting_document";
 
@@ -155,6 +157,21 @@ class ProductDatabase {
         } catch (error) {
             throw new Error(
                 `Failed to fetch products by category ID: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
+    async deleteProductByIdDatabase(product_id) {
+        try {
+            const {data, error} = this.db.from(productTableName).update({
+                is_delete: true
+            }).eq("product_id", product_id).select("*").maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(
+                `Failed to delete products by product id: ${error.message || JSON.stringify(error)}`,
             );
         }
     }

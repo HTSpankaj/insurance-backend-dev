@@ -126,6 +126,10 @@ class ProductService {
             );
         }
     }
+
+    async deleteProductByIdService(product_id) {
+        return await this.productDatabase.deleteProductByIdDatabase(product_id);
+    }
 }
 
 module.exports = ProductService;

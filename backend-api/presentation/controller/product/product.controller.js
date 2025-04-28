@@ -315,3 +315,23 @@ exports.getProductsByCategoryIdController = async (req, res) => {
         });
     }
 };
+
+exports.deleteProductByIdController = async (req, res) => {
+    /*
+    #swagger.tags = ['Product']
+    #swagger.description = 'Delete product by ID'
+    #swagger.parameters['product_id'] = { in: 'path', type: 'string', required: true, description: 'product UUID', example: '550e8400-e29b-41d4-a716-446655440000' }
+    */
+
+    const { product_id } = req.params;
+    try {
+        const result = productService.deleteProductByIdService(product_id);
+
+        return res.status(200).json({ success: true, data: result });
+    } catch (error) {
+        console.error("Error in product delete Controller:", error);
+        return res
+            .status(500)
+            .json({ success: false, error: { message: error.message || "Something went wrong" } });
+    }
+};
