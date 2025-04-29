@@ -20,7 +20,7 @@ exports.addCourseModuleController = async (req, res) => {
         in: 'formData', 
         type: 'string', 
         required: true, 
-        enum: ['Video', 'PDF', 'Image', 'Text'], 
+        enum: ['Video', 'PDF', 'Image', 'Text', 'URL'], 
         description: 'Type of file for the module' 
     }
     #swagger.parameters['course_id'] = { 
@@ -42,31 +42,6 @@ exports.addCourseModuleController = async (req, res) => {
         required: false, 
         description: 'Optional file to upload (PDF, Video, Image, etc.)' 
     }
-
-    #swagger.responses[200] = { 
-        description: 'Module created successfully', 
-        schema: { 
-            success: true, 
-            data: { 
-                id: "12345", 
-                title: "Module 1", 
-                file_type: "PDF", 
-                course_id: "163ec092-6b68-486e-83a8-a66b119cbc06", 
-                content: "This is a module description", 
-                file_url: "https://supabase.storage.com/bucket/modules/12345/file.pdf" 
-            } 
-        } 
-    }
-
-    #swagger.responses[400] = { 
-        description: 'Bad request - missing required fields or other errors', 
-        schema: { 
-            success: false, 
-            error: { 
-                message: "Missing required fields" 
-            } 
-        } 
-    }
     */
     try {
         const { title, file_type, course_id, content } = req.body;
@@ -77,7 +52,7 @@ exports.addCourseModuleController = async (req, res) => {
         if (!title || typeof title !== "string" || title.trim().length < 1) {
             throw new Error("Title must be a non-empty string");
         }
-        if (!file_type || !["Video", "PDF", "Image", "Text"].includes(file_type)) {
+        if (!file_type || !["Video", "PDF", "Image", "Text", "URL"].includes(file_type)) {
             throw new Error("File type must be one of: Video, PDF, Image, Text");
         }
         const uuidRegex =

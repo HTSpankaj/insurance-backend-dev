@@ -6,6 +6,7 @@ const {
     getRemunerationDashboardEarningBarStatisticsController,
     getRemunerationCompaniesWithFinancialStatisticsController,
     getRemunerationInvoiceCardStatisticsController,
+    getRemunerationInvoiceListForAdminController,
 } = require("../../../presentation/controller/remuneration/remuneration.controller");
 
 const invoiceRoute = require("./invoice.route");
@@ -21,6 +22,11 @@ router.get(
     "/get-remuneration-invoice-card-statistics",
     // authenticateToken,
     getRemunerationInvoiceCardStatisticsController,
+);
+router.get(
+    "/get-remuneration-invoice-list-for-admin",
+    // authenticateToken,
+    getRemunerationInvoiceListForAdminController,
 );
 
 router.get(

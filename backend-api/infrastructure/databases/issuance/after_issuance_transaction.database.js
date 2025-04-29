@@ -99,6 +99,20 @@ class AfterIssuanceTransactionDatabase {
             );
         }
     }
+    async getRemunerationInvoiceListForAdminDatabase(start_date, end_date) {
+        try {
+            const { data, error } = await this.db.rpc("get_remuneration_invoice_list",{
+                start_date_val: start_date || null,
+                end_date_val: end_date || null
+            });
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(
+                `Failed to get remuneration invoice list: ${error.message}`,
+            );
+        }
+    }
     async getRemunerationDashboardEarningBarStatisticsDatabase(company_id) {
         try {
             const { data, error } = await this.db.rpc(

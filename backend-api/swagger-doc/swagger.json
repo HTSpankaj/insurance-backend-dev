@@ -5587,6 +5587,41 @@
         }
       }
     },
+    "/api/remuneration/get-remuneration-invoice-list-for-admin": {
+      "get": {
+        "tags": [
+          "Remuneration"
+        ],
+        "description": "Get remuneration invoice card statistics",
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Start date format: YYYY-MM-DD"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "End date format: YYYY-MM-DD"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/remuneration/get-remuneration-dashboard-earning-bar": {
       "get": {
         "tags": [
@@ -6040,6 +6075,151 @@
           },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/config/invoice-scheduler/get-config": {
+      "get": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Get all invoice schedular config",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/config/invoice-scheduler/insert-config": {
+      "post": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Insert invoice schedular config",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "example": "1"
+                },
+                "time": {
+                  "type": "string",
+                  "example": "17:00:00"
+                },
+                "acceptance_time_period": {
+                  "type": "string",
+                  "example": "2"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/config/invoice-scheduler/update-config": {
+      "put": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Update invoice schedular config",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "date": {
+                  "type": "string",
+                  "example": "1"
+                },
+                "time": {
+                  "type": "string",
+                  "example": "17:00:00"
+                },
+                "acceptance_time_period": {
+                  "type": "string",
+                  "example": "2"
+                },
+                "is_active": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/config/invoice-scheduler/delete-config": {
+      "delete": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Delete invoice schedular config",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
