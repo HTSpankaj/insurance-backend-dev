@@ -181,7 +181,7 @@ class RegionDatabase {
 
             // Apply search filter
             if (search) {
-                query = query.ilike("name", `%${search}%`);
+                query = query.ilike("title", `%${search}%`);
             }
 
             // Apply pagination

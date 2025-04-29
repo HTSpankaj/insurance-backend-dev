@@ -10,6 +10,10 @@ class RemunerationService {
     async getRemunerationDashboardCardStatisticsService() {
         return await this.afterIssuanceTransactionDatabase.getRemunerationDashboardCardStatisticsDatabase();
     }
+    
+    async getRemunerationInvoiceCardStatisticsService(start_date, end_date) {
+        return await this.afterIssuanceTransactionDatabase.getRemunerationInvoiceCardStatisticsDatabase(start_date, end_date);
+    }
 
     async getRemunerationDashboardEarningBarStatisticsService(company_id) {
         return await this.afterIssuanceTransactionDatabase.getRemunerationDashboardEarningBarStatisticsDatabase(

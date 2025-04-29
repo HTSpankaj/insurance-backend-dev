@@ -23,6 +23,30 @@ exports.getRemunerationDashboardCardStatisticsController = async (req, res) => {
         });
     }
 };
+exports.getRemunerationInvoiceCardStatisticsController = async (req, res) => {
+    /*
+        #swagger.tags = ['Remuneration']
+        #swagger.description = 'Get remuneration invoice card statistics'
+        #swagger.parameters['start_date'] = { in: 'query', type: 'string', required: false, description: 'Start date format: YYYY-MM-DD' }
+        #swagger.parameters['end_date'] = { in: 'query', type: 'string', required: false, description: 'End date format: YYYY-MM-DD' }
+    */
+
+    try {
+        const { start_date, end_date } = req.query;
+
+        const result = await remunerationService.getRemunerationInvoiceCardStatisticsService(start_date, end_date);
+        return res.status(200).json({
+            success: true,
+            message: "Get remuneration invoice card statistics successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
 
 exports.getRemunerationDashboardEarningBarStatisticsController = async (req, res) => {
     /*

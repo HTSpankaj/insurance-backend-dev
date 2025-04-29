@@ -85,6 +85,20 @@ class AfterIssuanceTransactionDatabase {
             );
         }
     }
+    async getRemunerationInvoiceCardStatisticsDatabase(start_date, end_date) {
+        try {
+            const { data, error } = await this.db.rpc("get_remuneration_invoice_card_statistics",{
+                start_date_val: start_date || null,
+                end_date_val: end_date || null
+            });
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(
+                `Failed to get remuneration dashboard card statistics: ${error.message}`,
+            );
+        }
+    }
     async getRemunerationDashboardEarningBarStatisticsDatabase(company_id) {
         try {
             const { data, error } = await this.db.rpc(
