@@ -87,9 +87,9 @@ class AfterIssuanceTransactionDatabase {
     }
     async getRemunerationInvoiceCardStatisticsDatabase(start_date, end_date) {
         try {
-            const { data, error } = await this.db.rpc("get_remuneration_invoice_card_statistics",{
+            const { data, error } = await this.db.rpc("get_remuneration_invoice_card_statistics", {
                 start_date_val: start_date || null,
-                end_date_val: end_date || null
+                end_date_val: end_date || null,
             });
             if (error) throw error;
             return data;
@@ -101,16 +101,14 @@ class AfterIssuanceTransactionDatabase {
     }
     async getRemunerationInvoiceListForAdminDatabase(start_date, end_date) {
         try {
-            const { data, error } = await this.db.rpc("get_remuneration_invoice_list",{
+            const { data, error } = await this.db.rpc("get_remuneration_invoice_list", {
                 start_date_val: start_date || null,
-                end_date_val: end_date || null
+                end_date_val: end_date || null,
             });
             if (error) throw error;
             return data;
         } catch (error) {
-            throw new Error(
-                `Failed to get remuneration invoice list: ${error.message}`,
-            );
+            throw new Error(`Failed to get remuneration invoice list: ${error.message}`);
         }
     }
     async getRemunerationDashboardEarningBarStatisticsDatabase(company_id) {

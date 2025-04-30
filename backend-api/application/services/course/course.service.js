@@ -143,10 +143,12 @@ class CourseService {
                 search,
             });
 
-            let _data = data.map((course) => {
+            let _data = data.map(course => {
                 return {
                     ...course,
-                    sub_category: course?.sub_category?.map((subCategory) => subCategory?.sub_category_id),
+                    sub_category: course?.sub_category?.map(
+                        subCategory => subCategory?.sub_category_id,
+                    ),
                 };
             });
 

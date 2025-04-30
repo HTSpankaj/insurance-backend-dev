@@ -9,10 +9,9 @@ const cors = require("cors");
 var indexRouter = require("./routes/index");
 
 const dynamicCors = require("./configs/cors.config");
-const multer = require("multer");
 
 // Schedule job
-require("./scheduler/InvoiceCreation.scheduler");
+require("./scheduler/invoice/invoiceCreation.scheduler");
 
 var app = express();
 

@@ -32,7 +32,6 @@ class AfterIssuanceExcelDataService {
 
             if (element.commission_transaction_number === 0) {
                 error_result.add({
-                    error: company?.error,
                     data: element,
                     message:
                         "Error for calculating commission transaction number. Please check Payout Type, Commission Start Date and Commission End Date.",

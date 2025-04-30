@@ -13,7 +13,11 @@ class InvoiceSchedulerConfigDatabase {
 
     async getAllInvoiceSchedularConfigDatabase() {
         try {
-            const { data, error } = await this.db.from(TableName).select("*").eq("is_delete", false).order("created_at", { ascending: false });
+            const { data, error } = await this.db
+                .from(TableName)
+                .select("*")
+                .eq("is_delete", false)
+                .order("created_at", { ascending: false });
             if (data) {
                 return data;
             } else {
@@ -24,9 +28,13 @@ class InvoiceSchedulerConfigDatabase {
         }
     }
 
-    async InsertInvoiceSchedularConfigDatabase(date,time, acceptance_time_period) {
+    async InsertInvoiceSchedularConfigDatabase(date, time, acceptance_time_period) {
         try {
-            const { data, error } = await this.db.from(TableName).insert({ date, time, acceptance_time_period }).select("*").maybeSingle();
+            const { data, error } = await this.db
+                .from(TableName)
+                .insert({ date, time, acceptance_time_period })
+                .select("*")
+                .maybeSingle();
             if (data) {
                 return data;
             } else {
@@ -37,7 +45,7 @@ class InvoiceSchedulerConfigDatabase {
         }
     }
 
-    async UpdateInvoiceSchedularConfigDatabase(id, date,time, acceptance_time_period, is_active) {
+    async UpdateInvoiceSchedularConfigDatabase(id, date, time, acceptance_time_period, is_active) {
         try {
             let postBody = {};
             if (date) postBody.date = date;
@@ -58,7 +66,7 @@ class InvoiceSchedulerConfigDatabase {
             throw new Error(`Failed to update invoice schedular config: ${error.message}`);
         }
     }
-    
+
     async DeleteInvoiceSchedularConfigDatabase(id) {
         try {
             const { data, error } = await this.db

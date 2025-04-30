@@ -21,7 +21,7 @@ exports.getAllInvoiceSchedularConfigController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 exports.InsertInvoiceSchedularConfigController = async (req, res) => {
     /*
     #swagger.tags = ['Config']
@@ -36,8 +36,12 @@ exports.InsertInvoiceSchedularConfigController = async (req, res) => {
     }
     */
     try {
-        const { date,time, acceptance_time_period } = req.body;
-        const result = await invoiceSchedulerConfigService.InsertInvoiceSchedularConfigService(date,time, acceptance_time_period);
+        const { date, time, acceptance_time_period } = req.body;
+        const result = await invoiceSchedulerConfigService.InsertInvoiceSchedularConfigService(
+            date,
+            time,
+            acceptance_time_period,
+        );
         return res.status(200).json({
             success: true,
             message: "Insert invoice schedular config successfully.",
@@ -49,7 +53,7 @@ exports.InsertInvoiceSchedularConfigController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 exports.UpdateInvoiceSchedularConfigController = async (req, res) => {
     /*
     #swagger.tags = ['Config']
@@ -66,8 +70,14 @@ exports.UpdateInvoiceSchedularConfigController = async (req, res) => {
     }
     */
     try {
-        const { id, date,time, acceptance_time_period,  is_active } = req.body;
-        const result = await invoiceSchedulerConfigService.UpdateInvoiceSchedularConfigService(id, date,time, acceptance_time_period, is_active);
+        const { id, date, time, acceptance_time_period, is_active } = req.body;
+        const result = await invoiceSchedulerConfigService.UpdateInvoiceSchedularConfigService(
+            id,
+            date,
+            time,
+            acceptance_time_period,
+            is_active,
+        );
         return res.status(200).json({
             success: true,
             message: "Update invoice schedular config successfully.",
@@ -79,7 +89,7 @@ exports.UpdateInvoiceSchedularConfigController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 exports.DeleteInvoiceSchedularConfigController = async (req, res) => {
     /*
     #swagger.tags = ['Config']
@@ -105,4 +115,4 @@ exports.DeleteInvoiceSchedularConfigController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};

@@ -5067,7 +5067,8 @@
               "Video",
               "PDF",
               "Image",
-              "Text"
+              "Text",
+              "URL"
             ],
             "description": "Type of file for the module"
           },
@@ -5096,72 +5097,10 @@
         ],
         "responses": {
           "200": {
-            "description": "Module created successfully",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "data": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "example": "12345"
-                    },
-                    "title": {
-                      "type": "string",
-                      "example": "Module 1"
-                    },
-                    "file_type": {
-                      "type": "string",
-                      "example": "PDF"
-                    },
-                    "course_id": {
-                      "type": "string",
-                      "example": "163ec092-6b68-486e-83a8-a66b119cbc06"
-                    },
-                    "content": {
-                      "type": "string",
-                      "example": "This is a module description"
-                    },
-                    "file_url": {
-                      "type": "string",
-                      "example": "https://supabase.storage.com/bucket/modules/12345/file.pdf"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "OK"
           },
           "400": {
-            "description": "Bad request - missing required fields or other errors",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": false
-                },
-                "error": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string",
-                      "example": "Missing required fields"
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -6211,6 +6150,25 @@
             }
           }
         ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/config/invoice-config/get-template": {
+      "get": {
+        "tags": [
+          "Invoice Config"
+        ],
+        "description": "Get all invoice template",
         "responses": {
           "200": {
             "description": "OK"

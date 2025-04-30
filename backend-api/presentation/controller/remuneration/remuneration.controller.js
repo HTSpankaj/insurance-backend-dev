@@ -34,7 +34,10 @@ exports.getRemunerationInvoiceCardStatisticsController = async (req, res) => {
     try {
         const { start_date, end_date } = req.query;
 
-        const result = await remunerationService.getRemunerationInvoiceCardStatisticsService(start_date, end_date);
+        const result = await remunerationService.getRemunerationInvoiceCardStatisticsService(
+            start_date,
+            end_date,
+        );
         return res.status(200).json({
             success: true,
             message: "Get remuneration invoice card statistics successfully.",
@@ -59,7 +62,10 @@ exports.getRemunerationInvoiceListForAdminController = async (req, res) => {
     try {
         const { start_date, end_date } = req.query;
 
-        const result = await remunerationService.getRemunerationInvoiceListForAdminService(start_date, end_date);
+        const result = await remunerationService.getRemunerationInvoiceListForAdminService(
+            start_date,
+            end_date,
+        );
         return res.status(200).json({
             success: true,
             message: "Get remuneration invoice list successfully.",

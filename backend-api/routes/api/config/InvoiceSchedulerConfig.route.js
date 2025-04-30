@@ -1,6 +1,10 @@
 const express = require("express");
-const { getAllInvoiceSchedularConfigController, InsertInvoiceSchedularConfigController, UpdateInvoiceSchedularConfigController, DeleteInvoiceSchedularConfigController } = require("../../../presentation/controller/config/InvoiceSchedulerConfig.controller");
-
+const {
+    getAllInvoiceSchedularConfigController,
+    InsertInvoiceSchedularConfigController,
+    UpdateInvoiceSchedularConfigController,
+    DeleteInvoiceSchedularConfigController,
+} = require("../../../presentation/controller/config/InvoiceSchedulerConfig.controller");
 
 const router = express.Router();
 
