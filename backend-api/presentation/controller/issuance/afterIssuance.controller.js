@@ -78,3 +78,11 @@ exports.afterIssuanceExcelDataController = async (req, res) => {
             .json({ success: false, error: error?.message || "Something went wrong!" });
     }
 };
+
+
+exports.getExcelDataForAfterIssuanceController = async (req, res) => {
+    /*
+    #swagger.tags = ['Issuance']
+    #swagger.description = 'get excel data for after issuance'
+    */
+}

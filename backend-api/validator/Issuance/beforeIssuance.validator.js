@@ -56,7 +56,9 @@ const beforeIssuanceExcelDataValidator = [
         .isInt({ min: 1 })
         .withMessage("row_number must be a positive integer"),
 
-    validateClientParametersAndSendResponse,
+    (req, res, next) => {
+        validateClientParametersAndSendResponse(req, res, next, true);
+    },
 ];
 
 module.exports = { beforeIssuanceExcelDataValidator };

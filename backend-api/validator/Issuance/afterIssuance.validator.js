@@ -3,7 +3,8 @@ const { validateClientParametersAndSendResponse } = require("../validator");
 
 const afterIssuanceExcelDataValidator = [
     body("data").isArray({ min: 1, max: 20 }).withMessage("Data must be a non-empty array"),
-    body("data.*.lead_id").isString().notEmpty().withMessage("lead_id is required"),
+    body("data.*.lead_id").isString().notEmpty().withMessage("lead_id is required").matches(/^LED-\d+$/)
+    .withMessage("lead_id must be in the format LED-<number> (e.g., LED-1, LED-100)"),
     body("data.*.lead_name").isString().notEmpty().withMessage("lead_name is required"),
     body("data.*.product_id")
         .notEmpty()
@@ -14,6 +15,13 @@ const afterIssuanceExcelDataValidator = [
         ),
     body("data.*.product_name").isString().notEmpty().withMessage("product_name is required"),
     body("data.*.company_name").isString().notEmpty().withMessage("company_name is required"),
+    body("data.*.lead_product_relation_id")
+        .notEmpty()
+        .withMessage("lead_product_relation_id is required")
+        .matches(/^LPR-\d+$/)
+        .withMessage(
+            "lead_product_relation_id must be in the format LPR-<number> (e.g., LPR-1, LPR-4434)",
+        ),
     body("data.*.lead_close_date")
         .isISO8601()
         .withMessage("lead_close_date must be a valid date")
@@ -108,7 +116,9 @@ const afterIssuanceExcelDataValidator = [
         .isFloat({ min: 0 })
         .withMessage("emi_amount must be a positive number"),
 
-    validateClientParametersAndSendResponse,
+        (req, res, next) => {
+            validateClientParametersAndSendResponse(req, res, next, true);
+        },
 ];
 
 module.exports = { afterIssuanceExcelDataValidator };
