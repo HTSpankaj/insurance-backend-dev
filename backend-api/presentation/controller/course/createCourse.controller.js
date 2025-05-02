@@ -12,7 +12,7 @@ exports.createCourseController = async (req, res) => {
     #swagger.parameters['title'] = { in: 'formData', type: 'string', required: true, description: 'Course title' }
     #swagger.parameters['description'] = { in: 'formData', type: 'string', required: true, description: 'Course description' }
     #swagger.parameters['category_id'] = { in: 'formData', type: 'string', required: true, description: 'Category UUID' }
-    #swagger.parameters['su_category_id'] = { in: 'formData', type: 'string', required: false, description: 'SubCategory UUID pass in comma separated', example: 'sub_category_id1,sub_category_id2' }
+    #swagger.parameters['sub_category_id'] = { in: 'formData', type: 'string', required: false, description: 'SubCategory UUID pass in comma separated', example: 'sub_category_id1,sub_category_id2' }
     #swagger.parameters['access_for_all_user'] = { in: 'formData', type: 'boolean', required: true, description: 'Access for all users' }
     #swagger.parameters['access_for_verified_user'] = { in: 'formData', type: 'boolean', required: true, description: 'Access for verified users' }
     #swagger.parameters['availability_schedule'] = { in: 'formData', type: 'string', required: true, enum: ['Immediate', 'Schedule'], description: 'Availability schedule' }
@@ -25,7 +25,7 @@ exports.createCourseController = async (req, res) => {
             title,
             description,
             category_id,
-            su_category_id,
+            sub_category_id,
             access_for_all_user,
             access_for_verified_user,
             availability_schedule,
@@ -33,7 +33,7 @@ exports.createCourseController = async (req, res) => {
             status,
         } = req.body;
 
-        const sub_category_id_array = su_category_id ? su_category_id.split(",") : [];
+        const sub_category_id_array = sub_category_id ? sub_category_id.split(",") : [];
         const course_banner_img_file = req.files?.course_banner_img_file?.[0] || null;
 
         // Validation
@@ -104,7 +104,7 @@ exports.updateCourseController = async (req, res) => {
     #swagger.parameters['title'] = { in: 'formData', type: 'string', required: true, description: 'Course title' }
     #swagger.parameters['description'] = { in: 'formData', type: 'string', required: true, description: 'Course description' }
     #swagger.parameters['category_id'] = { in: 'formData', type: 'string', required: true, description: 'Category UUID' }
-    #swagger.parameters['su_category_id'] = { in: 'formData', type: 'string', required: false, description: 'SubCategory UUID pass in comma separated', example: 'sub_category_id1,sub_category_id2' }
+    #swagger.parameters['sub_category_id'] = { in: 'formData', type: 'string', required: false, description: 'SubCategory UUID pass in comma separated', example: 'sub_category_id1,sub_category_id2' }
     #swagger.parameters['access_for_all_user'] = { in: 'formData', type: 'boolean', required: true, description: 'Access for all users' }
     #swagger.parameters['access_for_verified_user'] = { in: 'formData', type: 'boolean', required: true, description: 'Access for verified users' }
     #swagger.parameters['availability_schedule'] = { in: 'formData', type: 'string', required: true, enum: ['Immediate', 'Schedule'], description: 'Availability schedule' }
@@ -118,7 +118,7 @@ exports.updateCourseController = async (req, res) => {
             title,
             description,
             category_id,
-            su_category_id,
+            sub_category_id,
             access_for_all_user,
             access_for_verified_user,
             availability_schedule,
@@ -126,7 +126,7 @@ exports.updateCourseController = async (req, res) => {
             status,
         } = req.body;
 
-        const sub_category_id_array = su_category_id ? su_category_id.split(",") : [];
+        const sub_category_id_array = sub_category_id ? sub_category_id.split(",") : [];
         const course_banner_img_file = req.files?.course_banner_img_file?.[0] || null;
 
         // Validation
