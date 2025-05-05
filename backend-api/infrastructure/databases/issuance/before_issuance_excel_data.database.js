@@ -43,6 +43,21 @@ class BeforeIssuanceExcelDataDatabase {
             };
         }
     }
+
+    async getExcelDataForAfterIssuanceDatabase(page_number, limit) {
+        try {
+            const { data, error } = await this.db.rpc(
+                "get_excel_data_for_after_issuance_excel",
+                { page_number_val: page_number, limit_val: limit },
+            );
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(
+                `Failed to get excel data for after issuance excel: ${error.message}`,
+            );
+        }
+    }
 }
 
 module.exports = BeforeIssuanceExcelDataDatabase;

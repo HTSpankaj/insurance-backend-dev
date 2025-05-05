@@ -84,5 +84,38 @@ exports.getExcelDataForAfterIssuanceController = async (req, res) => {
     /*
     #swagger.tags = ['Issuance']
     #swagger.description = 'get excel data for after issuance'
+    #swagger.parameters['page_number'] = { in: 'query', type: 'integer', required: false, description: 'Page number (default: 1)', example: 1, default: 1 }
+    #swagger.parameters['limit'] = { in: 'query', type: 'integer', required: false, description: 'Number of courses per page (default: 10)', example: 10, default: 10 }
     */
+
+    const {page_number = 1, limit = 10} = req.query;
+
+    try {
+        let result = await afterIssuanceExcelDataService.getExcelDataForAfterIssuanceService(page_number, limit);
+
+        if (result) {
+            result = result?.map((item) => ({
+                ...item,
+                policy_sold_date: "",
+                commission_start_date: "",
+                commission_end_date: "",
+                issuance_date: "",
+                profit_book_date: "",
+                profit_book_amount: "",
+                loan_disbursed_amount: "",
+                loan_disbursed_date: "",
+                emi_amount: "",
+            }));
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Get excel data for after issuance successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
+    }
 }

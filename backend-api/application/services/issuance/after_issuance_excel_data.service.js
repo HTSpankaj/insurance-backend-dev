@@ -1,6 +1,7 @@
 const CompanyDatabase = require("../../../infrastructure/databases/company/company.database");
 const AfterIssuanceExcelDataDatabase = require("../../../infrastructure/databases/issuance/after_issuance_excel_data.database");
 const AfterIssuanceTransactionDatabase = require("../../../infrastructure/databases/issuance/after_issuance_transaction.database");
+const BeforeIssuanceExcelDataDatabase = require("../../../infrastructure/databases/issuance/before_issuance_excel_data.database");
 const LeadDatabase = require("../../../infrastructure/databases/lead/lead.database");
 const LeadProductRelationDatabase = require("../../../infrastructure/databases/lead_product_relation/lead_product_relation.database");
 const ProductDatabase = require("../../../infrastructure/databases/product/product.database");
@@ -8,6 +9,7 @@ const { calculateCommissionTransactionNumber } = require("../../../utils/dateTim
 
 class AfterIssuanceExcelDataService {
     constructor(supabaseInstance) {
+        this.beforeIssuanceExcelDataDatabase = new BeforeIssuanceExcelDataDatabase(supabaseInstance);
         this.afterIssuanceExcelDataDatabase = new AfterIssuanceExcelDataDatabase(supabaseInstance);
         this.companyDatabase = new CompanyDatabase(supabaseInstance);
         this.productDatabase = new ProductDatabase(supabaseInstance);
@@ -141,6 +143,10 @@ class AfterIssuanceExcelDataService {
             total: list.length,
             error_count: error_result.size,
         };
+    }
+
+    async getExcelDataForAfterIssuanceService(page_number, limit){
+        return await this.beforeIssuanceExcelDataDatabase.getExcelDataForAfterIssuanceDatabase(page_number, limit);
     }
 }
 

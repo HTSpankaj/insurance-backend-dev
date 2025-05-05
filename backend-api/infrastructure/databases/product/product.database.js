@@ -18,19 +18,28 @@ class ProductDatabase {
         company_id,
         description,
         financial_description,
+        product_tax,
+            cover_amount_tax,
         is_publish,
     ) {
         try {
-            const { data, error } = await this.db
-                .from(productTableName)
-                .insert({
+            let postBody =
+                {
+                    product_tax,
+                        cover_amount_tax,
                     product_name,
                     sub_category_id,
                     company_id,
                     description,
                     financial_description,
                     is_publish,
-                })
+                };
+            if (product_tax) postBody.product_tax = product_tax;
+            if (cover_amount_tax) postBody.cover_amount_tax = cover_amount_tax;
+
+            const { data, error } = await this.db
+                .from(productTableName)
+                .insert(postBody)
                 .select()
                 .maybeSingle();
 
@@ -48,6 +57,8 @@ class ProductDatabase {
         company_id,
         description,
         financial_description,
+        product_tax,
+        cover_amount_tax,
         is_publish,
     ) {
         try {
@@ -58,6 +69,8 @@ class ProductDatabase {
             if (description) postBody.description = description;
             if (financial_description) postBody.financial_description = financial_description;
             if (is_publish === true || is_publish === false) postBody.is_publish = is_publish;
+            if (product_tax) postBody.product_tax = product_tax;
+            if (cover_amount_tax) postBody.cover_amount_tax = cover_amount_tax;
 
             const { data, error } = await this.db
                 .from(productTableName)
