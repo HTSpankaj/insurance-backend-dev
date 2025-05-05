@@ -14,7 +14,7 @@ class ProductService {
         description,
         financial_description,
         product_tax,
-            cover_amount_tax,
+        cover_amount_tax,
         is_publish,
         product_brochure_file,
         promotional_video_file,
@@ -29,7 +29,7 @@ class ProductService {
                 description,
                 financial_description,
                 product_tax,
-            cover_amount_tax,
+                cover_amount_tax,
                 is_publish,
             );
 

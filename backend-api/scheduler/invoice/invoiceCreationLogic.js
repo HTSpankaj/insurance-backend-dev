@@ -5,11 +5,11 @@ const { getWinstonLogger } = require("../../utils/winston.util");
 
 const AfterIssuanceTransactionDatabase = require("../../infrastructure/databases/issuance/after_issuance_transaction.database");
 const IssuanceTransactionInvoiceDatabase = require("../../infrastructure/databases/issuance/issuance_transaction_invoice.database");
-const InvoiceGenerationDatabase = require("../../infrastructure/databases/config/invoice_generation.database");
+const InvoiceTemplateGenerationDatabase = require("../../infrastructure/databases/config/invoice_template_generation.database");
 
 const afterIssuanceTransactionDatabase = new AfterIssuanceTransactionDatabase(supabaseInstance);
 const issuanceTransactionInvoiceDatabase = new IssuanceTransactionInvoiceDatabase(supabaseInstance);
-const invoiceGenerationDatabase = new InvoiceGenerationDatabase(supabaseInstance);
+const invoiceTemplateGenerationDatabase = new InvoiceTemplateGenerationDatabase(supabaseInstance);
 
 // console.log(moment().format("YYYY/MM/DD, HH:mm:ss"));
 
@@ -81,8 +81,8 @@ async function createInvoiceSchedularLogic() {
             continue;
         }
 
-        const invoiceGenerationRes = await invoiceGenerationDatabase.getInvoiceGenerationBySubCategory(tx.sub_category_id);
-
+        const invoiceGenerationRes =
+            await invoiceTemplateGenerationDatabase.getInvoiceGenerationBySubCategory(tx.sub_category_id);
 
         //TODO; Create invoice
         const addIssuanceTransactionInvoiceResponse =
@@ -90,7 +90,7 @@ async function createInvoiceSchedularLogic() {
                 tx.id,
                 tx.commission_amount,
                 tx.advisor_id,
-                invoiceGenerationRes?.data?.invoice_generation?.id || null,
+                invoiceGenerationRes?.data?.invoice_template_generation?.id || null,
             );
 
         if (addIssuanceTransactionInvoiceResponse?.success) {
@@ -102,9 +102,7 @@ async function createInvoiceSchedularLogic() {
                 );
 
             if (updateError) {
-                logger.error(
-                    `Create invoice Function: Failed to update transaction ${tx.id}:`
-                );
+                logger.error(`Create invoice Function: Failed to update transaction ${tx.id}:`);
                 logger.error(updateError);
                 continue;
             } else {
@@ -113,7 +111,7 @@ async function createInvoiceSchedularLogic() {
             }
         } else {
             logger.error(
-                `Create invoice Function: Failed to insert invoice for transaction ${tx.id}:`
+                `Create invoice Function: Failed to insert invoice for transaction ${tx.id}:`,
             );
             logger.error(addIssuanceTransactionInvoiceResponse);
             continue;

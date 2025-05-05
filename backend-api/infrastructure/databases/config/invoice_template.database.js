@@ -13,9 +13,7 @@ class InvoiceTemplateDatabase {
 
     async getAllInvoiceTemplateDatabase() {
         try {
-            const { data, error } = await this.db
-                .from(TableName)
-                .select("*")
+            const { data, error } = await this.db.from(TableName).select("*");
             if (data) {
                 return data;
             } else {

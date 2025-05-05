@@ -4,7 +4,6 @@ const { validationResult } = require("express-validator");
 exports.validateClientParametersAndSendResponse = (req, res, next, isExcelData = false) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        
         let response = errors.array();
         if (isExcelData) {
             const inputData = req.body.data || [];

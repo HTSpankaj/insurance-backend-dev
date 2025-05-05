@@ -139,17 +139,17 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
         const front_pan_card_file = req.files?.front_pan_card_file?.[0];
         const back_pan_card_file = req.files?.back_pan_card_file?.[0];
 
-        if (
-            !front_aadhar_card_file ||
-            !back_aadhar_card_file ||
-            !front_pan_card_file ||
-            !back_pan_card_file
-        ) {
-            return res.status(500).json({
-                success: false,
-                error: { message: "Aadhar and PAN card both side files are required" },
-            });
-        }
+        // if (
+        //     !front_aadhar_card_file ||
+        //     !back_aadhar_card_file ||
+        //     !front_pan_card_file ||
+        //     !back_pan_card_file
+        // ) {
+        //     return res.status(500).json({
+        //         success: false,
+        //         error: { message: "Aadhar and PAN card both side files are required" },
+        //     });
+        // }
 
         const result = await advisorService.reSubmitAdvisor(
             advisor_id,

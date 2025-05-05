@@ -79,7 +79,6 @@ exports.afterIssuanceExcelDataController = async (req, res) => {
     }
 };
 
-
 exports.getExcelDataForAfterIssuanceController = async (req, res) => {
     /*
     #swagger.tags = ['Issuance']
@@ -88,13 +87,16 @@ exports.getExcelDataForAfterIssuanceController = async (req, res) => {
     #swagger.parameters['limit'] = { in: 'query', type: 'integer', required: false, description: 'Number of courses per page (default: 10)', example: 10, default: 10 }
     */
 
-    const {page_number = 1, limit = 10} = req.query;
+    const { page_number = 1, limit = 10 } = req.query;
 
     try {
-        let result = await afterIssuanceExcelDataService.getExcelDataForAfterIssuanceService(page_number, limit);
+        let result = await afterIssuanceExcelDataService.getExcelDataForAfterIssuanceService(
+            page_number,
+            limit,
+        );
 
         if (result) {
-            result = result?.map((item) => ({
+            result = result?.map(item => ({
                 ...item,
                 policy_sold_date: "",
                 commission_start_date: "",
@@ -118,4 +120,4 @@ exports.getExcelDataForAfterIssuanceController = async (req, res) => {
             .status(500)
             .json({ success: false, error: error?.message || "Something went wrong!" });
     }
-}
+};

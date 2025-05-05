@@ -17,7 +17,7 @@ class IssuanceTransactionInvoiceDatabase {
         after_issuance_transaction_id,
         commission_amount,
         advisor_id,
-        invoice_generation_id
+        invoice_template_generation_id,
     ) {
         return new Promise(async (resolve, reject) => {
             const now = moment();
@@ -30,7 +30,7 @@ class IssuanceTransactionInvoiceDatabase {
                 .from(invoice_tableName)
                 .select()
                 .eq("advisor_id", advisor_id)
-                .eq("invoice_generation_id", invoice_generation_id)
+                .eq("invoice_template_generation_id", invoice_template_generation_id)
                 .eq("created_at", startOfMonth)
                 .eq("created_at", endOfMonth)
                 .maybeSingle();
@@ -42,7 +42,7 @@ class IssuanceTransactionInvoiceDatabase {
                     .from(invoice_tableName)
                     .insert({
                         advisor_id: advisor_id,
-                        invoice_generation_id: invoice_generation_id
+                        invoice_template_generation_id: invoice_template_generation_id,
                     })
                     .select("*")
                     .maybeSingle();
@@ -57,7 +57,7 @@ class IssuanceTransactionInvoiceDatabase {
                     });
                 }
             }
-            
+
             if (invoiceError) {
                 resolve({
                     success: false,

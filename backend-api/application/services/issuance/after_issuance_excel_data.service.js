@@ -9,7 +9,9 @@ const { calculateCommissionTransactionNumber } = require("../../../utils/dateTim
 
 class AfterIssuanceExcelDataService {
     constructor(supabaseInstance) {
-        this.beforeIssuanceExcelDataDatabase = new BeforeIssuanceExcelDataDatabase(supabaseInstance);
+        this.beforeIssuanceExcelDataDatabase = new BeforeIssuanceExcelDataDatabase(
+            supabaseInstance,
+        );
         this.afterIssuanceExcelDataDatabase = new AfterIssuanceExcelDataDatabase(supabaseInstance);
         this.companyDatabase = new CompanyDatabase(supabaseInstance);
         this.productDatabase = new ProductDatabase(supabaseInstance);
@@ -145,8 +147,11 @@ class AfterIssuanceExcelDataService {
         };
     }
 
-    async getExcelDataForAfterIssuanceService(page_number, limit){
-        return await this.beforeIssuanceExcelDataDatabase.getExcelDataForAfterIssuanceDatabase(page_number, limit);
+    async getExcelDataForAfterIssuanceService(page_number, limit) {
+        return await this.beforeIssuanceExcelDataDatabase.getExcelDataForAfterIssuanceDatabase(
+            page_number,
+            limit,
+        );
     }
 }
 

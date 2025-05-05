@@ -19,21 +19,20 @@ class ProductDatabase {
         description,
         financial_description,
         product_tax,
-            cover_amount_tax,
+        cover_amount_tax,
         is_publish,
     ) {
         try {
-            let postBody =
-                {
-                    product_tax,
-                        cover_amount_tax,
-                    product_name,
-                    sub_category_id,
-                    company_id,
-                    description,
-                    financial_description,
-                    is_publish,
-                };
+            let postBody = {
+                product_tax,
+                cover_amount_tax,
+                product_name,
+                sub_category_id,
+                company_id,
+                description,
+                financial_description,
+                is_publish,
+            };
             if (product_tax) postBody.product_tax = product_tax;
             if (cover_amount_tax) postBody.cover_amount_tax = cover_amount_tax;
 

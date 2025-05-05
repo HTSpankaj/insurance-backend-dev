@@ -1,4 +1,4 @@
-const InvoiceGenerationDatabase = require("../../../infrastructure/databases/config/invoice_generation.database");
+const InvoiceTemplateGenerationDatabase = require("../../../infrastructure/databases/config/invoice_template_generation.database");
 
 class InvoiceGenerationService {
     /**
@@ -6,10 +6,8 @@ class InvoiceGenerationService {
      * @param {SupabaseClient} supabaseInstance - The Supabase instance
      */
     constructor(supabaseInstance) {
-        this.invoiceGenerationDatabase = new InvoiceGenerationDatabase(supabaseInstance);
+        this.invoiceTemplateGenerationDatabase = new InvoiceTemplateGenerationDatabase(supabaseInstance);
     }
-
-    
 }
 
 module.exports = InvoiceGenerationService;

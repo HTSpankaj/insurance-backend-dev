@@ -3,8 +3,12 @@ const { validateClientParametersAndSendResponse } = require("../validator");
 
 const afterIssuanceExcelDataValidator = [
     body("data").isArray({ min: 1, max: 20 }).withMessage("Data must be a non-empty array"),
-    body("data.*.lead_id").isString().notEmpty().withMessage("lead_id is required").matches(/^LED-\d+$/)
-    .withMessage("lead_id must be in the format LED-<number> (e.g., LED-1, LED-100)"),
+    body("data.*.lead_id")
+        .isString()
+        .notEmpty()
+        .withMessage("lead_id is required")
+        .matches(/^LED-\d+$/)
+        .withMessage("lead_id must be in the format LED-<number> (e.g., LED-1, LED-100)"),
     body("data.*.lead_name").isString().notEmpty().withMessage("lead_name is required"),
     body("data.*.product_id")
         .notEmpty()
@@ -116,9 +120,9 @@ const afterIssuanceExcelDataValidator = [
         .isFloat({ min: 0 })
         .withMessage("emi_amount must be a positive number"),
 
-        (req, res, next) => {
-            validateClientParametersAndSendResponse(req, res, next, true);
-        },
+    (req, res, next) => {
+        validateClientParametersAndSendResponse(req, res, next, true);
+    },
 ];
 
 module.exports = { afterIssuanceExcelDataValidator };
