@@ -82,7 +82,9 @@ async function createInvoiceSchedularLogic() {
         }
 
         const invoiceGenerationRes =
-            await invoiceTemplateGenerationDatabase.getInvoiceGenerationBySubCategory(tx.sub_category_id);
+            await invoiceTemplateGenerationDatabase.getInvoiceGenerationBySubCategory(
+                tx.sub_category_id,
+            );
 
         //TODO; Create invoice
         const addIssuanceTransactionInvoiceResponse =

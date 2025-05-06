@@ -51,7 +51,6 @@ router.get(
 
 router.get(
     "/get-invoice-details-by-display-id/:invoice_display_id",
-    authenticateToken,
     getInvoiceDetailsByDisplayIdController,
 );
 

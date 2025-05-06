@@ -97,8 +97,8 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
         tax_summary_config,
         totals_section_config,
         bank_details_config,
-        terms_conditions_config
-    } =req.body;
+        terms_conditions_config,
+    } = req.body;
 
     try {
         const result = await invoiceTemplateService.invoiceTemplateGenerationService(
@@ -110,7 +110,7 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
             tax_summary_config,
             totals_section_config,
             bank_details_config,
-            terms_conditions_config
+            terms_conditions_config,
         );
         return res.status(200).json({
             success: true,
@@ -123,7 +123,7 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 
 exports.updateInvoiceTemplateGenerationController = async (req, res) => {
     /*
@@ -199,22 +199,22 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
         tax_summary_config,
         totals_section_config,
         bank_details_config,
-        terms_conditions_config
-    } =req.body;
+        terms_conditions_config,
+    } = req.body;
 
     try {
         const result = await invoiceTemplateService.updateInvoiceTemplateGenerationService(
             id,
-        title,
-        company_header_config,
-        invoice_info_config,
-        bill_to_config,
-        lead_table_preview_config,
-        tax_summary_config,
-        totals_section_config,
-        bank_details_config,
-        terms_conditions_config,
-        null
+            title,
+            company_header_config,
+            invoice_info_config,
+            bill_to_config,
+            lead_table_preview_config,
+            tax_summary_config,
+            totals_section_config,
+            bank_details_config,
+            terms_conditions_config,
+            null,
         );
         return res.status(200).json({
             success: true,
@@ -227,7 +227,7 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 
 exports.getInvoiceTemplateGenerationController = async (req, res) => {
     /*
@@ -257,7 +257,11 @@ exports.getInvoiceTemplateGenerationController = async (req, res) => {
 
     try {
         const { page_number, limit, search } = req.query;
-        const result = await invoiceTemplateService.getInvoiceTemplateGenerationService(page_number, limit, search);
+        const result = await invoiceTemplateService.getInvoiceTemplateGenerationService(
+            page_number,
+            limit,
+            search,
+        );
         return res.status(200).json({
             success: true,
             message: "Get invoice template generation successfully.",
@@ -269,10 +273,8 @@ exports.getInvoiceTemplateGenerationController = async (req, res) => {
                 total_pages: Math.ceil(result.total / limit),
             },
         });
-    } catch (error) {
-        
-    }
-}
+    } catch (error) {}
+};
 
 exports.uploadInvoiceTemplateGenerationLogoController = async (req, res) => {
     /*
@@ -294,13 +296,15 @@ exports.uploadInvoiceTemplateGenerationLogoController = async (req, res) => {
     */
 
     try {
-
         const { id } = req.body;
         const file = req.files?.file?.[0];
         if (!file) throw new Error("File is required");
         if (!id) throw new Error("Invoice template generation id is required");
 
-        const result = await invoiceTemplateService.uploadInvoiceTemplateGenerationLogoService(file, id);
+        const result = await invoiceTemplateService.uploadInvoiceTemplateGenerationLogoService(
+            file,
+            id,
+        );
         return res.status(200).json({
             success: true,
             message: "Upload invoice template generation logo successfully.",
@@ -312,7 +316,7 @@ exports.uploadInvoiceTemplateGenerationLogoController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 
 exports.getInvoiceViewController = async (req, res) => {
     /*
@@ -328,23 +332,30 @@ exports.getInvoiceViewController = async (req, res) => {
 
     try {
         const { invoice_display_id } = req.params;
-        console.log({invoice_display_id});
+        console.log({ invoice_display_id });
 
-        const invoiceDetailsRes = await invoiceTemplateGenerationService.getInvoiceTemplateGenerationDetailsByInvoiceDisplayID(invoice_display_id);
-        console.log(invoiceDetailsRes);
-        
+        // const invoiceDetailsRes = await invoiceTemplateGenerationService.getInvoiceTemplateGenerationDetailsByInvoiceDisplayID(invoice_display_id);
+        // console.log(invoiceDetailsRes);
 
-        
-        
-            res.render("Invoice/standard-invoice", {
-                // title: `${job_title} Application Form`,
-            });
+        // const logo_url                          = invoiceDetailsRes?.invoice_template_generation_id?.logo_url;
+        // const company_header_config             = invoiceDetailsRes?.invoice_template_generation_id?.company_header_config;
+        // const invoice_info_config               = invoiceDetailsRes?.invoice_template_generation_id?.invoice_info_config;
+        // const bill_to_config                    = invoiceDetailsRes?.invoice_template_generation_id?.bill_to_config;
+        // const lead_table_preview_config         = invoiceDetailsRes?.invoice_template_generation_id?.lead_table_preview_config;
+        // const tax_summary_config                = invoiceDetailsRes?.invoice_template_generation_id?.tax_summary_config;
+        // const totals_section_config             = invoiceDetailsRes?.invoice_template_generation_id?.totals_section_config;
+        // const bank_details_config               = invoiceDetailsRes?.invoice_template_generation_id?.bank_details_config;
+        // const terms_conditions_config           = invoiceDetailsRes?.invoice_template_generation_id?.terms_conditions_config;
+
+        res.render("Invoice/standard-invoice", {
+            invoice_display_id: invoice_display_id,
+        });
     } catch (error) {
-        console.error("Error in getInvoiceViewController:", error); 
-        
+        console.error("Error in getInvoiceViewController:", error);
+
         return res.status(400).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};

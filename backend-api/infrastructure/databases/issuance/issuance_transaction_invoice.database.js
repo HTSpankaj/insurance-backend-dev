@@ -251,17 +251,21 @@ class IssuanceTransactionInvoiceDatabase {
         try {
             const { data, error } = await this.db
                 .from(invoice_tableName)
-                .select(`*, 
+                .select(
+                    `*, 
+                    invoice_template_generation_id(*),
+                    advisor:advisor_id(name, mobile_number, email, advisor_display_id, gstin_number, bank_details(*)),
                     product:issuance_transaction_invoice(*,
                     after_issuance_transaction_id(
                         lead_product_relation_id(
                             lead_product_id, lead_product_relation_display_id,
                             lead:lead_id(name, email, contact_number, lead_display_id),
-                            product:product_id(product_name, product_display_id)
+                            product:product_id(product_name, product_display_id, sub_category_id(sub_category_id, title, category_id(category_id,title)))
                         )
                     )
                     )
-                `)
+                `,
+                )
                 .eq("invoice_display_id", invoice_display_id)
                 .maybeSingle();
             if (error) throw error;
@@ -269,6 +273,9 @@ class IssuanceTransactionInvoiceDatabase {
             if (data) {
                 _data = {
                     ...data,
+                    invoice_date: moment(data?.created_at).format(
+                        data.invoice_template_generation_id.invoice_info_config.invoice_date_format,
+                    ),
                     product: data?.product?.map(p => ({
                         id: p?.id,
                         amount: p?.amount,
@@ -277,17 +284,24 @@ class IssuanceTransactionInvoiceDatabase {
                         paid_amount: p?.paid_amount,
 
                         lead: p?.after_issuance_transaction_id?.lead_product_relation_id?.lead,
-                        product: p?.after_issuance_transaction_id?.lead_product_relation_id?.product,
+                        product:
+                            p?.after_issuance_transaction_id?.lead_product_relation_id?.product,
 
-                        lead_product_id: p?.after_issuance_transaction_id?.lead_product_relation_id?.lead_product_id,
-                        lead_product_relation_display_id: p?.after_issuance_transaction_id?.lead_product_relation_id?.lead_product_relation_display_id,
-                    }))
-                }
+                        lead_product_id:
+                            p?.after_issuance_transaction_id?.lead_product_relation_id
+                                ?.lead_product_id,
+                        lead_product_relation_display_id:
+                            p?.after_issuance_transaction_id?.lead_product_relation_id
+                                ?.lead_product_relation_display_id,
+                    })),
+                };
             }
+
+            //TODO: Tax calculations
             return _data;
         } catch (error) {
             console.log(error);
-            
+
             throw new Error(`Failed to get invoice Details: ${error.message}`);
         }
     }

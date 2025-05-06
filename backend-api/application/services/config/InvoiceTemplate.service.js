@@ -10,7 +10,9 @@ class InvoiceTemplateService {
     constructor(supabaseInstance) {
         this.configStorage = new BucketNameStorage(supabaseInstance, "config");
         this.invoiceTemplateDatabase = new InvoiceTemplateDatabase(supabaseInstance);
-        this.invoiceTemplateGenerationDatabase = new InvoiceTemplateGenerationDatabase(supabaseInstance);
+        this.invoiceTemplateGenerationDatabase = new InvoiceTemplateGenerationDatabase(
+            supabaseInstance,
+        );
     }
 
     async getAllInvoiceTemplateService() {
@@ -26,7 +28,7 @@ class InvoiceTemplateService {
         tax_summary_config,
         totals_section_config,
         bank_details_config,
-        terms_conditions_config
+        terms_conditions_config,
     ) {
         return await this.invoiceTemplateGenerationDatabase.invoiceTemplateGenerationDatabase(
             title,
@@ -37,7 +39,7 @@ class InvoiceTemplateService {
             tax_summary_config,
             totals_section_config,
             bank_details_config,
-            terms_conditions_config
+            terms_conditions_config,
         );
     }
 
@@ -52,11 +54,11 @@ class InvoiceTemplateService {
         totals_section_config,
         bank_details_config,
         terms_conditions_config,
-        logo_url
+        logo_url,
     ) {
         return await this.invoiceTemplateGenerationDatabase.updateInvoiceTemplateGenerationDatabase(
             id,
-             title,
+            title,
             company_header_config,
             invoice_info_config,
             bill_to_config,
@@ -65,7 +67,7 @@ class InvoiceTemplateService {
             totals_section_config,
             bank_details_config,
             terms_conditions_config,
-            logo_url
+            logo_url,
         );
     }
 
@@ -73,7 +75,7 @@ class InvoiceTemplateService {
         return await this.invoiceTemplateGenerationDatabase.getInvoiceTemplateGenerationDatabase(
             page_number,
             limit,
-            search
+            search,
         );
     }
 
@@ -93,23 +95,23 @@ class InvoiceTemplateService {
             const logo_url = await this.configStorage.getPublicUrl(
                 uploadFileResponse?.path + "?" + new Date().getTime(),
             );
-            updatedInvoiceTemplateGeneration = await this.invoiceTemplateGenerationDatabase.updateInvoiceTemplateGenerationDatabase(
-                id,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                logo_url
-            );
+            updatedInvoiceTemplateGeneration =
+                await this.invoiceTemplateGenerationDatabase.updateInvoiceTemplateGenerationDatabase(
+                    id,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    logo_url,
+                );
         }
         return updatedInvoiceTemplateGeneration;
     }
-
 }
 
 module.exports = InvoiceTemplateService;

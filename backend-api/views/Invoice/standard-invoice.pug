@@ -1,17 +1,17 @@
 extends ./../react-layout
 
 block content
-  script(type='text/babel' src='/react-pages/StandardInvoice.jsx')
-  script(type='text/babel' defer='').
-    function PageComponent() {
+    script(type='text/babel' src='/react-pages/StandardInvoice.jsx')
+    script(type='text/babel' defer='').
+        function PageComponent() {
 
-      return (
-        <StandardInvoice
-        
-        />
-      )
-    }
-    ReactDOM.render(<PageComponent />, document.getElementById("root"));
+            return (
+                <StandardInvoice
+                    invoice_display_id = {"#{invoice_display_id}"}
+                />
+            )
+        }
+        ReactDOM.render(<PageComponent />, document.getElementById("root"));
 
 //- <StandardInvoice
 //-           job_title = {"#{job_title}"}

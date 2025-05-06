@@ -7,13 +7,18 @@ class InvoiceTemplateGenerationService {
      * @param {SupabaseClient} supabaseInstance - The Supabase instance
      */
     constructor(supabaseInstance) {
-        this.invoiceTemplateGenerationDatabase = new InvoiceTemplateGenerationDatabase(supabaseInstance);
-        this.issuanceTransactionInvoiceDatabase = new IssuanceTransactionInvoiceDatabase(supabaseInstance);
+        this.invoiceTemplateGenerationDatabase = new InvoiceTemplateGenerationDatabase(
+            supabaseInstance,
+        );
+        this.issuanceTransactionInvoiceDatabase = new IssuanceTransactionInvoiceDatabase(
+            supabaseInstance,
+        );
     }
 
-
     async getInvoiceTemplateGenerationDetailsByInvoiceDisplayID(invoice_display_id) {
-        return await this.issuanceTransactionInvoiceDatabase.getInvoiceDetailsByInvoiceDisplayIdDatabase(invoice_display_id);
+        return await this.issuanceTransactionInvoiceDatabase.getInvoiceDetailsByInvoiceDisplayIdDatabase(
+            invoice_display_id,
+        );
     }
     // {
     //     code: '22P02',

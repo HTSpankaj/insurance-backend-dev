@@ -144,7 +144,7 @@ class AfterIssuanceTransactionDatabase {
             );
         }
     }
-    
+
     async getRemunerationPaymentListDatabase(search, page_number, limit, start_date, end_date) {
         try {
             const offset = (page_number - 1) * limit;

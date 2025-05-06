@@ -37,7 +37,7 @@ class RemunerationService {
             limit,
         );
     }
-    
+
     async getRemunerationPaymentListService(search, page_number, limit, start_date, end_date) {
         return await this.afterIssuanceTransactionDatabase.getRemunerationPaymentListDatabase(
             search,

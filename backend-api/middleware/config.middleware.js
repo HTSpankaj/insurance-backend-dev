@@ -39,5 +39,4 @@ const uploadInvoiceTemplateGenerationLogoMulter = multer({
     // { name: "logo_file", maxCount: 1 } // Another optional file field
 ]);
 
-
 module.exports = { mobileBannerMulter, uploadInvoiceTemplateGenerationLogoMulter };

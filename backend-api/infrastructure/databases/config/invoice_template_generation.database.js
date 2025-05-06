@@ -1,7 +1,8 @@
 const { SupabaseClient } = require("@supabase/supabase-js");
 
 const invoice_template_generation_TableName = "invoice_template_generation";
-const invoice_template_generation_category_relation_TableName = "invoice_template_generation_category_relation";
+const invoice_template_generation_category_relation_TableName =
+    "invoice_template_generation_category_relation";
 const invoice_template_generation_sub_category_relation_TableName =
     "invoice_template_generation_sub_category_relation";
 
@@ -57,33 +58,32 @@ class InvoiceTemplateGenerationDatabase {
         tax_summary_config,
         totals_section_config,
         bank_details_config,
-        terms_conditions_config
+        terms_conditions_config,
     ) {
         try {
             const { data, error } = await this.db
                 .from(invoice_template_generation_TableName)
-                .insert(
-                    {
-                        title,
-                        company_header_config,
-                        invoice_info_config,
-                        bill_to_config,
-                        lead_table_preview_config,
-                        tax_summary_config,
-                        totals_section_config,
-                        bank_details_config,
-                        terms_conditions_config,
-                    },
-                ).select("*").maybeSingle();
-                if (error) {
-                    throw error;
-                }
-                return data;
+                .insert({
+                    title,
+                    company_header_config,
+                    invoice_info_config,
+                    bill_to_config,
+                    lead_table_preview_config,
+                    tax_summary_config,
+                    totals_section_config,
+                    bank_details_config,
+                    terms_conditions_config,
+                })
+                .select("*")
+                .maybeSingle();
+            if (error) {
+                throw error;
+            }
+            return data;
         } catch (error) {
             throw new Error(`Failed to create invoice template generation: ${error.message}`);
         }
     }
-
 
     async updateInvoiceTemplateGenerationDatabase(
         id,
@@ -96,52 +96,52 @@ class InvoiceTemplateGenerationDatabase {
         totals_section_config,
         bank_details_config,
         terms_conditions_config,
-        logo_url
+        logo_url,
     ) {
         try {
-
             let postBody = {};
 
-            
-            if(title) {
+            if (title) {
                 postBody.title = title;
             }
-            if(company_header_config) {
+            if (company_header_config) {
                 postBody.company_header_config = company_header_config;
             }
-            if(invoice_info_config) {
+            if (invoice_info_config) {
                 postBody.invoice_info_config = invoice_info_config;
             }
-            if(bill_to_config) {
+            if (bill_to_config) {
                 postBody.bill_to_config = bill_to_config;
             }
-            if(lead_table_preview_config) {
+            if (lead_table_preview_config) {
                 postBody.lead_table_preview_config = lead_table_preview_config;
             }
-            if(tax_summary_config) {
+            if (tax_summary_config) {
                 postBody.tax_summary_config = tax_summary_config;
             }
-            if(totals_section_config) {
+            if (totals_section_config) {
                 postBody.totals_section_config = totals_section_config;
             }
-            if(bank_details_config) {
+            if (bank_details_config) {
                 postBody.bank_details_config = bank_details_config;
             }
-            if(terms_conditions_config) {
+            if (terms_conditions_config) {
                 postBody.terms_conditions_config = terms_conditions_config;
             }
-            if(logo_url) {
+            if (logo_url) {
                 postBody.logo_url = logo_url;
             }
-            
 
             const { data, error } = await this.db
                 .from(invoice_template_generation_TableName)
-                .update(postBody).eq("id", id).select("*").maybeSingle();
-                if (error) {
-                    throw error;
-                }
-                return data;
+                .update(postBody)
+                .eq("id", id)
+                .select("*")
+                .maybeSingle();
+            if (error) {
+                throw error;
+            }
+            return data;
         } catch (error) {
             throw new Error(`Failed to update invoice template generation: ${error.message}`);
         }
@@ -152,15 +152,18 @@ class InvoiceTemplateGenerationDatabase {
             const offset = (page_number - 1) * limit;
 
             let query = this.db
-            .from(invoice_template_generation_TableName)
-            .select("*, category:invoice_template_generation_category_relation(category_id(category_id, title)), sub_category:invoice_template_generation_sub_category_relation(sub_category_id(sub_category_id, title))", { count: "exact" })
-            .order("created_at", { ascending: false })
-            .range(offset, offset + limit - 1);
+                .from(invoice_template_generation_TableName)
+                .select(
+                    "*, category:invoice_template_generation_category_relation(category_id(category_id, title)), sub_category:invoice_template_generation_sub_category_relation(sub_category_id(sub_category_id, title))",
+                    { count: "exact" },
+                )
+                .order("created_at", { ascending: false })
+                .range(offset, offset + limit - 1);
 
             if (search && search.trim() !== "") {
                 query = query.ilike("title", `%${search}%`);
             }
-            
+
             const { data, error, count } = await query.eq("is_delete", false);
             let _data = [];
 
@@ -168,9 +171,7 @@ class InvoiceTemplateGenerationDatabase {
                 _data = data.map(item => {
                     return {
                         ...item,
-                        category: item?.category?.map(
-                            category => category?.category_id,
-                        ),
+                        category: item?.category?.map(category => category?.category_id),
                         sub_category: item?.sub_category?.map(
                             subCategory => subCategory?.sub_category_id,
                         ),

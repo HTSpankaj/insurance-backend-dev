@@ -154,34 +154,33 @@ exports.getRemunerationPaymentListController = async (req, res) => {
         #swagger.parameters['limit'] = { in: 'query', description: 'Number of records per page', type: 'integer', required: true, default: 10 }
     */
 
-        try {
-            const { search, page_number, limit, start_date, end_date } = req.query;
-            const result =
-                await remunerationService.getRemunerationPaymentListService(
-                    search,
-                    page_number,
-                    limit,
-                    start_date,
-                    end_date,
-                );
-            return res.status(200).json({
-                success: true,
-                message: "Get remuneration payment bank mis successfully.",
-                data: result,
-    
-                metadata: {
-                    current_page_count: result?.length || 0,
-                    page: page_number,
-                    per_page: limit,
-                },
-            });
-        } catch (error) {
-            return res.status(500).json({
-                success: false,
-                error: { message: error.message || "Something went wrong!" },
-            });
-        }
-}
+    try {
+        const { search, page_number, limit, start_date, end_date } = req.query;
+        const result = await remunerationService.getRemunerationPaymentListService(
+            search,
+            page_number,
+            limit,
+            start_date,
+            end_date,
+        );
+        return res.status(200).json({
+            success: true,
+            message: "Get remuneration payment bank mis successfully.",
+            data: result,
+
+            metadata: {
+                current_page_count: result?.length || 0,
+                page: page_number,
+                per_page: limit,
+            },
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
 
 exports.getInvoiceDetailsByDisplayIdController = async (req, res) => {
     /*
@@ -192,7 +191,7 @@ exports.getInvoiceDetailsByDisplayIdController = async (req, res) => {
 
     try {
         const { invoice_display_id } = req.params;
-        
+
         const result = await invoiceService.getInvoiceDetailsByDisplayIdService(invoice_display_id);
         return res.status(200).json({
             success: true,
@@ -205,4 +204,4 @@ exports.getInvoiceDetailsByDisplayIdController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
