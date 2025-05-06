@@ -74,11 +74,11 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
                 is_show_grand_total: true
             },
             bank_details_config: {
-                bank_name: "State Bank of India",
-                account_number: "123456789012",
-                account_name: "Acme Corp Pvt Ltd",
-                ifsc_code: "SBIN0001234",
-                uip_id: "acme@sbi"
+                bank_name: true,
+                account_number: true,
+                account_name: true,
+                ifsc_code: true,
+                uip_id: true,
             },
             terms_conditions_config: {
                 payment_terms: "Please pay within 30 days",
@@ -175,11 +175,11 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
                 is_show_grand_total: true
             },
             bank_details_config: {
-                bank_name: "State Bank of India",
-                account_number: "123456789012",
-                account_name: "Acme Corp Pvt Ltd",
-                ifsc_code: "SBIN0001234",
-                uip_id: "acme@sbi"
+                bank_name: true,
+                account_number: true,
+                account_name: true,
+                ifsc_code: true,
+                uip_id: true,
             },
             terms_conditions_config: {
                 payment_terms: "Please pay within 30 days",

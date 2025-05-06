@@ -46,11 +46,11 @@ const invoiceTemplateGenerationValidator =  [
     body("totals_section_config.is_show_grand_total").isBoolean(),
   
     // === bank_details_config ===
-    body("bank_details_config.bank_name").isString().notEmpty().withMessage("bank_name is required"),
-    body("bank_details_config.account_number").isString().notEmpty().withMessage("account_number is required"),
-    body("bank_details_config.account_name").isString().notEmpty().withMessage("account_name is required"),
-    body("bank_details_config.ifsc_code").matches(/^[A-Z]{4}0[A-Z0-9]{6}$/).withMessage("Invalid IFSC code"),
-    body("bank_details_config.uip_id").isString().optional(),
+    body("bank_details_config.bank_name").isBoolean().withMessage("bank_name is required."),
+    body("bank_details_config.account_number").isBoolean().withMessage("account_number is required."),
+    body("bank_details_config.account_name").isBoolean().withMessage("account_name is required."),
+    body("bank_details_config.ifsc_code").isBoolean().withMessage("ifsc_code is required."),
+    body("bank_details_config.uip_id").isBoolean().withMessage("uip_id is required."),
   
     // === terms_conditions_config ===
     body("terms_conditions_config.payment_terms").isString().optional(),
@@ -105,11 +105,11 @@ const updateInvoiceTemplateGenerationValidator =  [
     body("totals_section_config.is_show_grand_total").isBoolean(),
   
     // === bank_details_config ===
-    body("bank_details_config.bank_name").isString().notEmpty().withMessage("bank_name is required"),
-    body("bank_details_config.account_number").isString().notEmpty().withMessage("account_number is required"),
-    body("bank_details_config.account_name").isString().notEmpty().withMessage("account_name is required"),
-    body("bank_details_config.ifsc_code").matches(/^[A-Z]{4}0[A-Z0-9]{6}$/).withMessage("Invalid IFSC code"),
-    body("bank_details_config.uip_id").isString().optional(),
+    body("bank_details_config.bank_name").isBoolean().withMessage("bank_name is required."),
+    body("bank_details_config.account_number").isBoolean().withMessage("account_number is required."),
+    body("bank_details_config.account_name").isBoolean().withMessage("account_name is required."),
+    body("bank_details_config.ifsc_code").isBoolean().withMessage("ifsc_code is required."),
+    body("bank_details_config.uip_id").isBoolean().withMessage("uip_id is required."),
   
     // === terms_conditions_config ===
     body("terms_conditions_config.payment_terms").isString().optional(),
