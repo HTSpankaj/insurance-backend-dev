@@ -144,6 +144,25 @@ class AfterIssuanceTransactionDatabase {
             );
         }
     }
+    
+    async getRemunerationPaymentListDatabase(search, page_number, limit, start_date, end_date) {
+        try {
+            const offset = (page_number - 1) * limit;
+            const { data, error } = await this.db.rpc("get_remuneration_payment_list", {
+                search_val: search || null,
+                offset_val: offset || 0,
+                limit_val: limit || 10,
+                start_date_val: start_date || null,
+                end_date_val: end_date || null,
+            });
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(
+                `Failed to get Remuneration Companies with Financial Statistics: ${error.message}`,
+            );
+        }
+    }
 }
 
 module.exports = AfterIssuanceTransactionDatabase;

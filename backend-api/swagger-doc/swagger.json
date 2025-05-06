@@ -5712,6 +5712,92 @@
         }
       }
     },
+    "/api/remuneration/get-remuneration-payment-list": {
+      "get": {
+        "tags": [
+          "Remuneration"
+        ],
+        "description": "Get remuneration payment bank mis",
+        "parameters": [
+          {
+            "name": "start_date",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Start date format: YYYY-MM-DD"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "End date format: YYYY-MM-DD"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Search keyword"
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "description": "Page number",
+            "type": "integer",
+            "required": true,
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of records per page",
+            "type": "integer",
+            "required": true,
+            "default": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/remuneration/get-invoice-details-by-display-id/{invoice_display_id}": {
+      "get": {
+        "tags": [
+          "Remuneration"
+        ],
+        "description": "Get invoice details by invoice display id",
+        "parameters": [
+          {
+            "name": "invoice_display_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Invoice display id"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/remuneration/invoice/get-advisor-invoice": {
       "get": {
         "tags": [
@@ -6318,28 +6404,28 @@
                   "type": "object",
                   "properties": {
                     "customer_name": {
-                      "type": "string",
-                      "example": "John Doe"
+                      "type": "boolean",
+                      "example": true
                     },
                     "billing_address": {
-                      "type": "string",
-                      "example": "456 Avenue, Town"
+                      "type": "boolean",
+                      "example": true
                     },
                     "shipping_address": {
-                      "type": "string",
-                      "example": "789 Road, City"
+                      "type": "boolean",
+                      "example": true
                     },
                     "phone_number": {
-                      "type": "string",
-                      "example": "9876543210"
+                      "type": "boolean",
+                      "example": true
                     },
                     "email_address": {
-                      "type": "string",
-                      "example": "john@example.com"
+                      "type": "boolean",
+                      "example": true
                     },
                     "gstin_number": {
-                      "type": "string",
-                      "example": "29XYZAB1234C6Z7"
+                      "type": "boolean",
+                      "example": true
                     }
                   }
                 },
@@ -6559,28 +6645,28 @@
                   "type": "object",
                   "properties": {
                     "customer_name": {
-                      "type": "string",
-                      "example": "John Doe"
+                      "type": "boolean",
+                      "example": true
                     },
                     "billing_address": {
-                      "type": "string",
-                      "example": "456 Avenue, Town"
+                      "type": "boolean",
+                      "example": true
                     },
                     "shipping_address": {
-                      "type": "string",
-                      "example": "789 Road, City"
+                      "type": "boolean",
+                      "example": true
                     },
                     "phone_number": {
-                      "type": "string",
-                      "example": "9876543210"
+                      "type": "boolean",
+                      "example": true
                     },
                     "email_address": {
-                      "type": "string",
-                      "example": "john@example.com"
+                      "type": "boolean",
+                      "example": true
                     },
                     "gstin_number": {
-                      "type": "string",
-                      "example": "29XYZAB1234C6Z7"
+                      "type": "boolean",
+                      "example": true
                     }
                   }
                 },

@@ -51,12 +51,12 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
                 payment_terms: "Net 30"
             },
             bill_to_config: {
-                customer_name: "John Doe",
-                billing_address: "456 Avenue, Town",
-                shipping_address: "789 Road, City",
-                phone_number: "9876543210",
-                email_address: "john@example.com",
-                gstin_number: "29XYZAB1234C6Z7"
+                customer_name: true,
+                billing_address: true,
+                shipping_address: true,
+                phone_number: true,
+                email_address: true,
+                gstin_number: true,
             },
             lead_table_preview_config: [
                 { table_name: "Leads", column_name: "Lead ID" },
@@ -152,12 +152,12 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
                 payment_terms: "Net 30"
             },
             bill_to_config: {
-                customer_name: "John Doe",
-                billing_address: "456 Avenue, Town",
-                shipping_address: "789 Road, City",
-                phone_number: "9876543210",
-                email_address: "john@example.com",
-                gstin_number: "29XYZAB1234C6Z7"
+                customer_name: true,
+                billing_address: true,
+                shipping_address: true,
+                phone_number: true,
+                email_address: true,
+                gstin_number: true,
             },
             lead_table_preview_config: [
                 { table_name: "Leads", column_name: "Lead ID" },

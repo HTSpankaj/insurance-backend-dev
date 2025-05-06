@@ -19,12 +19,12 @@ const invoiceTemplateGenerationValidator =  [
     body("invoice_info_config.payment_terms").isString().optional(),
   
     // === bill_to_config ===
-    body("bill_to_config.customer_name").isString().notEmpty().withMessage("customer_name is required"),
-    body("bill_to_config.billing_address").isString().optional(),
-    body("bill_to_config.shipping_address").isString().optional(),
-    body("bill_to_config.phone_number").isString().optional(),
-    body("bill_to_config.email_address").isEmail().withMessage("Invalid email_address").optional(),
-    body("bill_to_config.gstin_number").isString().optional(),
+    body("bill_to_config.customer_name").isBoolean().withMessage("customer_name is required"),
+    body("bill_to_config.billing_address").isBoolean().withMessage("billing_address is required"),
+    body("bill_to_config.shipping_address").isBoolean().withMessage("shipping_address is required"),
+    body("bill_to_config.phone_number").isBoolean().withMessage("phone_number is required"),
+    body("bill_to_config.email_address").isBoolean().withMessage("email_address is required"),
+    body("bill_to_config.gstin_number").isBoolean().withMessage("gstin_number is required"),
   
     // === lead_table_preview_config ===
     body("lead_table_preview_config").isArray().withMessage("lead_table_preview_config must be an array"),
@@ -78,12 +78,12 @@ const updateInvoiceTemplateGenerationValidator =  [
     body("invoice_info_config.payment_terms").isString().optional(),
   
     // === bill_to_config ===
-    body("bill_to_config.customer_name").isString().notEmpty().withMessage("customer_name is required"),
-    body("bill_to_config.billing_address").isString().optional(),
-    body("bill_to_config.shipping_address").isString().optional(),
-    body("bill_to_config.phone_number").isString().optional(),
-    body("bill_to_config.email_address").isEmail().withMessage("Invalid email_address").optional(),
-    body("bill_to_config.gstin_number").isString().optional(),
+    body("bill_to_config.customer_name").isBoolean().withMessage("customer_name is required"),
+    body("bill_to_config.billing_address").isBoolean().withMessage("billing_address is required"),
+    body("bill_to_config.shipping_address").isBoolean().withMessage("shipping_address is required"),
+    body("bill_to_config.phone_number").isBoolean().withMessage("phone_number is required"),
+    body("bill_to_config.email_address").isBoolean().withMessage("email_address is required"),
+    body("bill_to_config.gstin_number").isBoolean().withMessage("gstin_number is required"),
   
     // === lead_table_preview_config ===
     body("lead_table_preview_config").isArray().withMessage("lead_table_preview_config must be an array"),

@@ -27,6 +27,12 @@ class InvoiceService {
             rejection_reason,
         );
     }
+
+    async getInvoiceDetailsByDisplayIdService(invoice_display_id) {
+        return await this.issuanceTransactionInvoiceDatabase.getInvoiceDetailsByInvoiceDisplayIdDatabase(
+            invoice_display_id,
+        );
+    }
 }
 
 module.exports = InvoiceService;

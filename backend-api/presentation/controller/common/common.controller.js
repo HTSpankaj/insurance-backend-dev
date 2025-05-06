@@ -272,23 +272,22 @@ exports.activeInactiveCityController = async (req, res) => {
 exports.upsertCityController = async (req, res) => {
     /*
     #swagger.tags = ['Common']
-
     #swagger.description = 'Upsert city.'
     #swagger.parameters['body'] ={
         in: 'body',
         description: 'In that object you have to pass an array of city objects. Each city object should have the following properties: title, state_id. if id present then it will update the city. else it will create a new city.',
         schema: {
-          "city_array": [
-            {
-              "id": "",
-              "title": "",
-              "state_id": ""
-            },
-            {
-              "title": "",
-              "state_id": ""
-            }
-          ]
+            "city_array": [
+                {
+                "id": "",
+                "title": "",
+                "state_id": ""
+                },
+                {
+                "title": "",
+                "state_id": ""
+                }
+            ]
         }
     }
   */

@@ -251,11 +251,40 @@ class IssuanceTransactionInvoiceDatabase {
         try {
             const { data, error } = await this.db
                 .from(invoice_tableName)
-                .select("*, product:issuance_transaction_invoice(*)")
+                .select(`*, 
+                    product:issuance_transaction_invoice(*,
+                    after_issuance_transaction_id(
+                        lead_product_relation_id(
+                            lead_product_id, lead_product_relation_display_id,
+                            lead:lead_id(name, email, contact_number, lead_display_id),
+                            product:product_id(product_name, product_display_id)
+                        )
+                    )
+                    )
+                `)
                 .eq("invoice_display_id", invoice_display_id)
                 .maybeSingle();
             if (error) throw error;
-            return data;
+            let _data = {};
+            if (data) {
+                _data = {
+                    ...data,
+                    product: data?.product?.map(p => ({
+                        id: p?.id,
+                        amount: p?.amount,
+                        created_at: p?.created_at,
+                        invoice_id: p?.invoice_id,
+                        paid_amount: p?.paid_amount,
+
+                        lead: p?.after_issuance_transaction_id?.lead_product_relation_id?.lead,
+                        product: p?.after_issuance_transaction_id?.lead_product_relation_id?.product,
+
+                        lead_product_id: p?.after_issuance_transaction_id?.lead_product_relation_id?.lead_product_id,
+                        lead_product_relation_display_id: p?.after_issuance_transaction_id?.lead_product_relation_id?.lead_product_relation_display_id,
+                    }))
+                }
+            }
+            return _data;
         } catch (error) {
             console.log(error);
             
