@@ -246,6 +246,22 @@ class IssuanceTransactionInvoiceDatabase {
             }
         });
     }
+
+    async getInvoiceDetailsByInvoiceDisplayIdDatabase(invoice_display_id) {
+        try {
+            const { data, error } = await this.db
+                .from(invoice_tableName)
+                .select("*, product:issuance_transaction_invoice(*)")
+                .eq("invoice_display_id", invoice_display_id)
+                .maybeSingle();
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.log(error);
+            
+            throw new Error(`Failed to get invoice Details: ${error.message}`);
+        }
+    }
 }
 
 module.exports = IssuanceTransactionInvoiceDatabase;

@@ -11,6 +11,15 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
+const ImageFileFilter = (req, file, cb) => {
+    const allowedMimeTypes = ["image/"];
+    if (allowedMimeTypes.some(s => file.mimetype?.startsWith(s))) {
+        cb(null, true);
+    } else {
+        cb(new Error("multerError:Invalid file type"), false);
+    }
+};
+
 // Multer configuration for handling multiple files
 const mobileBannerMulter = multer({
     storage,
@@ -21,4 +30,14 @@ const mobileBannerMulter = multer({
     // { name: "logo_file", maxCount: 1 } // Another optional file field
 ]);
 
-module.exports = { mobileBannerMulter };
+const uploadInvoiceTemplateGenerationLogoMulter = multer({
+    storage,
+    ImageFileFilter,
+    limits: { fileSize: 2 * 1024 * 1024 }, // 2MB limit
+}).fields([
+    { name: "file", maxCount: 1 }, // Image file for course banner
+    // { name: "logo_file", maxCount: 1 } // Another optional file field
+]);
+
+
+module.exports = { mobileBannerMulter, uploadInvoiceTemplateGenerationLogoMulter };

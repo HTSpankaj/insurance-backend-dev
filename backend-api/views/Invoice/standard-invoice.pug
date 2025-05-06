@@ -1,0 +1,20 @@
+extends ./../react-layout
+
+block content
+  script(type='text/babel' src='/react-pages/StandardInvoice.jsx')
+  script(type='text/babel' defer='').
+    function PageComponent() {
+
+      return (
+        <StandardInvoice
+        
+        />
+      )
+    }
+    ReactDOM.render(<PageComponent />, document.getElementById("root"));
+
+//- <StandardInvoice
+//-           job_title = {"#{job_title}"}
+//-           is_form_error = {#{is_form_error}}
+//-           form_error_message = {"#{form_error_message}"}
+//-         />

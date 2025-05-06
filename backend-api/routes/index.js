@@ -1,11 +1,13 @@
 var express = require("express");
 var router = express.Router();
 var apiRouter = require("./api/index.route");
+var viewRouter = require("./view/index.route");
 
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("../swagger-doc/swagger.json");
 
 router.use("/api", apiRouter);
+router.use("/view", viewRouter);
 router.use("/doc", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 router.get("/", function (req, res, next) {

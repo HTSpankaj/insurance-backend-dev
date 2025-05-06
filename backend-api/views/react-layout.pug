@@ -1,0 +1,19 @@
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title= title 
+  // React and ReactDOM via CDN
+  script(src='https://unpkg.com/react@17/umd/react.development.js' crossorigin='')
+  script(src='https://unpkg.com/react-dom@17/umd/react-dom.development.js' crossorigin='')
+  // Babel to allow JSX
+  script(src='https://unpkg.com/@babel/standalone/babel.min.js')
+  // Tailwind CSS
+  script(src='https://cdn.tailwindcss.com')
+  // Font Family
+  link(href='https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap' rel='stylesheet')
+
+  //- !  Style
+  link(rel='stylesheet' href='/stylesheets/application.css')
+#root
+//- script(type='text/babel' defer='').
+block content
