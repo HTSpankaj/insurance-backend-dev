@@ -28,7 +28,7 @@ const invoiceTemplateGenerationValidator =  [
   
     // === lead_table_preview_config ===
     body("lead_table_preview_config").isArray().withMessage("lead_table_preview_config must be an array"),
-    body("lead_table_preview_config.*.table_name").isString().notEmpty().withMessage("table_name is required"),
+    // body("lead_table_preview_config.*.table_name").isString().notEmpty().withMessage("table_name is required"),
     body("lead_table_preview_config.*.column_name").isString().notEmpty().withMessage("column_name is required"),
   
     // === tax_summary_config ===
@@ -87,7 +87,7 @@ const updateInvoiceTemplateGenerationValidator =  [
   
     // === lead_table_preview_config ===
     body("lead_table_preview_config").isArray().withMessage("lead_table_preview_config must be an array"),
-    body("lead_table_preview_config.*.table_name").isString().notEmpty().withMessage("table_name is required"),
+    // body("lead_table_preview_config.*.table_name").isString().notEmpty().withMessage("table_name is required"),
     body("lead_table_preview_config.*.column_name").isString().notEmpty().withMessage("column_name is required"),
   
     // === tax_summary_config ===

@@ -59,8 +59,8 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
                 gstin_number: true,
             },
             lead_table_preview_config: [
-                { table_name: "Leads", column_name: "Lead ID" },
-                { table_name: "Leads", column_name: "Lead Name" }
+                { column_name: "Lead ID" },
+                { column_name: "Lead Name" }
             ],
             tax_summary_config: {
                 is_enable_taxes: true,
@@ -160,8 +160,8 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
                 gstin_number: true,
             },
             lead_table_preview_config: [
-                { table_name: "Leads", column_name: "Lead ID" },
-                { table_name: "Leads", column_name: "Lead Name" }
+                {  column_name: "Lead ID" },
+                {  column_name: "Lead Name" }
             ],
             tax_summary_config: {
                 is_enable_taxes: true,
