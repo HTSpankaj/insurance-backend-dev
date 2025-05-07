@@ -23,20 +23,20 @@ const invoiceTemplateGenerationValidator = [
         .withMessage("invoice_title is required"),
     body("invoice_info_config.invoice_prefix").isString().optional(),
     body("invoice_info_config.invoice_date_format").isString().optional(),
-    body("invoice_info_config.invoice_date")
-        .isISO8601()
-        .withMessage("invoice_date must be a valid date")
-        .optional(),
-    body("invoice_info_config.due_date")
-        .isISO8601()
-        .withMessage("due_date must be a valid date")
-        .optional(),
-    body("invoice_info_config.payment_terms").isString().optional(),
+    // body("invoice_info_config.invoice_date")
+    //     .isISO8601()
+    //     .withMessage("invoice_date must be a valid date")
+    //     .optional(),
+    // body("invoice_info_config.due_date")
+    //     .isISO8601()
+    //     .withMessage("due_date must be a valid date")
+    //     .optional(),
+    // body("invoice_info_config.payment_terms").isString().optional(),
 
     // === bill_to_config ===
     body("bill_to_config.customer_name").isBoolean().withMessage("customer_name is required"),
     body("bill_to_config.billing_address").isBoolean().withMessage("billing_address is required"),
-    body("bill_to_config.shipping_address").isBoolean().withMessage("shipping_address is required"),
+    // body("bill_to_config.shipping_address").isBoolean().withMessage("shipping_address is required"),
     body("bill_to_config.phone_number").isBoolean().withMessage("phone_number is required"),
     body("bill_to_config.email_address").isBoolean().withMessage("email_address is required"),
     body("bill_to_config.gstin_number").isBoolean().withMessage("gstin_number is required"),
@@ -70,7 +70,7 @@ const invoiceTemplateGenerationValidator = [
     body("bank_details_config.account_number")
         .isBoolean()
         .withMessage("account_number is required."),
-    body("bank_details_config.account_name").isBoolean().withMessage("account_name is required."),
+    // body("bank_details_config.account_name").isBoolean().withMessage("account_name is required."),
     body("bank_details_config.ifsc_code").isBoolean().withMessage("ifsc_code is required."),
     body("bank_details_config.uip_id").isBoolean().withMessage("uip_id is required."),
 
@@ -104,20 +104,20 @@ const updateInvoiceTemplateGenerationValidator = [
         .withMessage("invoice_title is required"),
     body("invoice_info_config.invoice_prefix").isString().optional(),
     body("invoice_info_config.invoice_date_format").isString().optional(),
-    body("invoice_info_config.invoice_date")
-        .isISO8601()
-        .withMessage("invoice_date must be a valid date")
-        .optional(),
-    body("invoice_info_config.due_date")
-        .isISO8601()
-        .withMessage("due_date must be a valid date")
-        .optional(),
-    body("invoice_info_config.payment_terms").isString().optional(),
+    // body("invoice_info_config.invoice_date")
+    //     .isISO8601()
+    //     .withMessage("invoice_date must be a valid date")
+    //     .optional(),
+    // body("invoice_info_config.due_date")
+    //     .isISO8601()
+    //     .withMessage("due_date must be a valid date")
+    //     .optional(),
+    // body("invoice_info_config.payment_terms").isString().optional(),
 
     // === bill_to_config ===
     body("bill_to_config.customer_name").isBoolean().withMessage("customer_name is required"),
     body("bill_to_config.billing_address").isBoolean().withMessage("billing_address is required"),
-    body("bill_to_config.shipping_address").isBoolean().withMessage("shipping_address is required"),
+    // body("bill_to_config.shipping_address").isBoolean().withMessage("shipping_address is required"),
     body("bill_to_config.phone_number").isBoolean().withMessage("phone_number is required"),
     body("bill_to_config.email_address").isBoolean().withMessage("email_address is required"),
     body("bill_to_config.gstin_number").isBoolean().withMessage("gstin_number is required"),
@@ -151,7 +151,7 @@ const updateInvoiceTemplateGenerationValidator = [
     body("bank_details_config.account_number")
         .isBoolean()
         .withMessage("account_number is required."),
-    body("bank_details_config.account_name").isBoolean().withMessage("account_name is required."),
+    // body("bank_details_config.account_name").isBoolean().withMessage("account_name is required."),
     body("bank_details_config.ifsc_code").isBoolean().withMessage("ifsc_code is required."),
     body("bank_details_config.uip_id").isBoolean().withMessage("uip_id is required."),
 

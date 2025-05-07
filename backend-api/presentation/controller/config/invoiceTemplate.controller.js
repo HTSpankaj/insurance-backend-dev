@@ -45,15 +45,11 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
             invoice_info_config: {
                 invoice_title: "Invoice",
                 invoice_prefix: "INV-",
-                invoice_date_format: "YYYY-MM-DD",
-                invoice_date: "2025-05-05",
-                due_date: "2025-06-05",
-                payment_terms: "Net 30"
+                invoice_date_format: "YYYY-MM-DD"
             },
             bill_to_config: {
                 customer_name: true,
                 billing_address: true,
-                shipping_address: true,
                 phone_number: true,
                 email_address: true,
                 gstin_number: true,
@@ -76,7 +72,6 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
             bank_details_config: {
                 bank_name: true,
                 account_number: true,
-                account_name: true,
                 ifsc_code: true,
                 uip_id: true,
             },
@@ -146,15 +141,11 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
             invoice_info_config: {
                 invoice_title: "Invoice",
                 invoice_prefix: "INV-",
-                invoice_date_format: "YYYY-MM-DD",
-                invoice_date: "2025-05-05",
-                due_date: "2025-06-05",
-                payment_terms: "Net 30"
+                invoice_date_format: "YYYY-MM-DD"
             },
             bill_to_config: {
                 customer_name: true,
                 billing_address: true,
-                shipping_address: true,
                 phone_number: true,
                 email_address: true,
                 gstin_number: true,
@@ -177,7 +168,6 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
             bank_details_config: {
                 bank_name: true,
                 account_number: true,
-                account_name: true,
                 ifsc_code: true,
                 uip_id: true,
             },
