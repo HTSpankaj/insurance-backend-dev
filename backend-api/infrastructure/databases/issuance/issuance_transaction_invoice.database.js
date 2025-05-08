@@ -98,7 +98,18 @@ class IssuanceTransactionInvoiceDatabase {
             const offset = (pageNumber - 1) * limit;
             let query = this.db
                 .from(invoice_tableName)
-                .select("*, issuance_transaction_invoice(*)", { count: "exact" })
+                .select(`*, 
+                    advisor:advisor_id(name, mobile_number, email, advisor_display_id, gstin_number, bank_details(*)),
+                    product:issuance_transaction_invoice(*,
+                    after_issuance_transaction_id(
+                        lead_product_relation_id(
+                            lead_product_id, lead_product_relation_display_id,
+                            lead:lead_id(name, email, contact_number, lead_display_id),
+                            product:product_id(product_name, product_display_id, sub_category_id(sub_category_id, title, category_id(category_id,title)))
+                        )
+                    )
+                    )
+                `, { count: "exact" })
                 .eq("advisor_id", advisor_id);
 
             if (start_date && end_date) {
@@ -111,7 +122,35 @@ class IssuanceTransactionInvoiceDatabase {
 
             const { data, error, count } = await query;
             if (error) throw error;
-            return { data, count };
+            let _data = [];
+            if (data) {
+                _data = data.map(item => {
+                    const _m = {
+                        ...item,
+                        product: item?.product?.map(p => ({
+                            id: p?.id,
+                            amount: p?.amount,
+                            created_at: p?.created_at,
+                            invoice_id: p?.invoice_id,
+                            paid_amount: p?.paid_amount,
+    
+                            lead: p?.after_issuance_transaction_id?.lead_product_relation_id?.lead,
+                            product:
+                                p?.after_issuance_transaction_id?.lead_product_relation_id?.product,
+    
+                            lead_product_id:
+                                p?.after_issuance_transaction_id?.lead_product_relation_id
+                                    ?.lead_product_id,
+                            lead_product_relation_display_id:
+                                p?.after_issuance_transaction_id?.lead_product_relation_id
+                                    ?.lead_product_relation_display_id,
+                        })),
+                    };
+
+                    return _m;
+                })
+            }
+            return { data: _data, count };
         } catch (error) {
             throw new Error(`Failed to get invoice: ${error.message}`);
         }
