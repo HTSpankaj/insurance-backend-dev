@@ -79,7 +79,7 @@ class InvoiceTemplateGenerationDatabase {
                 .select("*")
                 .maybeSingle();
             if (data) {
-                await this.db
+                const catRes = await this.db
                 .from(invoice_template_generation_category_relation_TableName)
                 .insert(category.map(category_id => ({
                     invoice_template_generation_id: data.id,
@@ -87,13 +87,15 @@ class InvoiceTemplateGenerationDatabase {
                 })))
                 .select("*");
 
-                await this.db
+                const subatRes = await this.db
                 .from(invoice_template_generation_sub_category_relation_TableName)
                 .insert(sub_category.map(sub_category_id => ({
                     invoice_template_generation_id: data.id,
                     sub_category_id,
                 })))
                 .select("*");
+
+                // console.log("catRes", catRes, "subatRes", subatRes);
             }
 
     
@@ -118,8 +120,8 @@ class InvoiceTemplateGenerationDatabase {
         bank_details_config,
         terms_conditions_config,
         logo_url,
-        category,
-        sub_category
+        category=[],
+        sub_category=[]
     ) {
         try {
             let postBody = {};
@@ -163,32 +165,36 @@ class InvoiceTemplateGenerationDatabase {
                 .maybeSingle();
 
                 if (data) {
-                    await this.db
-                    .from(invoice_template_generation_category_relation_TableName)
-                    .delete()
-                    .eq("invoice_template_generation_id", id);
-
-                    await this.db
-                    .from(invoice_template_generation_category_relation_TableName)
-                    .insert(category.map(category_id => ({
-                        invoice_template_generation_id: data.id,
-                        category_id,
-                    })))
-                    .select("*");
+                    if (category?.length) {
+                        await this.db
+                        .from(invoice_template_generation_category_relation_TableName)
+                        .delete()
+                        .eq("invoice_template_generation_id", id);
+    
+                        await this.db
+                        .from(invoice_template_generation_category_relation_TableName)
+                        .insert(category.map(category_id => ({
+                            invoice_template_generation_id: data.id,
+                            category_id,
+                        })))
+                        .select("*");
+                    }
     
 
-                    await this.db
-                    .from(invoice_template_generation_sub_category_relation_TableName)
-                    .delete()
-                    .eq("invoice_template_generation_id", id);
-                    
-                    await this.db
-                    .from(invoice_template_generation_sub_category_relation_TableName)
-                    .insert(sub_category.map(sub_category_id => ({
-                        invoice_template_generation_id: data.id,
-                        sub_category_id,
-                    })))
-                    .select("*");
+                    if (sub_category?.length) {
+                        await this.db
+                        .from(invoice_template_generation_sub_category_relation_TableName)
+                        .delete()
+                        .eq("invoice_template_generation_id", id);
+                        
+                        await this.db
+                        .from(invoice_template_generation_sub_category_relation_TableName)
+                        .insert(sub_category.map(sub_category_id => ({
+                            invoice_template_generation_id: data.id,
+                            sub_category_id,
+                        })))
+                        .select("*");
+                    }
                 }
 
             if (error) {
@@ -207,7 +213,7 @@ class InvoiceTemplateGenerationDatabase {
             let query = this.db
                 .from(invoice_template_generation_TableName)
                 .select(
-                    "*, category:invoice_template_generation_category_relation(category_id(category_id, title)), sub_category:invoice_template_generation_sub_category_relation(sub_category_id(sub_category_id, title))",
+                    "*, invoice_template_id(*), category:invoice_template_generation_category_relation(category_id(category_id, title)), sub_category:invoice_template_generation_sub_category_relation(sub_category_id(sub_category_id, title))",
                     { count: "exact" },
                 )
                 .order("created_at", { ascending: false })
