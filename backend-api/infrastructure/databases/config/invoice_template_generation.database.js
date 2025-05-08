@@ -85,8 +85,7 @@ class InvoiceTemplateGenerationDatabase {
                     invoice_template_generation_id: data.id,
                     category_id,
                 })))
-                .select("*")
-                .maybeSingle();
+                .select("*");
 
                 await this.db
                 .from(invoice_template_generation_sub_category_relation_TableName)
@@ -94,8 +93,7 @@ class InvoiceTemplateGenerationDatabase {
                     invoice_template_generation_id: data.id,
                     sub_category_id,
                 })))
-                .select("*")
-                .maybeSingle();
+                .select("*");
             }
 
     
@@ -176,8 +174,7 @@ class InvoiceTemplateGenerationDatabase {
                         invoice_template_generation_id: data.id,
                         category_id,
                     })))
-                    .select("*")
-                    .maybeSingle();
+                    .select("*");
     
 
                     await this.db
@@ -191,8 +188,7 @@ class InvoiceTemplateGenerationDatabase {
                         invoice_template_generation_id: data.id,
                         sub_category_id,
                     })))
-                    .select("*")
-                    .maybeSingle();
+                    .select("*");
                 }
 
             if (error) {
