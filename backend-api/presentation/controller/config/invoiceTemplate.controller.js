@@ -180,7 +180,7 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
             terms_conditions_config: {
                 payment_terms: "Please pay within 30 days",
                 thank_you_message: "Thank you for your business!"
-            }
+            },
             category: ["550e8400-e29b-41d4-a716-446655440000"],
             sub_category: ["550e8400-e29b-41d4-a716-446655440000"]
         }

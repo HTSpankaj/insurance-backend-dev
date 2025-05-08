@@ -6385,18 +6385,6 @@
                     "invoice_date_format": {
                       "type": "string",
                       "example": "YYYY-MM-DD"
-                    },
-                    "invoice_date": {
-                      "type": "string",
-                      "example": "2025-05-05"
-                    },
-                    "due_date": {
-                      "type": "string",
-                      "example": "2025-06-05"
-                    },
-                    "payment_terms": {
-                      "type": "string",
-                      "example": "Net 30"
                     }
                   }
                 },
@@ -6408,10 +6396,6 @@
                       "example": true
                     },
                     "billing_address": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "shipping_address": {
                       "type": "boolean",
                       "example": true
                     },
@@ -6434,10 +6418,6 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "table_name": {
-                        "type": "string",
-                        "example": "Leads"
-                      },
                       "column_name": {
                         "type": "string",
                         "example": "Lead Name"
@@ -6514,24 +6494,20 @@
                   "type": "object",
                   "properties": {
                     "bank_name": {
-                      "type": "string",
-                      "example": "State Bank of India"
+                      "type": "boolean",
+                      "example": true
                     },
                     "account_number": {
-                      "type": "string",
-                      "example": "123456789012"
-                    },
-                    "account_name": {
-                      "type": "string",
-                      "example": "Acme Corp Pvt Ltd"
+                      "type": "boolean",
+                      "example": true
                     },
                     "ifsc_code": {
-                      "type": "string",
-                      "example": "SBIN0001234"
+                      "type": "boolean",
+                      "example": true
                     },
                     "uip_id": {
-                      "type": "string",
-                      "example": "acme@sbi"
+                      "type": "boolean",
+                      "example": true
                     }
                   }
                 },
@@ -6546,6 +6522,24 @@
                       "type": "string",
                       "example": "Thank you for your business!"
                     }
+                  }
+                },
+                "category": {
+                  "type": "array",
+                  "example": [
+                    "550e8400-e29b-41d4-a716-446655440000"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "sub_category": {
+                  "type": "array",
+                  "example": [
+                    "550e8400-e29b-41d4-a716-446655440000"
+                  ],
+                  "items": {
+                    "type": "string"
                   }
                 }
               }
@@ -6626,18 +6620,6 @@
                     "invoice_date_format": {
                       "type": "string",
                       "example": "YYYY-MM-DD"
-                    },
-                    "invoice_date": {
-                      "type": "string",
-                      "example": "2025-05-05"
-                    },
-                    "due_date": {
-                      "type": "string",
-                      "example": "2025-06-05"
-                    },
-                    "payment_terms": {
-                      "type": "string",
-                      "example": "Net 30"
                     }
                   }
                 },
@@ -6649,10 +6631,6 @@
                       "example": true
                     },
                     "billing_address": {
-                      "type": "boolean",
-                      "example": true
-                    },
-                    "shipping_address": {
                       "type": "boolean",
                       "example": true
                     },
@@ -6675,10 +6653,6 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "table_name": {
-                        "type": "string",
-                        "example": "Leads"
-                      },
                       "column_name": {
                         "type": "string",
                         "example": "Lead Name"
@@ -6755,24 +6729,20 @@
                   "type": "object",
                   "properties": {
                     "bank_name": {
-                      "type": "string",
-                      "example": "State Bank of India"
+                      "type": "boolean",
+                      "example": true
                     },
                     "account_number": {
-                      "type": "string",
-                      "example": "123456789012"
-                    },
-                    "account_name": {
-                      "type": "string",
-                      "example": "Acme Corp Pvt Ltd"
+                      "type": "boolean",
+                      "example": true
                     },
                     "ifsc_code": {
-                      "type": "string",
-                      "example": "SBIN0001234"
+                      "type": "boolean",
+                      "example": true
                     },
                     "uip_id": {
-                      "type": "string",
-                      "example": "acme@sbi"
+                      "type": "boolean",
+                      "example": true
                     }
                   }
                 },
@@ -6787,6 +6757,24 @@
                       "type": "string",
                       "example": "Thank you for your business!"
                     }
+                  }
+                },
+                "category": {
+                  "type": "array",
+                  "example": [
+                    "550e8400-e29b-41d4-a716-446655440000"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "sub_category": {
+                  "type": "array",
+                  "example": [
+                    "550e8400-e29b-41d4-a716-446655440000"
+                  ],
+                  "items": {
+                    "type": "string"
                   }
                 }
               }
@@ -6910,6 +6898,17 @@
             "required": true,
             "type": "string",
             "description": "Invoice template generation id"
+          },
+          {
+            "name": "device",
+            "in": "query",
+            "required": true,
+            "type": "string",
+            "enum": [
+              "web",
+              "mobile"
+            ],
+            "description": "Device type (web, mobile)"
           }
         ],
         "responses": {
