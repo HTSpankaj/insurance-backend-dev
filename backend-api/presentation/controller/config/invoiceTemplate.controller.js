@@ -78,7 +78,9 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
             terms_conditions_config: {
                 payment_terms: "Please pay within 30 days",
                 thank_you_message: "Thank you for your business!"
-            }
+            },
+            category: ["550e8400-e29b-41d4-a716-446655440000"],
+            sub_category: ["550e8400-e29b-41d4-a716-446655440000"]
         }
     }
     */
@@ -93,6 +95,8 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
         totals_section_config,
         bank_details_config,
         terms_conditions_config,
+        category,
+        sub_category
     } = req.body;
 
     try {
@@ -106,6 +110,8 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
             totals_section_config,
             bank_details_config,
             terms_conditions_config,
+            category,
+            sub_category
         );
         return res.status(200).json({
             success: true,
@@ -175,6 +181,8 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
                 payment_terms: "Please pay within 30 days",
                 thank_you_message: "Thank you for your business!"
             }
+            category: ["550e8400-e29b-41d4-a716-446655440000"],
+            sub_category: ["550e8400-e29b-41d4-a716-446655440000"]
         }
     }
     */
@@ -190,6 +198,8 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
         totals_section_config,
         bank_details_config,
         terms_conditions_config,
+        category,
+        sub_category
     } = req.body;
 
     try {
@@ -205,6 +215,8 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
             bank_details_config,
             terms_conditions_config,
             null,
+            category,
+            sub_category
         );
         return res.status(200).json({
             success: true,
@@ -318,11 +330,18 @@ exports.getInvoiceViewController = async (req, res) => {
         type: 'string',
         description: 'Invoice template generation id'
     }
+    #swagger.parameters['device'] = {
+        in: 'query',
+        required: true,
+        type: 'string',
+        enum: ['web', 'mobile'],
+        description: 'Device type (web, mobile)'
+    }
     */
 
     try {
         const { invoice_display_id } = req.params;
-        console.log({ invoice_display_id });
+        const device = req.query?.device || "web";
 
         // const invoiceDetailsRes = await invoiceTemplateGenerationService.getInvoiceTemplateGenerationDetailsByInvoiceDisplayID(invoice_display_id);
         // console.log(invoiceDetailsRes);
@@ -339,6 +358,7 @@ exports.getInvoiceViewController = async (req, res) => {
 
         res.render("Invoice/standard-invoice", {
             invoice_display_id: invoice_display_id,
+            device:device
         });
     } catch (error) {
         console.error("Error in getInvoiceViewController:", error);

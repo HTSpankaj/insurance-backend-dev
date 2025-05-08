@@ -2,6 +2,7 @@ const { useEffect, useState, useRef, Fragment } = React;
 
 const StandardInvoice = ({
     invoice_display_id = "",
+    device = "web",
 }) => {
     const [loading, setLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState(null);
@@ -35,7 +36,8 @@ const StandardInvoice = ({
                     set_lead_table_preview_config(data?.invoice_template_generation_id?.lead_table_preview_config);
                     set_totals_section_config(data?.invoice_template_generation_id?.totals_section_config);
                     set_bank_details_config(data?.invoice_template_generation_id?.bank_details_config);
-                    
+                    set_terms_conditions_config(data?.invoice_template_generation_id?.terms_conditions_config);
+
                     const leadTableData = data.product.map(p=> {
                         return data?.invoice_template_generation_id?.lead_table_preview_config.map(c=>{
                             if (c?.column_name === "Lead Name") {
@@ -87,13 +89,16 @@ const StandardInvoice = ({
     return (
         <div
             style={{
-                maxWidth: "900px",
-                margin: "auto",
-                backgroundColor: "#fff",
-                // padding: "30px",
-                fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
-                border: "1px solid #eee",
-                boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+                ...{
+                    maxWidth: "900px",
+                    margin: "auto",
+                    backgroundColor: "#fff",
+                    // padding: "30px",
+                    fontFamily: "Segoe UI, Tahoma, Geneva, Verdana, sans-serif",
+                    border: "1px solid #eee",
+                    boxShadow: "0 0 10px rgba(0,0,0,0.1)",
+                },
+                ...(device === "mobile" && mobileDeviceStyle),
             }}
         >
             {/* Header */}
@@ -247,10 +252,10 @@ const StandardInvoice = ({
                 <div style={{ maxWidth: "45%" }}>
                     <strong>Payment Terms</strong>
                     <br />
-                    {terms_conditions_config?.terms || "Payments to be made within 7 working days."}
+                    {terms_conditions_config?.payment_terms}
                     <br />
                     <br />
-                    Thank you for your business!
+                    {terms_conditions_config?.thank_you_message}
                 </div>
             </div>
         </div>
@@ -276,3 +281,7 @@ const tdStyle = {
 const bankDetailsTdStyle = {
     paddingLeft: '10px'
 }
+
+const mobileDeviceStyle = {
+    zoom: "80%",
+};

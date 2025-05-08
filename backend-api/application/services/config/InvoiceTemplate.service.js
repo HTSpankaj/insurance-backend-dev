@@ -29,6 +29,8 @@ class InvoiceTemplateService {
         totals_section_config,
         bank_details_config,
         terms_conditions_config,
+        category,
+        sub_category
     ) {
         return await this.invoiceTemplateGenerationDatabase.invoiceTemplateGenerationDatabase(
             title,
@@ -40,6 +42,8 @@ class InvoiceTemplateService {
             totals_section_config,
             bank_details_config,
             terms_conditions_config,
+            category,
+            sub_category
         );
     }
 
@@ -55,6 +59,8 @@ class InvoiceTemplateService {
         bank_details_config,
         terms_conditions_config,
         logo_url,
+        category,
+        sub_category
     ) {
         return await this.invoiceTemplateGenerationDatabase.updateInvoiceTemplateGenerationDatabase(
             id,
@@ -68,6 +74,8 @@ class InvoiceTemplateService {
             bank_details_config,
             terms_conditions_config,
             logo_url,
+            category,
+            sub_category
         );
     }
 
