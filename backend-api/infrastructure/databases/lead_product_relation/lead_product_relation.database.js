@@ -69,7 +69,7 @@ class LeadProductRelationDatabase {
                 lead_id(name, email, contact_number, dob, address, city_id(title, state_id(title)), lead_display_id),
                 product_id(product_id, product_name, description, company_id(company_id, company_name), sub_category_id(sub_category_id, title, category_id(category_id, title))),
                 before_issuance_excel_data_id(policy_amount),
-                after_issuance_transaction(commission_admount, actual_number_transaction, current_number_invoice_created, issuance_transaction_invoice(amount, paid_amount, invoice_id(invoice_id, invoice_display_id,advisor_invoice_status, invoice_payment_status,paid_amount), created_at))
+                after_issuance_transaction(commission_amount, actual_number_transaction, current_number_invoice_created, issuance_transaction_invoice(amount, paid_amount, invoice_id(invoice_id, invoice_display_id,advisor_invoice_status, invoice_payment_status,paid_amount), created_at))
                 `,
             )
             // after_issuance_transaction(commission_amount, actual_number_transaction, current_number_invoice_created, issuance_transaction_invoice(advisor_invoice_status, invoice_payment_status, paid_amount, created_at))
