@@ -161,11 +161,11 @@ class LeadService {
                 );
             const total_pages = Math.ceil(total_count / limit);
             return {
-                data,
+                data: data || [],
                 metadata: {
                     page: page_number,
                     per_page: limit,
-                    total_count,
+                    total_count: total_count || 0,
                     total_pages,
                 },
             };
