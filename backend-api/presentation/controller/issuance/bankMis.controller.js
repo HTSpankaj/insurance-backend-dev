@@ -42,6 +42,7 @@ exports.afterBankMisExcelDataController = async (req, res) => {
             data: result,
         });
     } catch (error) {
+        console.error("Error in afterBankMisExcelDataController:", error);
         return res
             .status(500)
             .json({ success: false, error: error?.message || "Something went wrong!" });

@@ -61,7 +61,7 @@ class LeadProductRelationDatabase {
 
     async getLeadProductRelationByAdvisorIdDatabase(page_number, limit, advisor_id) {
         const offset = (page_number - 1) * limit;
-        const { data, total_count } = await this.db
+        const { data, total_count, error } = await this.db
             .from(tableName)
             .select(
                 `
@@ -76,6 +76,12 @@ class LeadProductRelationDatabase {
             .eq("advisor_id", advisor_id)
             .order("created_at", { ascending: false })
             .range(offset, offset + limit - 1);
+        if (error) {
+            console.error("Error in getLeadProductRelationByAdvisorIdDatabase:", error);
+            throw new Error(
+                `Failed to get lead product relation by advisor id: ${error.message || JSON.stringify(error)}`,
+            );
+        }
         return { data, total_count };
     }
 

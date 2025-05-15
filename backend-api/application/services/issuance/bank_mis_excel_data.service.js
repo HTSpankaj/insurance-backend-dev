@@ -29,6 +29,7 @@ class BankMisExcelDataService {
                     data: element,
                     message: "Advisor not found, please check Advisor ID.",
                 });
+                continue;
             }
 
             const advisorInvoiceList =
@@ -40,6 +41,7 @@ class BankMisExcelDataService {
                     data: element,
                     message: "Advisor invoice not found, please check Advisor ID.",
                 });
+                continue;
             }
 
             const productInvoiceSorted = advisorInvoiceList?.data?.sort(
@@ -84,6 +86,7 @@ class BankMisExcelDataService {
                         data: element,
                         message: addBankMisExcelDataAndUpdateInvoiceServiceRes.error,
                     });
+                    continue;
                 }
             }
 

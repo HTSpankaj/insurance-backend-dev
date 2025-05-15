@@ -26,20 +26,20 @@ const beforeIssuanceExcelDataValidator = [
             "lead_product_relation_id must be in the format LPR-<number> (e.g., LPR-1, LPR-4434)",
         ),
     body("data.*.lead_close_date")
-        .isISO8601()
-        .withMessage("lead_close_date must be a valid date")
-        .isDate({ format: "YYYY-MM-DD" })
-        .withMessage("Date must be in YYYY-MM-DD format"),
+        // .isISO8601()
+        .withMessage("lead_close_date must be a valid date"),
+    // .isDate({ format: "YYYY-MM-DD" })
+    // .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.start_date_policy")
-        .isISO8601()
-        .withMessage("start_date_policy must be a valid date")
-        .isDate({ format: "YYYY-MM-DD" })
-        .withMessage("Date must be in YYYY-MM-DD format"),
+        // .isISO8601()
+        .withMessage("start_date_policy must be a valid date"),
+    // .isDate({ format: "YYYY-MM-DD" })
+    // .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.end_date_policy")
-        .isISO8601()
-        .withMessage("end_date_policy must be a valid date")
-        .isDate({ format: "YYYY-MM-DD" })
-        .withMessage("Date must be in YYYY-MM-DD format"),
+        // .isISO8601()
+        .withMessage("end_date_policy must be a valid date"),
+    // .isDate({ format: "YYYY-MM-DD" })
+    // .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.policy_amount")
         .isFloat({ min: 0 })
         .withMessage("policy_amount must be a positive number"),

@@ -27,20 +27,20 @@ const afterIssuanceExcelDataValidator = [
             "lead_product_relation_id must be in the format LPR-<number> (e.g., LPR-1, LPR-4434)",
         ),
     body("data.*.lead_close_date")
-        .isISO8601()
-        .withMessage("lead_close_date must be a valid date")
-        .isDate({ format: "YYYY-MM-DD" })
-        .withMessage("Date must be in YYYY-MM-DD format"),
+        // .isISO8601()
+        .withMessage("lead_close_date must be a valid date"),
+    // .isDate({ format: "YYYY-MM-DD" })
+    // .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.start_date_policy")
-        .isISO8601()
-        .withMessage("start_date_policy must be a valid date")
-        .isDate({ format: "YYYY-MM-DD" })
-        .withMessage("Date must be in YYYY-MM-DD format"),
+        // .isISO8601()
+        .withMessage("start_date_policy must be a valid date"),
+    // .isDate({ format: "YYYY-MM-DD" })
+    // .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.end_date_policy")
-        .isISO8601()
-        .withMessage("end_date_policy must be a valid date")
-        .isDate({ format: "YYYY-MM-DD" })
-        .withMessage("Date must be in YYYY-MM-DD format"),
+        // .isISO8601()
+        .withMessage("end_date_policy must be a valid date"),
+    // .isDate({ format: "YYYY-MM-DD" })
+    // .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.policy_amount")
         .isFloat({ min: 0 })
         .withMessage("policy_amount must be a positive number"),
@@ -58,20 +58,20 @@ const afterIssuanceExcelDataValidator = [
     //     .withMessage("commission_transaction_number must be a positive integer"),
 
     body("data.*.policy_sold_date")
-        .isISO8601()
-        .withMessage("policy_sold_date must be a valid date")
-        .isDate({ format: "YYYY-MM-DD" })
-        .withMessage("Date must be in YYYY-MM-DD format"),
+        // .isISO8601()
+        .withMessage("policy_sold_date must be a valid date"),
+    // .isDate({ format: "YYYY-MM-DD" })
+    // .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.commission_start_date")
-        .isISO8601()
-        .withMessage("commission_start_date must be a valid date")
-        .isDate({ format: "YYYY-MM-DD" })
-        .withMessage("Date must be in YYYY-MM-DD format"),
+        // .isISO8601()
+        .withMessage("commission_start_date must be a valid date"),
+    // .isDate({ format: "YYYY-MM-DD" })
+    // .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.commission_end_date")
-        .isISO8601()
-        .withMessage("commission_end_date must be a valid date")
-        .isDate({ format: "YYYY-MM-DD" })
-        .withMessage("Date must be in YYYY-MM-DD format"),
+        // .isISO8601()
+        .withMessage("commission_end_date must be a valid date"),
+    // .isDate({ format: "YYYY-MM-DD" })
+    // .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.file_name").isString().notEmpty().withMessage("file_name is required"),
     body("data.*.row_number")
         .isInt({ min: 1 })
@@ -81,20 +81,20 @@ const afterIssuanceExcelDataValidator = [
     //  "issuance_date": "",
     body("data.*.issuance_date")
         .optional()
-        .isISO8601()
-        .withMessage("issuance_date must be a valid date")
-        .isDate({ format: "YYYY-MM-DD" })
-        .withMessage("Date must be in YYYY-MM-DD format"),
+        // .isISO8601()
+        .withMessage("issuance_date must be a valid date"),
+    // .isDate({ format: "YYYY-MM-DD" })
+    // .withMessage("Date must be in YYYY-MM-DD format"),
 
     //  //? Mutual Products//      One Time
     //  "profit_book_amount": "",
     //  "profit_book_date": "",
     body("data.*.profit_book_date")
         .optional()
-        .isISO8601()
-        .withMessage("profit_book_date must be a valid date")
-        .isDate({ format: "YYYY-MM-DD" })
-        .withMessage("Date must be in YYYY-MM-DD format"),
+        // .isISO8601()
+        .withMessage("profit_book_date must be a valid date"),
+    // .isDate({ format: "YYYY-MM-DD" })
+    // .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.profit_book_amount")
         .optional()
         .isFloat({ min: 0 })
@@ -111,10 +111,10 @@ const afterIssuanceExcelDataValidator = [
         .withMessage("loan_disbursed_amount must be a positive number"),
     body("data.*.loan_disbursed_date")
         .optional()
-        .isISO8601()
-        .withMessage("loan_disbursed_date must be a valid date")
-        .isDate({ format: "YYYY-MM-DD" })
-        .withMessage("Date must be in YYYY-MM-DD format"),
+        // .isISO8601()
+        .withMessage("loan_disbursed_date must be a valid date"),
+    // .isDate({ format: "YYYY-MM-DD" })
+    // .withMessage("Date must be in YYYY-MM-DD format"),
     body("data.*.emi_amount")
         .optional()
         .isFloat({ min: 0 })

@@ -98,7 +98,8 @@ class IssuanceTransactionInvoiceDatabase {
             const offset = (pageNumber - 1) * limit;
             let query = this.db
                 .from(invoice_tableName)
-                .select(`*, 
+                .select(
+                    `*, 
                     advisor:advisor_id(name, mobile_number, email, advisor_display_id, gstin_number, bank_details(*)),
                     product:issuance_transaction_invoice(*,
                     after_issuance_transaction_id(
@@ -109,7 +110,9 @@ class IssuanceTransactionInvoiceDatabase {
                         )
                     )
                     )
-                `, { count: "exact" })
+                `,
+                    { count: "exact" },
+                )
                 .eq("advisor_id", advisor_id);
 
             if (start_date && end_date) {
@@ -133,11 +136,11 @@ class IssuanceTransactionInvoiceDatabase {
                             created_at: p?.created_at,
                             invoice_id: p?.invoice_id,
                             paid_amount: p?.paid_amount,
-    
+
                             lead: p?.after_issuance_transaction_id?.lead_product_relation_id?.lead,
                             product:
                                 p?.after_issuance_transaction_id?.lead_product_relation_id?.product,
-    
+
                             lead_product_id:
                                 p?.after_issuance_transaction_id?.lead_product_relation_id
                                     ?.lead_product_id,
@@ -148,7 +151,7 @@ class IssuanceTransactionInvoiceDatabase {
                     };
 
                     return _m;
-                })
+                });
             }
             return { data: _data, count };
         } catch (error) {

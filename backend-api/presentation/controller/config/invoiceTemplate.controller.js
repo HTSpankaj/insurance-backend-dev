@@ -96,7 +96,7 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
         bank_details_config,
         terms_conditions_config,
         category,
-        sub_category
+        sub_category,
     } = req.body;
 
     try {
@@ -111,7 +111,7 @@ exports.invoiceTemplateGenerationController = async (req, res) => {
             bank_details_config,
             terms_conditions_config,
             category,
-            sub_category
+            sub_category,
         );
         return res.status(200).json({
             success: true,
@@ -199,7 +199,7 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
         bank_details_config,
         terms_conditions_config,
         category,
-        sub_category
+        sub_category,
     } = req.body;
 
     try {
@@ -216,7 +216,7 @@ exports.updateInvoiceTemplateGenerationController = async (req, res) => {
             terms_conditions_config,
             null,
             category,
-            sub_category
+            sub_category,
         );
         return res.status(200).json({
             success: true,
@@ -358,7 +358,7 @@ exports.getInvoiceViewController = async (req, res) => {
 
         res.render("Invoice/standard-invoice", {
             invoice_display_id: invoice_display_id,
-            device:device
+            device: device,
         });
     } catch (error) {
         console.error("Error in getInvoiceViewController:", error);

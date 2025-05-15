@@ -59,8 +59,8 @@ class InvoiceTemplateGenerationDatabase {
         totals_section_config,
         bank_details_config,
         terms_conditions_config,
-        category=[],
-        sub_category=[],
+        category = [],
+        sub_category = [],
     ) {
         try {
             const { data, error } = await this.db
@@ -80,25 +80,28 @@ class InvoiceTemplateGenerationDatabase {
                 .maybeSingle();
             if (data) {
                 const catRes = await this.db
-                .from(invoice_template_generation_category_relation_TableName)
-                .insert(category.map(category_id => ({
-                    invoice_template_generation_id: data.id,
-                    category_id,
-                })))
-                .select("*");
+                    .from(invoice_template_generation_category_relation_TableName)
+                    .insert(
+                        category.map(category_id => ({
+                            invoice_template_generation_id: data.id,
+                            category_id,
+                        })),
+                    )
+                    .select("*");
 
                 const subatRes = await this.db
-                .from(invoice_template_generation_sub_category_relation_TableName)
-                .insert(sub_category.map(sub_category_id => ({
-                    invoice_template_generation_id: data.id,
-                    sub_category_id,
-                })))
-                .select("*");
+                    .from(invoice_template_generation_sub_category_relation_TableName)
+                    .insert(
+                        sub_category.map(sub_category_id => ({
+                            invoice_template_generation_id: data.id,
+                            sub_category_id,
+                        })),
+                    )
+                    .select("*");
 
                 // console.log("catRes", catRes, "subatRes", subatRes);
             }
 
-    
             if (error) {
                 throw error;
             }
@@ -120,8 +123,8 @@ class InvoiceTemplateGenerationDatabase {
         bank_details_config,
         terms_conditions_config,
         logo_url,
-        category=[],
-        sub_category=[]
+        category = [],
+        sub_category = [],
     ) {
         try {
             let postBody = {};
@@ -164,38 +167,41 @@ class InvoiceTemplateGenerationDatabase {
                 .select("*")
                 .maybeSingle();
 
-                if (data) {
-                    if (category?.length) {
-                        await this.db
+            if (data) {
+                if (category?.length) {
+                    await this.db
                         .from(invoice_template_generation_category_relation_TableName)
                         .delete()
                         .eq("invoice_template_generation_id", id);
-    
-                        await this.db
-                        .from(invoice_template_generation_category_relation_TableName)
-                        .insert(category.map(category_id => ({
-                            invoice_template_generation_id: data.id,
-                            category_id,
-                        })))
-                        .select("*");
-                    }
-    
 
-                    if (sub_category?.length) {
-                        await this.db
+                    await this.db
+                        .from(invoice_template_generation_category_relation_TableName)
+                        .insert(
+                            category.map(category_id => ({
+                                invoice_template_generation_id: data.id,
+                                category_id,
+                            })),
+                        )
+                        .select("*");
+                }
+
+                if (sub_category?.length) {
+                    await this.db
                         .from(invoice_template_generation_sub_category_relation_TableName)
                         .delete()
                         .eq("invoice_template_generation_id", id);
-                        
-                        await this.db
+
+                    await this.db
                         .from(invoice_template_generation_sub_category_relation_TableName)
-                        .insert(sub_category.map(sub_category_id => ({
-                            invoice_template_generation_id: data.id,
-                            sub_category_id,
-                        })))
+                        .insert(
+                            sub_category.map(sub_category_id => ({
+                                invoice_template_generation_id: data.id,
+                                sub_category_id,
+                            })),
+                        )
                         .select("*");
-                    }
                 }
+            }
 
             if (error) {
                 throw error;
