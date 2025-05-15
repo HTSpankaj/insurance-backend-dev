@@ -27,7 +27,7 @@ function calculateCommissionTransactionNumber(payout_type, startDate, endDate) {
 
     const totalMonths = end.diff(start, "months", true); // fractional months
 
-    switch (payout_type.toLowerCase()) {
+    switch (payout_type) {
         case "One Time":
             return 1;
 

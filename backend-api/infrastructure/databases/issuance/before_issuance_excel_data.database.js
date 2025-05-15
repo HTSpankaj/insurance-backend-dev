@@ -29,6 +29,7 @@ class BeforeIssuanceExcelDataDatabase {
             "errorArray": payload?.errorArray,
             "row_number": payload?.row_number,
             "file_name": payload?.file_name,
+            transaction_created_by_user_id: payload?.transaction_created_by_user_id
         }
         const { data, error } = await this.db
             .from(tableName)
