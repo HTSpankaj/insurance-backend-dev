@@ -12,6 +12,10 @@ const {
     updateStateController,
     deleteStateController,
 } = require("../../../presentation/controller/common/common.controller");
+const { getTermAndConditionController,
+updateTermAndConditionController,
+getHelpCenterController,
+updateHelpCenterController } = require("../../../presentation/controller/common/commonConfig.controller");
 
 const router = express.Router();
 
@@ -29,5 +33,10 @@ router.post("/add-city", addCityController);
 router.put("/active-inactive-city", activeInactiveCityController);
 router.put("/upsert-city", upsertCityController);
 router.delete("/delete-city", deleteCityController);
+
+router.get("/get-term-and-condition", getTermAndConditionController);
+router.put("/update-term-and-condition", updateTermAndConditionController);
+router.get("/get-help-center", getHelpCenterController);
+router.put("/update-help-center", updateHelpCenterController);
 
 module.exports = router;

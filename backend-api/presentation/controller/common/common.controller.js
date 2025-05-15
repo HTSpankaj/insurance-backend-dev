@@ -9,9 +9,7 @@ const cityService = new CityService(supabaseInstance);
 exports.getStateController = async (req, res) => {
     /*
     #swagger.tags = ['Common']
-
     #swagger.description = 'Get state list.'
-
   */
 
     try {

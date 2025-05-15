@@ -76,6 +76,75 @@ class CourseService {
             );
         }
     }
+  
+    async updateCourseModule(id,title,
+            file_type,
+            content,
+            is_active,
+            is_delete,
+            file,) {
+        try {
+             let courseModule = await this.courseDatabase.updateCourseModule(
+                id, file_type,
+            content,
+            is_active,
+            is_delete
+            );
+
+            if (!courseModule || !courseModule.id) {
+                throw new Error("Failed to update course module");
+            }
+
+            // Step 2: Upload the file to storage if provided
+            let fileUrl = null;
+            if (file) {
+                const fileExtension =
+                    file.mimetype === "application/pdf"
+                        ? "pdf"
+                        : file.mimetype.startsWith("image/")
+                          ? "jpg"
+                          : file.mimetype.startsWith("video/")
+                            ? "mp4"
+                            : "txt";
+                const fileName = `${file.originalname.split(".")[0]}.${fileExtension}`;
+                const filePath = `course_module/${course_id}/${courseModule.id}/${fileName}`;
+
+                console.log("Service - Uploading file to:", filePath);
+                console.log("Service - File details:", {
+                    originalname: file.originalname,
+                    mimetype: file.mimetype,
+                    size: file.size,
+                });
+
+                const { data, error } = await this.storage.uploadFile(
+                    filePath,
+                    file.buffer,
+                    file.mimetype,
+                    true,
+                );
+                if (error) {
+                    console.error("Service - Upload error:", error);
+                    throw new Error(`Upload failed: ${error.message}`);
+                }
+                // console.log("Service - Upload successful:", data);
+
+                fileUrl = await this.storage.getPublicUrl(filePath);
+                console.log("Service - Generated fileUrl:", fileUrl);
+                
+                courseModule = await this.courseDatabase.updateCourseModuleFileUrl(
+                    courseModule.id,
+                    fileUrl,
+                );
+            }
+
+            return courseModule;
+        } catch (error) {
+            console.error("Error in addCourseModule:", error);
+            throw new Error(
+                `Failed to add course module: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 
     // New method to get course modules
     async getCourseModules(courseId) {

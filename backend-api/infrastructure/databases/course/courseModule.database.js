@@ -1,6 +1,11 @@
 const tableName = "course_module";
 
 class CourseDatabase {
+    
+    /**
+     * Constructor for initializing the UsersDatabase
+     * @param {SupabaseClient} supabaseInstance - The supabase instance
+     */
     constructor(supabaseInstance) {
         this.db = supabaseInstance;
     }
@@ -26,6 +31,44 @@ class CourseDatabase {
             return data;
         } catch (error) {
             console.error("Error in addCourseModule:", error);
+            throw new Error(
+                `Failed to add course module: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+    async updateCourseModule(id, file_type,
+            content,
+            is_active,
+            is_delete) {
+        try {
+            let postBody = {}
+            if (file_type) {
+                postBody.file_type = file_type;
+            }
+            if (content) {
+                postBody.content = content;
+            }
+            if (is_active === true || is_active === false) {
+                postBody.is_active = is_active;
+            }
+            if (is_delete === true || is_delete === false) {
+                postBody.is_delete = is_delete;
+            } 
+            const { data, error } = await this.db
+                .from(tableName)
+                .update(postBody)
+                .eq("id", id)
+                .select()
+                .maybeSingle();
+
+            if (error) {
+                console.error("Supabase error in updateCourseModule:", error);
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in updateCourseModule:", error);
             throw new Error(
                 `Failed to add course module: ${error.message || JSON.stringify(error)}`,
             );
@@ -60,6 +103,7 @@ class CourseDatabase {
                 .from(tableName)
                 .select("*")
                 .eq("course_id", courseId)
+                .eq("is_delete", false)
                 .order("created_at", { ascending: true });
 
             if (error) {

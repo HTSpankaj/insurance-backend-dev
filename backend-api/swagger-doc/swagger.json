@@ -1862,6 +1862,120 @@
         }
       }
     },
+    "/api/common/get-term-and-condition": {
+      "get": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Get term and condition config",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/common/update-term-and-condition": {
+      "put": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Update term and condition config",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "content": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/common/get-help-center": {
+      "get": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Get help center config",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/common/update-help-center": {
+      "put": {
+        "tags": [
+          "Config"
+        ],
+        "description": "Update help center config",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": ""
+                },
+                "description": {
+                  "type": "string",
+                  "example": ""
+                },
+                "contact_number": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
     "/api/advisor/advisor-registration": {
       "post": {
         "tags": [
@@ -5126,6 +5240,86 @@
             "type": "string",
             "required": false,
             "description": "Optional description/content of the module"
+          },
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file",
+            "required": false,
+            "description": "Optional file to upload (PDF, Video, Image, etc.)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/course/update-course-module": {
+      "put": {
+        "tags": [
+          "Course_Module "
+        ],
+        "description": "Update a course module",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "ID of the module"
+          },
+          {
+            "name": "title",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "description": "Module title"
+          },
+          {
+            "name": "file_type",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "enum": [
+              "Video",
+              "PDF",
+              "Image",
+              "Text",
+              "URL"
+            ],
+            "description": "Type of file for the module"
+          },
+          {
+            "name": "content",
+            "in": "formData",
+            "type": "string",
+            "required": false,
+            "description": "Optional description/content of the module"
+          },
+          {
+            "name": "is_active",
+            "in": "formData",
+            "type": "boolean",
+            "required": false,
+            "description": "Optional boolean to set the module active or inactive"
+          },
+          {
+            "name": "is_delete",
+            "in": "formData",
+            "type": "boolean",
+            "required": false,
+            "description": "Optional boolean to delete the module"
           },
           {
             "name": "file",

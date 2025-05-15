@@ -83,6 +83,94 @@ exports.addCourseModuleController = async (req, res) => {
         });
     }
 };
+exports.updateCourseModuleController = async (req, res) => {
+    /*
+    #swagger.tags = ['Course_Module ']
+    #swagger.autoBody = false
+    #swagger.description = 'Update a course module'
+    #swagger.consumes = ['multipart/form-data']
+    
+    #swagger.parameters['id'] = {
+        in: 'formData',
+        type: 'string',
+        required: true,
+        description: 'ID of the module'
+    }
+    #swagger.parameters['title'] = { 
+        in: 'formData', 
+        type: 'string', 
+        required: false, 
+        description: 'Module title' 
+    }
+    #swagger.parameters['file_type'] = { 
+        in: 'formData', 
+        type: 'string', 
+        required: false, 
+        enum: ['Video', 'PDF', 'Image', 'Text', 'URL'], 
+        description: 'Type of file for the module' 
+    }
+    #swagger.parameters['content'] = { 
+        in: 'formData', 
+        type: 'string', 
+        required: false, 
+        description: 'Optional description/content of the module' 
+    }
+    #swagger.parameters['is_active'] = {
+        in: 'formData',
+        type: 'boolean',
+        required: false,
+        description: 'Optional boolean to set the module active or inactive'
+    }
+    #swagger.parameters['is_delete'] = {
+        in: 'formData',
+        type: 'boolean',
+        required: false,
+        description: 'Optional boolean to delete the module'
+    }
+    #swagger.parameters['file'] = { 
+        in: 'formData', 
+        type: 'file', 
+        required: false, 
+        description: 'Optional file to upload (PDF, Video, Image, etc.)' 
+    }
+    */
+    try {
+        const { id, title, file_type, content, is_active, is_delete } = req.body;
+        const file = req.file; // Should be populated by Multer
+        // console.log("Controller - Received file:", file); // Debug log
+
+        // Validation
+        if (!title || typeof title !== "string" || title.trim().length < 1) {
+            throw new Error("Title must be a non-empty string");
+        }
+        if (!file_type || !["Video", "PDF", "Image", "Text", "URL"].includes(file_type)) {
+            throw new Error("File type must be one of: Video, PDF, Image, Text");
+        }
+        if (content && (typeof content !== "string" || content.trim().length < 1)) {
+            throw new Error("Content must be a non-empty string if provided");
+        }
+
+        const result = await courseService.updateCourseModule(
+            id,
+            title,
+            file_type,
+            content || null,
+            is_active,
+            is_delete,
+            file,
+        );
+
+        return res.status(200).json({
+            success: true,
+            data: result,
+        });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
 
 exports.getCourseModulesController = async (req, res) => {
     /*
