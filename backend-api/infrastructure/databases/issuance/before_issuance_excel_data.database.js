@@ -12,9 +12,27 @@ class BeforeIssuanceExcelDataDatabase {
     }
 
     async addBeforeIssuanceExcelDataDatabase(payload) {
+
+        let postBody = {
+            "lead_id": payload?.lead_id,
+            "lead_name": payload?.lead_name,
+            "product_id": payload?.product_id,
+            "product_name": payload?.product_name,
+            "company_name": payload?.company_name,
+            "lead_product_relation_id": payload?.lead_product_relation_id,
+            "lead_close_date": payload?.lead_close_date,
+            "start_date_policy": payload?.start_date_policy,
+            "end_date_policy": payload?.end_date_policy,
+            "policy_amount": payload?.policy_amount,
+            "payout_type": payload?.payout_type,
+            "commission_amount": payload?.commission_amount,
+            "errorArray": payload?.errorArray,
+            "row_number": payload?.row_number,
+            "file_name": payload?.file_name,
+        }
         const { data, error } = await this.db
             .from(tableName)
-            .insert(payload)
+            .insert(postBody)
             .select("*")
             .maybeSingle();
         if (data) {
