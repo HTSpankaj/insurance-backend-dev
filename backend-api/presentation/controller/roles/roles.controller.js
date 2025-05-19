@@ -1,20 +1,3 @@
-/***const RolesService = require('../../../services/roles/roles.service');
-
-class RolesController {
-  async createRole(req, res) {
-    const { title, access } = req.body;
-    const result = await RolesService.createRole(title, access);
-    return res.status(result.success ? 201 : 400).json(result);
-  }
-
-  async getRoles(req, res) {
-    const pageNumber = parseInt(req.query.page_number) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const result = await RolesService.getRoles(pageNumber, limit);
-    return res.status(result.success ? 200 : 400).json(result);
-  }
-}***/
-
 var { supabaseInstance } = require("../../../supabase-db/index.js");
 
 const RolesService = require("../../../application/services/roles/roles.service.js");
@@ -38,7 +21,8 @@ exports.createRoleController = async (req, res) => {
             data: result,
         });
     } catch (error) {
-        return res.status(500).json({ success: false, error: error || "Something went wrong!" });
+        // console.error("Error in createRoleController:", error);
+        return res.status(500).json({ success: false, error: {message: error?.message || "Something went wrong!"} });
     }
 };
 

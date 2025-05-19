@@ -11,20 +11,7 @@ class RolesService {
     }
 
     async createRole(title, access) {
-        try {
-            const role = await this.rolesDatabase.createRole(title, access);
-            return {
-                success: true,
-                data: role,
-            };
-        } catch (error) {
-            return {
-                success: false,
-                error: {
-                    message: error.message,
-                },
-            };
-        }
+        return  await this.rolesDatabase.createRole(title, access);
     }
 
     async getRoles(pageNumber, limit) {
@@ -51,20 +38,7 @@ class RolesService {
 
     // New method to update a role
     async updateRole(role_id, title, access) {
-        try {
-            const role = await this.rolesDatabase.updateRole(role_id, title, access);
-            return {
-                success: true,
-                data: role,
-            };
-        } catch (error) {
-            return {
-                success: false,
-                error: {
-                    message: error.message,
-                },
-            };
-        }
+        return await this.rolesDatabase.updateRole(role_id, title, access);
     }
 
     // New method to soft-delete a role

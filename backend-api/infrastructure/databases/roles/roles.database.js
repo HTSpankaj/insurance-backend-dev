@@ -16,6 +16,14 @@ class RolesDatabase {
                 throw new Error("Access must be a valid JSON object");
             }
 
+            const existingRole = await this.db
+                .from(tableName)
+                .select()
+                .eq("title", title)
+            if (existingRole?.data?.length > 0) {
+                throw new Error(`Role with title '${title}' already exists.`);
+            }
+
             const { data, error } = await this.db
                 .from(tableName)
                 .insert({ title, access }) // Supabase will automatically convert object to JSONB
@@ -25,7 +33,7 @@ class RolesDatabase {
             if (error) throw error;
             return data;
         } catch (error) {
-            throw new Error(`Failed to create role: ${error.message}`);
+            throw new Error(`${error.message}`);
         }
     }
 
@@ -54,6 +62,15 @@ class RolesDatabase {
                     throw new Error("Access must be a valid JSON object");
                 }
                 updates.access = access;
+            }
+
+            const existingRole = await this.db
+                .from(tableName)
+                .select()
+                .eq("title", title)
+                .neq("roles_id", role_id)
+            if (existingRole?.data?.length > 0) {
+                throw new Error(`Role with title '${title}' already exists.`);
             }
 
             const { data, error } = await this.db
