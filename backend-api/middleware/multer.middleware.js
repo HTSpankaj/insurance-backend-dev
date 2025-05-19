@@ -5,20 +5,20 @@ const storage = multer.memoryStorage();
 // Define allowed mime types for each field
 const allowedTypes = {
     front_aadhar_card_file: mimetype =>
-        ["application/pdf", "image/jpeg", "image/png"].includes(mimetype),
+        ["application/pdf", "image/jpeg", "image/png", "image/webp"].includes(mimetype),
     back_aadhar_card_file: mimetype =>
-        ["application/pdf", "image/jpeg", "image/png"].includes(mimetype),
+        ["application/pdf", "image/jpeg", "image/png", "image/webp"].includes(mimetype),
     front_pan_card_file: mimetype =>
-        ["application/pdf", "image/jpeg", "image/png"].includes(mimetype),
+        ["application/pdf", "image/jpeg", "image/png", "image/webp"].includes(mimetype),
     back_pan_card_file: mimetype =>
-        ["application/pdf", "image/jpeg", "image/png"].includes(mimetype),
+        ["application/pdf", "image/jpeg", "image/png", "image/webp"].includes(mimetype),
     logo_file: mimetype => ["application/pdf", "image/jpeg", "image/png"].includes(mimetype),
     irdai_license_file: mimetype =>
-        ["application/pdf", "image/jpeg", "image/png"].includes(mimetype),
+        ["application/pdf", "image/jpeg", "image/png", "image/webp"].includes(mimetype),
     terms_of_agreement_file: mimetype =>
-        ["application/pdf", "image/jpeg", "image/png"].includes(mimetype),
+        ["application/pdf", "image/jpeg", "image/png", "image/webp"].includes(mimetype),
     business_certification_file: mimetype =>
-        ["application/pdf", "image/jpeg", "image/png"].includes(mimetype),
+        ["application/pdf", "image/jpeg", "image/png", "image/webp"].includes(mimetype),
     product_brochure_url: mimetype => mimetype === "application/pdf",
     promotional_video_url: mimetype => mimetype.startsWith("video/"),
     promotional_image_url: mimetype => mimetype.startsWith("image/"),
