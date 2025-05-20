@@ -27,6 +27,35 @@ class RegionService {
             throw new Error(`Failed to add region: ${error.message || JSON.stringify(error)}`);
         }
     }
+    async checkRegion(title, state, city=[], company_id, region_id) {
+        try {
+            let messageObj = {};
+            const region = await this.regionDatabase.checkRegion(title, company_id, region_id);
+            if (region?.length > 0) {
+                messageObj.title = "Region title already exists";
+            }
+
+            if (city?.length > 0) {
+                let cityName = [];
+
+                region.forEach(regionElement => {
+                    regionElement?.city?.forEach(_serverCity => {
+                        if (city.includes(_serverCity.city_id.id) && !cityName.includes(_serverCity.city_id.title)) {
+                            cityName.push(_serverCity.city_id.title);
+                        }
+                    });
+                });
+                if (cityName?.length > 0) {
+                    messageObj.city = `City ${cityName?.join(", ")} already exists`;
+                }
+            }
+
+            return messageObj;
+        } catch (error) {
+            console.error("Error in addRegion:", error);
+            throw new Error(`Failed to add region: ${error.message || JSON.stringify(error)}`);
+        }
+    }
     async updateRegion(region_id, title, state, city, company_id) {
         try {
             // Insert into region table

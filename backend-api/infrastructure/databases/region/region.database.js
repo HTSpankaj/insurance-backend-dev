@@ -31,6 +31,31 @@ class RegionDatabase {
             throw new Error(`Failed to create region: ${error.message || JSON.stringify(error)}`);
         }
     }
+    async checkRegion(title, company_id, region_id) {
+        try {
+            let query = this.db
+                .from(regionTableName)
+                .select("*, state:region_state(*, state_id(*)), city:region_city(*, city_id(*))")
+                .eq("company_id", company_id)
+                .eq("title", title);
+
+                if (region_id) {
+                    query = query.neq("region_id", region_id);
+                }
+                
+            const { data, error } = await query;
+
+            if (error) {
+                console.error("Supabase error in checkRegion:", error);
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in createRegion:", error);
+            throw new Error(`Failed to create region: ${error.message || JSON.stringify(error)}`);
+        }
+    }
     async updateRegion(region_id, title, company_id) {
         try {
             const { data, error } = await this.db

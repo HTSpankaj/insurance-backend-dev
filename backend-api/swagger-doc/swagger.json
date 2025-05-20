@@ -666,6 +666,68 @@
         }
       }
     },
+    "/api/region/check-region": {
+      "post": {
+        "tags": [
+          "region"
+        ],
+        "description": "Check only Region for duplicate",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "North Region"
+                },
+                "region_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "company_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "state": {
+                  "type": "array",
+                  "example": [
+                    "550e8400-e29b-41d4-a716-446655440000",
+                    "550e8400-e29b-41d4-a716-446655440001"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "city": {
+                  "type": "array",
+                  "example": [
+                    "550e8400-e29b-41d4-a716-446655440002",
+                    "550e8400-e29b-41d4-a716-446655440003"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/region/update-region": {
       "put": {
         "tags": [

@@ -57,6 +57,63 @@ exports.addRegionController = async (req, res) => {
         });
     }
 };
+exports.checkRegionController = async (req, res) => {
+    /*
+    #swagger.tags = ['region']
+    #swagger.description = 'Check only Region for duplicate'
+    #swagger.parameters['body'] = {
+        in: 'body',
+        schema:  {
+            title: 'North Region',
+            region_id: '550e8400-e29b-41d4-a716-446655440000',
+            company_id: '550e8400-e29b-41d4-a716-446655440000',
+            state: ['550e8400-e29b-41d4-a716-446655440000', '550e8400-e29b-41d4-a716-446655440001'],
+            city: ['550e8400-e29b-41d4-a716-446655440002', '550e8400-e29b-41d4-a716-446655440003']
+        }
+    }
+    */
+    try {
+        const { title, state, city, company_id, region_id } = req.body;
+
+        // Validation
+        if (!title || typeof title !== "string" || title.trim().length < 2) {
+            throw new Error("Title must be a string with at least 2 characters");
+        }
+        if (!Array.isArray(state) || state.length === 0) {
+            throw new Error("State must be a non-empty array of UUIDs");
+        }
+        if (!Array.isArray(city) || city.length === 0) {
+            throw new Error("City must be a non-empty array of UUIDs");
+        }
+
+        const uuidRegex =
+            /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+        state.forEach((id, index) => {
+            if (!uuidRegex.test(id)) {
+                throw new Error(`State ID at index ${index} is not a valid UUID`);
+            }
+        });
+        city.forEach((id, index) => {
+            if (!uuidRegex.test(id)) {
+                throw new Error(`City ID at index ${index} is not a valid UUID`);
+            }
+        });
+
+        const checkMessages = await regionService.checkRegion(title, state, city, company_id, region_id);
+
+        return res.status(200).json({
+            success: !Boolean(Object.keys(checkMessages).length > 0), 
+            data: checkMessages,
+        });
+    } catch (error) {
+        console.error("Error in checkRegion  controller:", error);
+        
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
 exports.updateRegionController = async (req, res) => {
     /*
     #swagger.tags = ['region']
