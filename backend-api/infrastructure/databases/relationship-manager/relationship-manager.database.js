@@ -37,6 +37,28 @@ class RelationshipManagerDatabase {
             );
         }
     }
+    async checkRelationshipManager(company_id) {
+        try {
+            const { data, error } = await this.db
+                .from(relationshipManagerTableName)
+                .select(
+                    "*, region:relationship_manager_region_relations(*, region_id(region_id, title)), category:relationship_manager_category_relations(*, category_id(category_id, title))",
+                )
+                .eq("company_id", company_id);
+
+            if (error) {
+                console.error("Supabase error in checkRelationshipManager:", error);
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in checkRelationshipManager:", error);
+            throw new Error(
+                `Failed to check relationship manager: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 
     async updateRelationshipManager(rm_id, name, contact_number, company_id) {
         try {

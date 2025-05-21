@@ -12,10 +12,12 @@ const {
     updateStateController,
     deleteStateController,
 } = require("../../../presentation/controller/common/common.controller");
-const { getTermAndConditionController,
-updateTermAndConditionController,
-getHelpCenterController,
-updateHelpCenterController } = require("../../../presentation/controller/common/commonConfig.controller");
+const {
+    getTermAndConditionController,
+    updateTermAndConditionController,
+    getHelpCenterController,
+    updateHelpCenterController,
+} = require("../../../presentation/controller/common/commonConfig.controller");
 
 const router = express.Router();
 

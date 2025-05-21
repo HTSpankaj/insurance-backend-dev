@@ -12,7 +12,7 @@ class CommonConfigService {
     async getTermAndConditionService() {
         return await this.commonConfigDatabase.getTermAndConditionDatabase();
     }
-    
+
     async updateTermAndConditionService(content) {
         return await this.commonConfigDatabase.updateTermAndConditionDatabase(content);
     }
@@ -20,13 +20,13 @@ class CommonConfigService {
     async getHelpCenterService() {
         return await this.commonConfigDatabase.getHelpCenterDatabase();
     }
-    
-    async updateHelpCenterService(title,
-        description,
-        contact_number) {
-        return await this.commonConfigDatabase.updateHelpCenterDatabase(title,
+
+    async updateHelpCenterService(title, description, contact_number) {
+        return await this.commonConfigDatabase.updateHelpCenterDatabase(
+            title,
             description,
-            contact_number);
+            contact_number,
+        );
     }
 }
 

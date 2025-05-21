@@ -28,11 +28,13 @@ const remunerationBankMisUploadExcelValidator = [
         .isString()
         .withMessage("transaction_reference_number must be a string"),
 
-    body("data.*.payment_date").notEmpty().withMessage("payment_date is required")
-    .isISO8601()
-    .withMessage("payment_date must be a valid date (YYYY-MM-DD)")
-    .isDate({ format: "YYYY-MM-DD" })
-    .withMessage("Date must be in YYYY-MM-DD format"),
+    body("data.*.payment_date")
+        .notEmpty()
+        .withMessage("payment_date is required")
+        .isISO8601()
+        .withMessage("payment_date must be a valid date (YYYY-MM-DD)")
+        .isDate({ format: "YYYY-MM-DD" })
+        .withMessage("Date must be in YYYY-MM-DD format"),
 
     body("data.*.payment_mode")
         .notEmpty()

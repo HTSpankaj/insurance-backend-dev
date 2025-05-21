@@ -22,7 +22,12 @@ exports.createRoleController = async (req, res) => {
         });
     } catch (error) {
         // console.error("Error in createRoleController:", error);
-        return res.status(500).json({ success: false, error: {message: error?.message || "Something went wrong!"} });
+        return res
+            .status(500)
+            .json({
+                success: false,
+                error: { message: error?.message || "Something went wrong!" },
+            });
     }
 };
 

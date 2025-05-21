@@ -76,19 +76,15 @@ class CourseService {
             );
         }
     }
-  
-    async updateCourseModule(id,title,
-            file_type,
-            content,
-            is_active,
-            is_delete,
-            file,) {
+
+    async updateCourseModule(id, title, file_type, content, is_active, is_delete, file) {
         try {
-             let courseModule = await this.courseDatabase.updateCourseModule(
-                id, file_type,
-            content,
-            is_active,
-            is_delete
+            let courseModule = await this.courseDatabase.updateCourseModule(
+                id,
+                file_type,
+                content,
+                is_active,
+                is_delete,
             );
 
             if (!courseModule || !courseModule.id) {
@@ -130,7 +126,7 @@ class CourseService {
 
                 fileUrl = await this.storage.getPublicUrl(filePath);
                 console.log("Service - Generated fileUrl:", fileUrl);
-                
+
                 courseModule = await this.courseDatabase.updateCourseModuleFileUrl(
                     courseModule.id,
                     fileUrl,

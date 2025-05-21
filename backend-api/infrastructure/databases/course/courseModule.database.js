@@ -1,7 +1,6 @@
 const tableName = "course_module";
 
 class CourseDatabase {
-    
     /**
      * Constructor for initializing the UsersDatabase
      * @param {SupabaseClient} supabaseInstance - The supabase instance
@@ -36,12 +35,9 @@ class CourseDatabase {
             );
         }
     }
-    async updateCourseModule(id, file_type,
-            content,
-            is_active,
-            is_delete) {
+    async updateCourseModule(id, file_type, content, is_active, is_delete) {
         try {
-            let postBody = {}
+            let postBody = {};
             if (file_type) {
                 postBody.file_type = file_type;
             }
@@ -53,7 +49,7 @@ class CourseDatabase {
             }
             if (is_delete === true || is_delete === false) {
                 postBody.is_delete = is_delete;
-            } 
+            }
             const { data, error } = await this.db
                 .from(tableName)
                 .update(postBody)

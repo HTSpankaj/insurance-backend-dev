@@ -11,7 +11,7 @@ class RolesService {
     }
 
     async createRole(title, access) {
-        return  await this.rolesDatabase.createRole(title, access);
+        return await this.rolesDatabase.createRole(title, access);
     }
 
     async getRoles(pageNumber, limit) {

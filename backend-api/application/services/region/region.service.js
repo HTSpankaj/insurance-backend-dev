@@ -27,12 +27,20 @@ class RegionService {
             throw new Error(`Failed to add region: ${error.message || JSON.stringify(error)}`);
         }
     }
-    async checkRegion(title, state, city=[], company_id, region_id) {
+    async checkRegion(title, state, city = [], company_id, region_id) {
         try {
             let messageObj = {};
             const region = await this.regionDatabase.checkRegion(title, company_id, region_id);
             if (region?.length > 0) {
-                messageObj.title = "Region title already exists";
+                if (
+                    region?.some(
+                        s =>
+                            s?.title?.toLowerCase() === title?.toLowerCase() &&
+                            s?.region_id !== region_id,
+                    )
+                ) {
+                    messageObj.title = "Region title already exists";
+                }
             }
 
             if (city?.length > 0) {
@@ -40,7 +48,11 @@ class RegionService {
 
                 region.forEach(regionElement => {
                     regionElement?.city?.forEach(_serverCity => {
-                        if (city.includes(_serverCity.city_id.id) && !cityName.includes(_serverCity.city_id.title)) {
+                        if (
+                            city.includes(_serverCity.city_id.id) &&
+                            _serverCity?.region_id !== region_id &&
+                            !cityName.includes(_serverCity.city_id.title)
+                        ) {
                             cityName.push(_serverCity.city_id.title);
                         }
                     });
@@ -51,6 +63,7 @@ class RegionService {
             }
 
             return messageObj;
+            // return region
         } catch (error) {
             console.error("Error in addRegion:", error);
             throw new Error(`Failed to add region: ${error.message || JSON.stringify(error)}`);

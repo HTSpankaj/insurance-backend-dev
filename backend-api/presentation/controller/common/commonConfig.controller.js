@@ -50,7 +50,6 @@ exports.updateTermAndConditionController = async (req, res) => {
     }
 };
 
-
 exports.getHelpCenterController = async (req, res) => {
     /*
     #swagger.tags = ['Config']
@@ -85,12 +84,12 @@ exports.updateHelpCenterController = async (req, res) => {
     }
     */
     try {
-        const { title,
-        description,
-        contact_number } = req.body;
-        const result = await commonConfigService.updateHelpCenterService(title,
-        description,
-        contact_number);
+        const { title, description, contact_number } = req.body;
+        const result = await commonConfigService.updateHelpCenterService(
+            title,
+            description,
+            contact_number,
+        );
         return res.status(200).json({
             success: true,
             message: "Update help center config successfully.",

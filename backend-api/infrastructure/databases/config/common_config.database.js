@@ -15,7 +15,11 @@ class CommonConfigDatabase {
 
     async getTermAndConditionDatabase() {
         try {
-            const { data, error } = await this.db.from(tableName).select("*").eq("id", termAndConditionId).maybeSingle();
+            const { data, error } = await this.db
+                .from(tableName)
+                .select("*")
+                .eq("id", termAndConditionId)
+                .maybeSingle();
 
             if (error) throw error;
             return data;
@@ -28,7 +32,7 @@ class CommonConfigDatabase {
         try {
             const { data, error } = await this.db
                 .from(tableName)
-                .update({ config: {content} })
+                .update({ config: { content } })
                 .eq("id", termAndConditionId)
                 .select()
                 .maybeSingle();
@@ -42,7 +46,11 @@ class CommonConfigDatabase {
 
     async getHelpCenterDatabase() {
         try {
-            const { data, error } = await this.db.from(tableName).select("*").eq("id", helpCenterId).maybeSingle();
+            const { data, error } = await this.db
+                .from(tableName)
+                .select("*")
+                .eq("id", helpCenterId)
+                .maybeSingle();
 
             if (error) throw error;
             return data;
@@ -51,15 +59,11 @@ class CommonConfigDatabase {
         }
     }
 
-    async updateHelpCenterDatabase(title,
-description,
-contact_number) {
+    async updateHelpCenterDatabase(title, description, contact_number) {
         try {
             const { data, error } = await this.db
                 .from(tableName)
-                .update({ config: {title,
-description,
-contact_number} })
+                .update({ config: { title, description, contact_number } })
                 .eq("id", helpCenterId)
                 .select()
                 .maybeSingle();

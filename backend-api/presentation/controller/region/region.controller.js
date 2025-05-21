@@ -99,15 +99,21 @@ exports.checkRegionController = async (req, res) => {
             }
         });
 
-        const checkMessages = await regionService.checkRegion(title, state, city, company_id, region_id);
+        const checkMessages = await regionService.checkRegion(
+            title,
+            state,
+            city,
+            company_id,
+            region_id,
+        );
 
         return res.status(200).json({
-            success: !Boolean(Object.keys(checkMessages).length > 0), 
+            success: !Boolean(Object.keys(checkMessages).length > 0),
             data: checkMessages,
         });
     } catch (error) {
         console.error("Error in checkRegion  controller:", error);
-        
+
         return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },

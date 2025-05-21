@@ -36,13 +36,8 @@ class RegionDatabase {
             let query = this.db
                 .from(regionTableName)
                 .select("*, state:region_state(*, state_id(*)), city:region_city(*, city_id(*))")
-                .eq("company_id", company_id)
-                .eq("title", title);
+                .eq("company_id", company_id);
 
-                if (region_id) {
-                    query = query.neq("region_id", region_id);
-                }
-                
             const { data, error } = await query;
 
             if (error) {

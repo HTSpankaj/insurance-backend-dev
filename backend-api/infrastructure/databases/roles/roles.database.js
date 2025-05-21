@@ -16,10 +16,7 @@ class RolesDatabase {
                 throw new Error("Access must be a valid JSON object");
             }
 
-            const existingRole = await this.db
-                .from(tableName)
-                .select()
-                .eq("title", title)
+            const existingRole = await this.db.from(tableName).select().eq("title", title);
             if (existingRole?.data?.length > 0) {
                 throw new Error(`Role with title '${title}' already exists.`);
             }
@@ -68,7 +65,7 @@ class RolesDatabase {
                 .from(tableName)
                 .select()
                 .eq("title", title)
-                .neq("roles_id", role_id)
+                .neq("roles_id", role_id);
             if (existingRole?.data?.length > 0) {
                 throw new Error(`Role with title '${title}' already exists.`);
             }

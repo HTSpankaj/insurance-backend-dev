@@ -1,6 +1,7 @@
 const express = require("express");
 const {
     addRelationshipManagerController,
+    checkRelationshipManagerController,
     relationshipManagerAssignToLeadController,
     updateRelationshipManagerController,
     deleteRelationshipManagerController,
@@ -14,6 +15,7 @@ const {
 const router = express.Router();
 
 router.post("/add-relationship-manager", addRelationshipManagerController);
+router.post("/check-relationship-manager", checkRelationshipManagerController);
 router.put("/update-relationship-manager", updateRelationshipManagerController);
 router.post(
     "/assign-relationship-manager-to-lead",

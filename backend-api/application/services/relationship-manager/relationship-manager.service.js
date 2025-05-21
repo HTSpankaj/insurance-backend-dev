@@ -46,6 +46,66 @@ class RelationshipManagerService {
             );
         }
     }
+    async checkRelationshipManager(rm_id, name, contact_number, region, category, company_id) {
+        try {
+            let messageObj = {};
+
+            const relationshipManagers =
+                await this.relationshipManagerDatabase.checkRelationshipManager(company_id);
+            if (relationshipManagers?.length > 0) {
+                if (relationshipManagers?.some(s => s?.name === name && s?.rm_id !== rm_id)) {
+                    messageObj.name = "Name already exists";
+                }
+                if (
+                    relationshipManagers?.some(
+                        s => s?.contact_number === contact_number && s?.rm_id !== rm_id,
+                    )
+                ) {
+                    messageObj.contact_number = "Contact number already exists";
+                }
+            }
+            // if (region?.some(s => s?.title?.toLowerCase() === title?.toLowerCase() && s?.region_id !== region_id)) {
+            //         messageObj.title = "Region title already exists";
+            //     }
+
+            let regionName = [];
+            let categoryName = [];
+
+            relationshipManagers.forEach(relationshipManagerElement => {
+                relationshipManagerElement?.region?.forEach(_serverRegion => {
+                    if (
+                        region.includes(_serverRegion.region_id?.region_id) &&
+                        _serverRegion?.relationship_manager_id !== rm_id &&
+                        !regionName?.includes(_serverRegion?.region_id?.title)
+                    ) {
+                        regionName.push(_serverRegion.region_id.title);
+                    }
+                });
+                relationshipManagerElement?.category?.forEach(_serverCategory => {
+                    if (
+                        category.includes(_serverCategory.category_id?.category_id) &&
+                        _serverCategory?.relationship_manager_id !== rm_id &&
+                        !categoryName?.includes(_serverCategory?.category_id?.title)
+                    ) {
+                        categoryName.push(_serverCategory.category_id.title);
+                    }
+                });
+            });
+            if (regionName?.length > 0) {
+                messageObj.region = `Region ${regionName?.join(", ")} already exists`;
+            }
+            if (categoryName?.length > 0) {
+                messageObj.category = `Category ${categoryName?.join(", ")} already exists`;
+            }
+
+            return messageObj;
+        } catch (error) {
+            console.error("Error in checkRelationshipManager:", error);
+            throw new Error(
+                `Failed to check relationship manager: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
     async updateRelationshipManager(rm_id, name, contact_number, region, category, company_id) {
         try {
             // Insert into relationship_manager table
