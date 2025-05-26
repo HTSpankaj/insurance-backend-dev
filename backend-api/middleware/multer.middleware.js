@@ -46,6 +46,7 @@ const upload = multer({
     { name: "back_aadhar_card_file", maxCount: 1 },
     { name: "front_pan_card_file", maxCount: 1 },
     { name: "back_pan_card_file", maxCount: 1 },
+    { name: "gstin_file", maxCount: 1 },
     { name: "logo_file", maxCount: 1 },
     { name: "irdai_license_file", maxCount: 1 },
     { name: "terms_of_agreement_file", maxCount: 1 },

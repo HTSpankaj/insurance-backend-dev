@@ -2091,6 +2091,13 @@
             "description": "10-character PAN card number (e.g., ABCDE1234F)"
           },
           {
+            "name": "gstin_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "GST IN number"
+          },
+          {
             "name": "qualification",
             "in": "formData",
             "type": "string",
@@ -2130,28 +2137,35 @@
             "in": "formData",
             "type": "file",
             "required": true,
-            "description": "Aadhar card file (JPEG or PDF)"
+            "description": "Aadhar card file (Image Only)"
           },
           {
             "name": "back_aadhar_card_file",
             "in": "formData",
             "type": "file",
             "required": true,
-            "description": "Aadhar card file (JPEG or PDF)"
+            "description": "Aadhar card file (Image Only)"
           },
           {
             "name": "front_pan_card_file",
             "in": "formData",
             "type": "file",
             "required": true,
-            "description": "PAN card file (JPEG or PDF)"
+            "description": "PAN card file (Image Only)"
           },
           {
             "name": "back_pan_card_file",
             "in": "formData",
             "type": "file",
             "required": true,
-            "description": "PAN card file (JPEG or PDF)"
+            "description": "PAN card file (Image Only)"
+          },
+          {
+            "name": "gstin_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "GSTIN file (JPEG or PDF)"
           }
         ],
         "responses": {
@@ -2234,6 +2248,13 @@
             "description": "10-character PAN card number (e.g., ABCDE1234F)"
           },
           {
+            "name": "gstin_number",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "GST IN number"
+          },
+          {
             "name": "qualification",
             "in": "formData",
             "type": "string",
@@ -2295,6 +2316,13 @@
             "type": "file",
             "required": true,
             "description": "PAN card file (JPEG or PDF)"
+          },
+          {
+            "name": "gstin_file",
+            "in": "formData",
+            "type": "file",
+            "required": true,
+            "description": "GSTIN file (JPEG or PDF)"
           }
         ],
         "responses": {

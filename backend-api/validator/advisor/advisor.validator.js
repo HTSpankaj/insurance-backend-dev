@@ -28,6 +28,8 @@ const advisorRegistrationValidateInput = [
         .withMessage("PAN card number is required")
         .matches(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/)
         .withMessage("PAN card number must be 10 characters (e.g., ABCDE1234F)"),
+    // body("gstin_number").notEmpty().withMessage("GST number is required"),
+    body("gstin_number").optional(),
     body("qualification").notEmpty().withMessage("Qualification is required"),
     body("bank_name").notEmpty().withMessage("Bank name is required"),
     body("bank_ifsc_code")
@@ -80,6 +82,7 @@ const advisorUpdateRegistrationValidator = [
         .withMessage("PAN card number is required")
         .matches(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/)
         .withMessage("PAN card number must be 10 characters (e.g., ABCDE1234F)"),
+    body("gstin_number").notEmpty().withMessage("GST number is required"),
     body("qualification").notEmpty().withMessage("Qualification is required"),
     body("bank_name").notEmpty().withMessage("Bank name is required"),
     body("bank_ifsc_code")

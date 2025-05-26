@@ -36,7 +36,7 @@ class RegionDatabase {
             let query = this.db
                 .from(regionTableName)
                 .select("*, state:region_state(*, state_id(*)), city:region_city(*, city_id(*))")
-                .eq("company_id", company_id);
+                .eq("company_id", company_id).eq("is_delete", false);
 
             const { data, error } = await query;
 

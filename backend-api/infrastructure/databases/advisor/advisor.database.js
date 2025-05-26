@@ -1,6 +1,8 @@
+const { SupabaseClient } = require("@supabase/supabase-js");
+
 const tableName = "advisors";
 const bankTableName = "bank_details";
-const { SupabaseClient } = require("@supabase/supabase-js");
+const notRegisteredAdvisorTableName = "not_registered_advisor";
 
 const onboardingStatusString = [
     { title: "Pending", id: 1 },
@@ -24,6 +26,7 @@ class AdvisorDatabase {
         email,
         aadhar_card_number,
         pan_card_number,
+        gstin_number,
         qualification,
     ) {
         try {
@@ -36,6 +39,7 @@ class AdvisorDatabase {
                     email,
                     aadhar_card_number,
                     pan_card_number,
+                    gstin_number,
                     qualification,
                 })
                 .select()
@@ -61,6 +65,7 @@ class AdvisorDatabase {
         email,
         aadhar_card_number,
         pan_card_number,
+        gstin_number,
         qualification,
     ) {
         try {
@@ -73,6 +78,7 @@ class AdvisorDatabase {
                     email,
                     aadhar_card_number,
                     pan_card_number,
+                    gstin_number,
                     qualification,
                     advisor_onboarding_status_id: 3,
                 })
@@ -166,6 +172,7 @@ class AdvisorDatabase {
         backAadharPublicUrl,
         frontPanPublicUrl,
         backPanPublicUrl,
+        gstinPublicUrl
     ) {
         try {
             let postBody = {};
@@ -173,6 +180,7 @@ class AdvisorDatabase {
             if (backAadharPublicUrl) postBody.back_aadhar_card_image_url = backAadharPublicUrl;
             if (frontPanPublicUrl) postBody.front_pan_card_image_url = frontPanPublicUrl;
             if (backPanPublicUrl) postBody.back_pan_card_image_url = backPanPublicUrl;
+            if (gstinPublicUrl) postBody.gstin_image_url = gstinPublicUrl;
             const { data, error } = await this.db
                 .from(tableName)
                 .update(postBody)
@@ -537,6 +545,26 @@ class AdvisorDatabase {
                 resolve(error || null);
             }
         });
+    }
+
+    async upsertNotRegisteredAdvisorDatabase(mobile_number) {
+        try {
+            const { data, error } = await this.db
+                .from(notRegisteredAdvisorTableName)
+                .upsert({ mobile_number: mobile_number }, { onConflict: "mobile_number" })
+                .select()
+                .maybeSingle();
+            if (error) {
+                console.error("Supabase error in upsertNotRegisteredAdvisorDatabase:", error);
+                throw error;
+            }
+            return data;
+        } catch (error) {
+            console.error("Error in upsertNotRegisteredAdvisorDatabase:", error);
+            throw new Error(
+                `Failed to upsert not registered advisor: ${error.message || JSON.stringify(error)}`,
+            );
+        }
     }
 }
 

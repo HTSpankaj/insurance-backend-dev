@@ -10,7 +10,6 @@ const {
     getAdvisorDetailsByIdController,
     approveAdvisorRequestController,
     rejectAdvisorRequestController,
-    resubmitAdvisorRequestController,
     upsertAdvisorCompanyAccessController,
     getAdvisorCompanyAccessController,
     getAdvisorCategoryAccessController,

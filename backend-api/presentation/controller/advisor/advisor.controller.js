@@ -19,15 +19,17 @@ exports.createAdvisorController = async (req, res) => {
     #swagger.parameters['email'] = { in: 'formData', type: 'string', required: true, description: 'Email address' }
     #swagger.parameters['aadhar_card_number'] = { in: 'formData', type: 'string', required: true, description: '12-digit Aadhar card number' }
     #swagger.parameters['pan_card_number'] = { in: 'formData', type: 'string', required: true, description: '10-character PAN card number (e.g., ABCDE1234F)' }
+    #swagger.parameters['gstin_number'] = { in: 'formData', type: 'string', required: true, description: 'GST IN number' }
     #swagger.parameters['qualification'] = { in: 'formData', type: 'string', required: true, description: 'Educational qualification' }
     #swagger.parameters['bank_name'] = { in: 'formData', type: 'string', required: true, description: 'Bank name' }
     #swagger.parameters['bank_ifsc_code'] = { in: 'formData', type: 'string', required: true, description: '11-character IFSC code (e.g., HDFC0001234)' }
     #swagger.parameters['bank_branch'] = { in: 'formData', type: 'string', required: true, description: 'Bank branch' }
     #swagger.parameters['bank_account_number'] = { in: 'formData', type: 'string', required: true, description: '9-18 digit bank account number' }
-    #swagger.parameters['front_aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (JPEG or PDF)' }
-    #swagger.parameters['back_aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (JPEG or PDF)' }
-    #swagger.parameters['front_pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (JPEG or PDF)' }
-    #swagger.parameters['back_pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (JPEG or PDF)' }
+    #swagger.parameters['front_aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (Image Only)' }
+    #swagger.parameters['back_aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (Image Only)' }
+    #swagger.parameters['front_pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (Image Only)' }
+    #swagger.parameters['back_pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (Image Only)' }
+    #swagger.parameters['gstin_file'] = { in: 'formData', type: 'file', required: true, description: 'GSTIN file (JPEG or PDF)' }
   */
     try {
         const {
@@ -37,6 +39,7 @@ exports.createAdvisorController = async (req, res) => {
             email,
             aadhar_card_number,
             pan_card_number,
+            gstin_number,
             qualification,
             bank_name,
             bank_ifsc_code,
@@ -48,6 +51,7 @@ exports.createAdvisorController = async (req, res) => {
         const back_aadhar_card_file = req.files?.back_aadhar_card_file?.[0];
         const front_pan_card_file = req.files?.front_pan_card_file?.[0];
         const back_pan_card_file = req.files?.back_pan_card_file?.[0];
+        const gstin_file = req.files?.gstin_file?.[0];
 
         if (
             !front_aadhar_card_file ||
@@ -68,6 +72,7 @@ exports.createAdvisorController = async (req, res) => {
             email,
             aadhar_card_number,
             pan_card_number,
+            gstin_number,
             qualification,
             bank_name,
             bank_ifsc_code,
@@ -77,6 +82,7 @@ exports.createAdvisorController = async (req, res) => {
             back_aadhar_card_file,
             front_pan_card_file,
             back_pan_card_file,
+            gstin_file
         );
 
         return res.status(200).json({
@@ -107,6 +113,7 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
     #swagger.parameters['email'] = { in: 'formData', type: 'string', required: true, description: 'Email address' }
     #swagger.parameters['aadhar_card_number'] = { in: 'formData', type: 'string', required: true, description: '12-digit Aadhar card number' }
     #swagger.parameters['pan_card_number'] = { in: 'formData', type: 'string', required: true, description: '10-character PAN card number (e.g., ABCDE1234F)' }
+    #swagger.parameters['gstin_number'] = { in: 'formData', type: 'string', required: true, description: 'GST IN number' }
     #swagger.parameters['qualification'] = { in: 'formData', type: 'string', required: true, description: 'Educational qualification' }
     #swagger.parameters['bank_name'] = { in: 'formData', type: 'string', required: true, description: 'Bank name' }
     #swagger.parameters['bank_ifsc_code'] = { in: 'formData', type: 'string', required: true, description: '11-character IFSC code (e.g., HDFC0001234)' }
@@ -116,6 +123,7 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
     #swagger.parameters['back_aadhar_card_file'] = { in: 'formData', type: 'file', required: true, description: 'Aadhar card file (JPEG or PDF)' }
     #swagger.parameters['front_pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (JPEG or PDF)' }
     #swagger.parameters['back_pan_card_file'] = { in: 'formData', type: 'file', required: true, description: 'PAN card file (JPEG or PDF)' }
+    #swagger.parameters['gstin_file'] = { in: 'formData', type: 'file', required: true, description: 'GSTIN file (JPEG or PDF)' }
   */
     try {
         const {
@@ -127,6 +135,7 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
             email,
             aadhar_card_number,
             pan_card_number,
+            gstin_number,
             qualification,
             bank_name,
             bank_ifsc_code,
@@ -138,6 +147,7 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
         const back_aadhar_card_file = req.files?.back_aadhar_card_file?.[0];
         const front_pan_card_file = req.files?.front_pan_card_file?.[0];
         const back_pan_card_file = req.files?.back_pan_card_file?.[0];
+        const gstin_file = req.files?.gstin_file?.[0];
 
         // if (
         //     !front_aadhar_card_file ||
@@ -160,6 +170,7 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
             email,
             aadhar_card_number,
             pan_card_number,
+            gstin_number,
             qualification,
             bank_name,
             bank_ifsc_code,
@@ -169,6 +180,7 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
             back_aadhar_card_file,
             front_pan_card_file,
             back_pan_card_file,
+            gstin_file
         );
 
         return res.status(200).json({
@@ -208,6 +220,8 @@ exports.sendAdvisorOtpController = async (req, res) => {
             data: result,
         });
     } catch (error) {
+        console.log(error);
+        
         return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },

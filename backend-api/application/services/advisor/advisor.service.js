@@ -17,6 +17,7 @@ class AdvisorService {
         email,
         aadhar_card_number,
         pan_card_number,
+        gstin_number,
         qualification,
         bank_name,
         bank_ifsc_code,
@@ -26,6 +27,7 @@ class AdvisorService {
         back_aadhar_card_file,
         front_pan_card_file,
         back_pan_card_file,
+        gstin_file
     ) {
         try {
             const advisor = await this.advisorDatabase.createAdvisor(
@@ -35,6 +37,7 @@ class AdvisorService {
                 email,
                 aadhar_card_number,
                 pan_card_number,
+                gstin_number || null,
                 qualification,
             );
 
@@ -52,6 +55,7 @@ class AdvisorService {
                 back_aadhar_card_file,
                 front_pan_card_file,
                 back_pan_card_file,
+                gstin_file
             );
 
             return aadharAndPanCardUploadRes ? aadharAndPanCardUploadRes : advisor;
@@ -72,6 +76,7 @@ class AdvisorService {
         email,
         aadhar_card_number,
         pan_card_number,
+        gstin_number,
         qualification,
         bank_name,
         bank_ifsc_code,
@@ -81,6 +86,7 @@ class AdvisorService {
         back_aadhar_card_file,
         front_pan_card_file,
         back_pan_card_file,
+        gstin_file
     ) {
         try {
             const advisor = await this.advisorDatabase.updateResubmitAdvisor(
@@ -91,6 +97,7 @@ class AdvisorService {
                 email,
                 aadhar_card_number,
                 pan_card_number,
+                gstin_number || null,
                 qualification,
             );
 
@@ -109,6 +116,7 @@ class AdvisorService {
                 back_aadhar_card_file,
                 front_pan_card_file,
                 back_pan_card_file,
+                gstin_file
             );
 
             return aadharAndPanCardUploadRes ? aadharAndPanCardUploadRes : advisor;
@@ -126,6 +134,7 @@ class AdvisorService {
         back_aadhar_card_file,
         front_pan_card_file,
         back_pan_card_file,
+        gstin_file
     ) {
         let frontAadharPublicUrl = null;
         let backAadharPublicUrl = null;
@@ -191,14 +200,31 @@ class AdvisorService {
             }
         }
 
+        let gstinPublicUrl = null;
+
+        if (gstin_file) {
+            const _gstInFilePath = `${advisor_id}/document/gstin.${gstin_file?.mimetype.split("/")[1]}`;
+            const gstInUploadResult = await this.advisorStorage.uploadFile(
+                _gstInFilePath,
+                gstin_file.buffer,
+                gstin_file.mimetype,
+            );
+            if (gstInUploadResult) {
+                gstinPublicUrl = await this.advisorStorage.getPublicUrl(
+                    gstInUploadResult?.path,
+                );
+            }
+        }
+
         let updatedAdvisor = null;
-        if (frontAadharPublicUrl || backAadharPublicUrl || frontPanPublicUrl || backPanPublicUrl) {
+        if (frontAadharPublicUrl || backAadharPublicUrl || frontPanPublicUrl || backPanPublicUrl || gstinPublicUrl) {
             updatedAdvisor = await this.advisorDatabase.updateAdvisorFiles(
                 advisor_id,
                 frontAadharPublicUrl,
                 backAadharPublicUrl,
                 frontPanPublicUrl,
                 backPanPublicUrl,
+                gstinPublicUrl
             );
         }
         return updatedAdvisor;
@@ -211,7 +237,8 @@ class AdvisorService {
                 throw new Error("Mobile number already registered");
             }
             if (purpose_for === "login" && !exists) {
-                throw new Error("Mobile number not found");
+                // throw new Error("Mobile number not found");
+                await this.advisorDatabase.upsertNotRegisteredAdvisorDatabase(mobile_number);                
             }
             // const otp = generateOtp(4);
             const otp = 1234;
@@ -249,7 +276,12 @@ class AdvisorService {
                 } else if (purpose_for === "login") {
                     const user = await this.advisorDatabase.getAdvisorByMobile(mobile_number);
                     if (!user) {
-                        throw new Error("User not found");
+                        return {
+                            data: {
+                                message: "User not found",
+                                mobile_number,
+                            },
+                        };
                     }
 
                     const userOject = { ...user };
