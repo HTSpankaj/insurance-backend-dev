@@ -36,6 +36,22 @@ class ProductDatabase {
             if (product_tax) postBody.product_tax = product_tax;
             if (cover_amount_tax) postBody.cover_amount_tax = cover_amount_tax;
 
+            if (product_name) {
+                const existingProduct = await this.db
+                    .from(productTableName)
+                    .select()
+                    .eq("product_name", product_name)
+                    .limit(1)
+                    .eq("is_delete", false);
+
+                if (existingProduct?.error) throw error;
+                if (existingProduct?.data?.length > 0) {
+                    throw new Error(
+                        "Product with same name already exists. Please choose a different name.",
+                    );
+                }
+            }
+
             const { data, error } = await this.db
                 .from(productTableName)
                 .insert(postBody)
@@ -71,6 +87,23 @@ class ProductDatabase {
             if (product_tax) postBody.product_tax = product_tax;
             if (cover_amount_tax) postBody.cover_amount_tax = cover_amount_tax;
 
+            if (product_name) {
+                const existingProduct = await this.db
+                    .from(productTableName)
+                    .select()
+                    .eq("product_name", product_name)
+                    .eq("is_delete", false)
+                    .neq("product_id", product_id)
+                    .limit(1);
+
+                if (existingProduct?.error) throw error;
+                if (existingProduct?.data?.length > 0) {
+                    throw new Error(
+                        "Product with same name already exists. Please choose a different name.",
+                    );
+                }
+            }
+
             const { data, error } = await this.db
                 .from(productTableName)
                 .update(postBody)
@@ -93,9 +126,12 @@ class ProductDatabase {
     ) {
         try {
             let postBody = { product_id: product_id };
-            if (product_brochure_url) postBody.product_brochure_url = product_brochure_url;
-            if (promotional_video_url) postBody.promotional_video_url = promotional_video_url;
-            if (promotional_image_url) postBody.promotional_image_url = promotional_image_url;
+            if (product_brochure_url)
+                postBody.product_brochure_url = product_brochure_url + `?date=${Date.now()}`;
+            if (promotional_video_url)
+                postBody.promotional_video_url = promotional_video_url + `?date=${Date.now()}`;
+            if (promotional_image_url)
+                postBody.promotional_image_url = promotional_image_url + `?date=${Date.now()}`;
 
             const { data, error } = await this.db
                 .from(supportingDocTableName)

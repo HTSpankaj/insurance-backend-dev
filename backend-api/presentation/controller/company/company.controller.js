@@ -53,6 +53,12 @@ exports.createCompanyController = async (req, res) => {
       required: true, 
       description: 'Publish status (true or false)' 
     }
+    #swagger.parameters['is_auto_assign_rm'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'Auto assign RM status (true or false)' 
+    }
     #swagger.parameters['logo_file'] = { 
       in: 'formData', 
       type: 'file', 
@@ -87,6 +93,7 @@ exports.createCompanyController = async (req, res) => {
             irdai_license_number,
             tax_gstin_number,
             is_publish,
+            is_auto_assign_rm,
         } = req.body;
 
         const logo_file = req.files?.logo_file?.[0];
@@ -120,6 +127,9 @@ exports.createCompanyController = async (req, res) => {
         if (!["true", "false"].includes(is_publish)) {
             throw new Error('is_publish must be "true" or "false"');
         }
+        // if (!["true", "false"].includes(is_auto_assign_rm)) {
+        //     throw new Error('is_auto_assign_rm must be "true" or "false"');
+        // }
 
         // File validation
         const validFileTypes = ["application/pdf", "image/jpeg", "image/png"];
@@ -138,6 +148,7 @@ exports.createCompanyController = async (req, res) => {
         // Convert FormData strings to appropriate types
         const contactPersonNumeric = parseInt(contact_person, 10);
         const isPublishBoolean = is_publish === "true";
+        const isAutoAssignRMBoolean = is_auto_assign_rm === "true";
 
         const result = await companyService.createCompany(
             company_name,
@@ -147,6 +158,7 @@ exports.createCompanyController = async (req, res) => {
             irdai_license_number,
             tax_gstin_number,
             isPublishBoolean,
+            isAutoAssignRMBoolean,
             logo_file,
             irdai_license_file,
             terms_of_agreement_file,
@@ -220,6 +232,12 @@ exports.updateCompanyController = async (req, res) => {
       required: true, 
       description: 'Publish status (true or false)' 
     }
+    #swagger.parameters['is_auto_assign_rm'] = { 
+      in: 'formData', 
+      type: 'string', 
+      required: true, 
+      description: 'Auto assign RM status (true or false)' 
+    }
     #swagger.parameters['logo_file'] = { 
       in: 'formData', 
       type: 'file', 
@@ -255,6 +273,7 @@ exports.updateCompanyController = async (req, res) => {
             irdai_license_number,
             tax_gstin_number,
             is_publish,
+            is_auto_assign_rm,
         } = req.body;
 
         const logo_file = req.files?.logo_file?.[0] || null;
@@ -293,6 +312,9 @@ exports.updateCompanyController = async (req, res) => {
         if (!["true", "false"].includes(is_publish)) {
             throw new Error('is_publish must be "true" or "false"');
         }
+        // if (!["true", "false"].includes(is_auto_assign_rm)) {
+        //     throw new Error('is_auto_assign_rm must be "true" or "false"');
+        // }
 
         // File validation
         const validFileTypes = ["application/pdf", "image/jpeg", "image/png"];
@@ -319,6 +341,7 @@ exports.updateCompanyController = async (req, res) => {
         // Convert FormData strings to appropriate types
         const contactPersonNumeric = parseInt(contact_person, 10);
         const isPublishBoolean = is_publish === "true";
+        const isAutoAssignRmBoolean = is_auto_assign_rm === "true";
 
         const result = await companyService.updateCompany(
             company_id,
@@ -329,6 +352,7 @@ exports.updateCompanyController = async (req, res) => {
             irdai_license_number,
             tax_gstin_number,
             isPublishBoolean,
+            isAutoAssignRmBoolean,
             logo_file,
             irdai_license_file,
             terms_of_agreement_file,

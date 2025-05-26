@@ -31,7 +31,6 @@ class LeadDatabase {
     ) {
         try {
             const offset = (pageNumber - 1) * limit;
-            const limit_val = offset + limit - 1;
 
             // console.log({offset, limit_val});
 
@@ -40,11 +39,13 @@ class LeadDatabase {
                 _status = leadStatusEnum.find(item => item?.title === status)?.id;
             }
 
+            console.log({ offset });
+
             const { data, error, count } = await this.db.rpc(
                 "get_lead_product_relations",
                 {
                     offset_val: offset,
-                    limit_val: limit_val,
+                    limit_val: limit,
                     search_val: search,
                     status_val: _status,
                     priority_val: priority,

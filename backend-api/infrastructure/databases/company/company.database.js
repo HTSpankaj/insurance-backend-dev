@@ -19,6 +19,7 @@ class CompanyDatabase {
         irdai_license_number,
         tax_gstin_number,
         is_publish,
+        is_auto_assign_rm,
         logo_url,
         created_by_user_id,
     ) {
@@ -33,6 +34,7 @@ class CompanyDatabase {
                     irdai_license_number: irdai_license_number,
                     tax_gstin_number: tax_gstin_number,
                     is_publish: is_publish,
+                    is_auto_assign_rm: is_auto_assign_rm,
                     logo_url: logo_url,
                     created_by_user_id,
                 })
@@ -60,6 +62,7 @@ class CompanyDatabase {
         irdai_license_number,
         tax_gstin_number,
         is_publish,
+        is_auto_assign_rm,
         created_by_user_id,
     ) {
         try {
@@ -73,6 +76,7 @@ class CompanyDatabase {
                     irdai_license_number: irdai_license_number,
                     tax_gstin_number: tax_gstin_number,
                     is_publish: is_publish,
+                    is_auto_assign_rm: is_auto_assign_rm,
                     created_by_user_id,
                 })
                 .eq("company_id", company_id)
@@ -122,10 +126,10 @@ class CompanyDatabase {
             const { data, error } = await this.db
                 .from(supportingDocTableName)
                 .insert({
-                    company_id,
-                    irdai_license_url,
-                    terms_of_agreement_url,
-                    business_certification_url,
+                    company_id: company_id,
+                    irdai_license_url: `${irdai_license_url}?date=${Date?.now()}`,
+                    terms_of_agreement_url: `${terms_of_agreement_url}?date=${Date?.now()}`,
+                    business_certification_url: `${business_certification_url}?date=${Date?.now()}`,
                 })
                 .select()
                 .maybeSingle();
@@ -152,13 +156,14 @@ class CompanyDatabase {
         try {
             let postBody = {};
             if (irdai_license_url) {
-                postBody.irdai_license_url = irdai_license_url;
+                postBody.irdai_license_url = irdai_license_url + `?date=${Date.now()}`;
             }
             if (terms_of_agreement_url) {
-                postBody.terms_of_agreement_url = terms_of_agreement_url;
+                postBody.terms_of_agreement_url = terms_of_agreement_url + `?date=${Date.now()}`;
             }
             if (business_certification_url) {
-                postBody.business_certification_url = business_certification_url;
+                postBody.business_certification_url =
+                    business_certification_url + `?date=${Date.now()}`;
             }
             const { data, error } = await this.db
                 .from(supportingDocTableName)
@@ -185,7 +190,7 @@ class CompanyDatabase {
         try {
             const { data, error } = await this.db
                 .from(companyTableName)
-                .update({ logo_url })
+                .update({ logo_url: `${logo_url}?date=${Date.now()}` })
                 .eq("company_id", company_id)
                 .select()
                 .maybeSingle();

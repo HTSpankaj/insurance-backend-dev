@@ -27,7 +27,7 @@ class AdvisorService {
         back_aadhar_card_file,
         front_pan_card_file,
         back_pan_card_file,
-        gstin_file
+        gstin_file,
     ) {
         try {
             const advisor = await this.advisorDatabase.createAdvisor(
@@ -55,7 +55,7 @@ class AdvisorService {
                 back_aadhar_card_file,
                 front_pan_card_file,
                 back_pan_card_file,
-                gstin_file
+                gstin_file,
             );
 
             return aadharAndPanCardUploadRes ? aadharAndPanCardUploadRes : advisor;
@@ -86,7 +86,7 @@ class AdvisorService {
         back_aadhar_card_file,
         front_pan_card_file,
         back_pan_card_file,
-        gstin_file
+        gstin_file,
     ) {
         try {
             const advisor = await this.advisorDatabase.updateResubmitAdvisor(
@@ -116,7 +116,7 @@ class AdvisorService {
                 back_aadhar_card_file,
                 front_pan_card_file,
                 back_pan_card_file,
-                gstin_file
+                gstin_file,
             );
 
             return aadharAndPanCardUploadRes ? aadharAndPanCardUploadRes : advisor;
@@ -134,7 +134,7 @@ class AdvisorService {
         back_aadhar_card_file,
         front_pan_card_file,
         back_pan_card_file,
-        gstin_file
+        gstin_file,
     ) {
         let frontAadharPublicUrl = null;
         let backAadharPublicUrl = null;
@@ -210,21 +210,25 @@ class AdvisorService {
                 gstin_file.mimetype,
             );
             if (gstInUploadResult) {
-                gstinPublicUrl = await this.advisorStorage.getPublicUrl(
-                    gstInUploadResult?.path,
-                );
+                gstinPublicUrl = await this.advisorStorage.getPublicUrl(gstInUploadResult?.path);
             }
         }
 
         let updatedAdvisor = null;
-        if (frontAadharPublicUrl || backAadharPublicUrl || frontPanPublicUrl || backPanPublicUrl || gstinPublicUrl) {
+        if (
+            frontAadharPublicUrl ||
+            backAadharPublicUrl ||
+            frontPanPublicUrl ||
+            backPanPublicUrl ||
+            gstinPublicUrl
+        ) {
             updatedAdvisor = await this.advisorDatabase.updateAdvisorFiles(
                 advisor_id,
                 frontAadharPublicUrl,
                 backAadharPublicUrl,
                 frontPanPublicUrl,
                 backPanPublicUrl,
-                gstinPublicUrl
+                gstinPublicUrl,
             );
         }
         return updatedAdvisor;
@@ -238,7 +242,7 @@ class AdvisorService {
             }
             if (purpose_for === "login" && !exists) {
                 // throw new Error("Mobile number not found");
-                await this.advisorDatabase.upsertNotRegisteredAdvisorDatabase(mobile_number);                
+                await this.advisorDatabase.upsertNotRegisteredAdvisorDatabase(mobile_number);
             }
             // const otp = generateOtp(4);
             const otp = 1234;

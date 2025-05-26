@@ -82,7 +82,7 @@ exports.createAdvisorController = async (req, res) => {
             back_aadhar_card_file,
             front_pan_card_file,
             back_pan_card_file,
-            gstin_file
+            gstin_file,
         );
 
         return res.status(200).json({
@@ -180,7 +180,7 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
             back_aadhar_card_file,
             front_pan_card_file,
             back_pan_card_file,
-            gstin_file
+            gstin_file,
         );
 
         return res.status(200).json({
@@ -221,7 +221,7 @@ exports.sendAdvisorOtpController = async (req, res) => {
         });
     } catch (error) {
         console.log(error);
-        
+
         return res.status(500).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },

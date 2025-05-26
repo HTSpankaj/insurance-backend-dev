@@ -35,6 +35,19 @@ class CategoryDatabase {
     }
 
     async createCategory(title, description, created_by_user_id) {
+        const existingCategory = await this.db
+            .from(tableName)
+            .select()
+            .eq("title", title)
+            .limit(1)
+            .eq("is_delete", false);
+
+        if (existingCategory?.error) throw error;
+        if (existingCategory?.data?.length > 0) {
+            throw new Error(
+                "Category with same title already exists. Please choose a different title.",
+            );
+        }
         try {
             const { data, error } = await this.db
                 .from(tableName)
@@ -132,6 +145,23 @@ class CategoryDatabase {
             if (title) postBody.title = title;
             if (description) postBody.description = description;
             if (logo_url) postBody.logo_url = logo_url;
+
+            if (title) {
+                const existingCategory = await this.db
+                    .from(tableName)
+                    .select()
+                    .eq("title", title)
+                    .limit(1)
+                    .neq("category_id", category_id)
+                    .eq("is_delete", false);
+
+                if (existingCategory?.error) throw error;
+                if (existingCategory?.data?.length > 0) {
+                    throw new Error(
+                        "Category with same title already exists. Please choose a different title.",
+                    );
+                }
+            }
 
             const { data, error } = await this.db
                 .from(tableName)

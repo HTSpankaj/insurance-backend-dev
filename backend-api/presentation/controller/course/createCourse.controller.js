@@ -309,3 +309,31 @@ exports.getCourseListController = async (req, res) => {
         });
     }
 };
+
+exports.getCourseDetailsController = async (req, res) => {
+    /*
+    #swagger.tags = ['Course']
+    #swagger.description = 'Get details of a specific course'
+    #swagger.parameters['id'] = {
+        in: 'path',
+        type: 'string',
+        required: true,
+        description: 'UUID of the course',
+        example: '837b8747-e7fe-4e40-9a00-dcd07e4a800d'
+    }
+    */
+
+    try {
+        const { id } = req.params;
+        const course = await courseService.getCourseDetailsService(id);
+        return res.status(200).json({
+            success: true,
+            data: course,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};

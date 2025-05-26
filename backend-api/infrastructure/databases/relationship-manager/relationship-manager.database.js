@@ -44,7 +44,8 @@ class RelationshipManagerDatabase {
                 .select(
                     "*, region:relationship_manager_region_relations(*, region_id(region_id, title)), category:relationship_manager_category_relations(*, category_id(category_id, title))",
                 )
-                .eq("company_id", company_id).eq("is_delete", false);
+                .eq("company_id", company_id)
+                .eq("is_delete", false);
 
             if (error) {
                 console.error("Supabase error in checkRelationshipManager:", error);

@@ -3,6 +3,7 @@ const {
     createCourseController,
     deleteCourseController,
     getCourseListController,
+    getCourseDetailsController,
     updateCourseController,
 } = require("../../../presentation/controller/course/createCourse.controller");
 const uploadCourseBanner = require("../../../middleware/course.middleware");
@@ -18,5 +19,6 @@ router.put("/update-course", uploadCourseBanner, updateCourseValidator, updateCo
 // router.post("/create-course", uploadCourseBanner, createCourseController);
 router.delete("/delete-course", deleteCourseController);
 router.get("/course-list", getCourseListController);
+router.get("/course-details/:id", getCourseDetailsController);
 
 module.exports = router;

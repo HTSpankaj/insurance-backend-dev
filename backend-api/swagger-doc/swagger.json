@@ -5351,6 +5351,35 @@
         }
       }
     },
+    "/api/course/course-details/{id}": {
+      "get": {
+        "tags": [
+          "Course"
+        ],
+        "description": "Get details of a specific course",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "UUID of the course",
+            "example": "837b8747-e7fe-4e40-9a00-dcd07e4a800d"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/course/add-course-module": {
       "post": {
         "tags": [

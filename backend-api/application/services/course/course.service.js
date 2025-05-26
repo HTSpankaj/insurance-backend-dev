@@ -163,5 +163,9 @@ class CourseService {
             );
         }
     }
+
+    async getCourseDetailsService(id) {
+        return await this.courseDatabase.getCourseDetailsDatabase(id);
+    }
 }
 module.exports = CourseService;

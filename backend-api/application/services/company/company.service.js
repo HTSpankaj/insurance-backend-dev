@@ -15,6 +15,7 @@ class CompanyService {
         irdai_license_number,
         tax_gstin_number,
         is_publish,
+        is_auto_assign_rm,
         logo_file,
         irdai_license_file,
         terms_of_agreement_file,
@@ -31,6 +32,7 @@ class CompanyService {
                 irdai_license_number,
                 tax_gstin_number,
                 is_publish,
+                is_auto_assign_rm,
                 null, // Temporarily set logo_url to null
                 created_by_user_id,
             );
@@ -96,6 +98,7 @@ class CompanyService {
         irdai_license_number,
         tax_gstin_number,
         is_publish,
+        is_auto_assign_rm,
         logo_file,
         irdai_license_file,
         terms_of_agreement_file,
@@ -113,6 +116,7 @@ class CompanyService {
                 irdai_license_number,
                 tax_gstin_number,
                 is_publish,
+                is_auto_assign_rm,
                 created_by_user_id,
             );
 

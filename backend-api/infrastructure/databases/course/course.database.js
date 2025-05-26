@@ -24,6 +24,19 @@ class CourseDatabase {
         status,
     ) {
         try {
+            const existingCourse = await this.db
+                .from(courseTableName)
+                .select()
+                .eq("title", title)
+                .limit(1)
+                .eq("is_delete", false);
+
+            if (existingCourse?.error) throw error;
+            if (existingCourse?.data?.length > 0) {
+                throw new Error(
+                    "Course with same title already exists. Please choose a different title.",
+                );
+            }
             const { data, error } = await this.db
                 .from(courseTableName)
                 .insert({
@@ -72,6 +85,22 @@ class CourseDatabase {
         status,
     ) {
         try {
+            if (title) {
+                const existingCategory = await this.db
+                    .from(courseTableName)
+                    .select()
+                    .eq("title", title)
+                    .limit(1)
+                    .eq("is_delete", false)
+                    .neq("id", id);
+
+                if (existingCategory?.error) throw error;
+                if (existingCategory?.data?.length > 0) {
+                    throw new Error(
+                        "Category with same title already exists. Please choose a different title.",
+                    );
+                }
+            }
             const { data, error } = await this.db
                 .from(courseTableName)
                 .update({
@@ -198,6 +227,29 @@ class CourseDatabase {
             console.error("Error in getCourseList:", error);
             throw new Error(
                 `Failed to fetch course list: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
+
+    async getCourseDetailsDatabase(id) {
+        try {
+            const { data, error } = await this.db
+                .from(courseTableName)
+                .select(
+                    `*, category_id(category_id, title), course_module(count),
+                    sub_category:course_sub_category_relation(sub_category_id(sub_category_id, title))
+                    `,
+                )
+                .eq("id", id)
+                .maybeSingle();
+
+            if (error) throw error;
+            if (!data) throw new Error("Course not found");
+            return data;
+        } catch (error) {
+            console.error("Error in getCourseDetailsDatabase:", error);
+            throw new Error(
+                `Failed to fetch course details: ${error.message || JSON.stringify(error)}`,
             );
         }
     }

@@ -172,7 +172,7 @@ class AdvisorDatabase {
         backAadharPublicUrl,
         frontPanPublicUrl,
         backPanPublicUrl,
-        gstinPublicUrl
+        gstinPublicUrl,
     ) {
         try {
             let postBody = {};

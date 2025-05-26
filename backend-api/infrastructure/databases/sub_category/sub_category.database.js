@@ -12,6 +12,20 @@ class SubCategoryDatabase {
 
     async createSubCategory(title, description, category_id, created_by_user_id) {
         try {
+            const existingSubCategory = await this.db
+                .from(tableName)
+                .select()
+                .eq("title", title)
+                .limit(1)
+                .eq("is_delete", false);
+
+            if (existingSubCategory?.error) throw error;
+            if (existingSubCategory?.data?.length > 0) {
+                throw new Error(
+                    "Sub-category with same title already exists. Please choose a different title.",
+                );
+            }
+
             const { data, error } = await this.db
                 .from(tableName)
                 .insert({ title, description, category_id, created_by_user_id })
@@ -96,6 +110,24 @@ class SubCategoryDatabase {
             if (title) postBody.title = title;
             if (description) postBody.description = description;
             if (logo_url) postBody.logo_url = logo_url;
+
+            if (title) {
+                const existingSubCategory = await this.db
+                    .from(tableName)
+                    .select()
+                    .eq("title", title)
+                    .limit(1)
+                    .neq("sub_category_id", sub_category_id)
+                    .eq("is_delete", false);
+
+                if (existingSubCategory?.error) throw error;
+                if (existingSubCategory?.data?.length > 0) {
+                    throw new Error(
+                        "Sub-category with same title already exists. Please choose a different title.",
+                    );
+                }
+            }
+
             const { data, error } = await this.db
                 .from(tableName)
                 .update(postBody)

@@ -11,6 +11,21 @@ class CourseDatabase {
 
     async addCourseModule(course_id, title, file_type, content) {
         try {
+            const existingCourseModule = await this.db
+                .from(tableName)
+                .select()
+                .eq("title", title)
+                .limit(1)
+                .eq("course_id", course_id)
+                .eq("is_delete", false);
+
+            if (existingCourseModule?.error) throw error;
+            if (existingCourseModule?.data?.length > 0) {
+                throw new Error(
+                    "Course module with same title already exists. Please choose a different title.",
+                );
+            }
+
             const { data, error } = await this.db
                 .from(tableName)
                 .insert({
@@ -49,6 +64,24 @@ class CourseDatabase {
             }
             if (is_delete === true || is_delete === false) {
                 postBody.is_delete = is_delete;
+            }
+
+            if (title) {
+                const existingCourseModule = await this.db
+                    .from(tableName)
+                    .select()
+                    .eq("title", title)
+                    .limit(1)
+                    .neq("id", id)
+                    .eq("course_id", course_id)
+                    .eq("is_delete", false);
+
+                if (existingCourseModule?.error) throw error;
+                if (existingCourseModule?.data?.length > 0) {
+                    throw new Error(
+                        "Course module with same title already exists. Please choose a different title.",
+                    );
+                }
             }
             const { data, error } = await this.db
                 .from(tableName)
