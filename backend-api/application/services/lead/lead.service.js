@@ -59,6 +59,7 @@ class LeadService {
         priority,
         additional_note,
         product_id,
+        category_id,
         advisor_id,
     ) {
         try {
@@ -77,6 +78,7 @@ class LeadService {
                 await this.leadDatabase.createLeadProductRelation(
                     lead.lead_id,
                     product_id,
+                    category_id,
                     advisor_id,
                     priority,
                     additional_note,

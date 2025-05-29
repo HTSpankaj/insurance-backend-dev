@@ -341,7 +341,8 @@ exports.addLeadController = async (req, res) => {
           city_id: '550e8400-e29b-41d4-a716-446655440000',
           priority: 'High',
           additinal_note: 'Urgent lead',
-          product_id: '550e8400-e29b-41d4-a716-446655440001'
+          product_id: '',
+          category_id: '',
         }
       
     }
@@ -357,6 +358,7 @@ exports.addLeadController = async (req, res) => {
             priority,
             additinal_note,
             product_id,
+            category_id
         } = req.body;
 
         const advisor_id = res.locals.tokenData?.advisor_id; // Extract advisor_id from token
@@ -391,9 +393,24 @@ exports.addLeadController = async (req, res) => {
         ) {
             throw new Error("Additional note must be a non-empty string if provided");
         }
-        if (!product_id || !uuidRegex.test(product_id)) {
-            throw new Error("Product ID must be a valid UUID");
+
+        
+        if (!product_id && !category_id) {
+            throw new Error("Either product_id or category_id is required");
+        } else if (product_id && category_id) {
+            throw new Error("Both product_id and category_id cannot be provided");
+        } else if (product_id) {
+            if (!product_id || !uuidRegex.test(product_id)) {
+                throw new Error("Product ID must be a valid UUID");
+            }
+        } else if (category_id) {
+            if (!category_id || !uuidRegex.test(category_id)) {
+                throw new Error("Category ID must be a valid UUID");
+            }
+        } else {
+            throw new Error("Product ID or Category ID is required");
         }
+
         if (!advisor_id || !uuidRegex.test(advisor_id)) {
             throw new Error("Advisor ID (from token) must be a valid UUID");
         }
@@ -407,7 +424,8 @@ exports.addLeadController = async (req, res) => {
             city_id,
             priority,
             additinal_note || "",
-            product_id,
+            product_id || null,
+            category_id || null,
             advisor_id,
         );
 

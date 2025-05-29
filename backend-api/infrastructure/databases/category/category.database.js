@@ -34,7 +34,7 @@ class CategoryDatabase {
         this.db = supabaseInstance;
     }
 
-    async createCategory(title, description, created_by_user_id) {
+    async createCategory(title, description, is_lead_add_without_product, created_by_user_id) {
         const existingCategory = await this.db
             .from(tableName)
             .select()
@@ -51,7 +51,7 @@ class CategoryDatabase {
         try {
             const { data, error } = await this.db
                 .from(tableName)
-                .insert({ title, description, created_by_user_id }) // Include description
+                .insert({ title, description, is_lead_add_without_product, created_by_user_id }) // Include description
                 .select()
                 .maybeSingle();
 

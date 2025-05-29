@@ -10,16 +10,18 @@ exports.createCategoryController = async (req, res) => {
     #swagger.consumes = ['multipart/form-data']
     #swagger.parameters['title'] = { in: 'formData', type: 'string', required: true, description: 'Title of the category' }
     #swagger.parameters['description'] = { in: 'formData', type: 'string', required: true, description: 'Description of the category' }
+    #swagger.parameters['is_lead_add_without_product'] = { in: 'formData', type: 'boolean', required: true, description: 'Is lead add without product' } 
     #swagger.parameters['file'] = { in: 'formData', type: 'file', required: true, description: 'category image' }
   */
     try {
-        const { title, description } = req.body;
+        const { title, description, is_lead_add_without_product } = req.body;
         const file = req.files?.file?.[0];
         const created_by_user_id = res?.locals?.tokenData?.user_id;
 
         const result = await categoryService.createCategory(
             title,
             description,
+            is_lead_add_without_product,
             file,
             created_by_user_id,
         );

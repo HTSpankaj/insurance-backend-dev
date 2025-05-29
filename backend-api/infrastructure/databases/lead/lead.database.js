@@ -108,11 +108,12 @@ class LeadDatabase {
         }
     }
 
-    async createLeadProductRelation(lead_id, product_id, advisor_id, priority, additional_note) {
+    async createLeadProductRelation(lead_id, product_id, category_id, advisor_id, priority, additional_note) {
         try {
             console.log("Inserting into lead_product_relation table:", {
                 lead_id,
                 product_id,
+                category_id,
                 advisor_id,
                 priority,
                 additional_note,
@@ -121,7 +122,8 @@ class LeadDatabase {
                 .from(leadProductRelationTableName)
                 .insert({
                     lead_id,
-                    product_id,
+                    product_id: product_id || null,
+                    category_id: category_id || null,
                     advisor_id,
                     priority,
                     additinal_note: additional_note,
