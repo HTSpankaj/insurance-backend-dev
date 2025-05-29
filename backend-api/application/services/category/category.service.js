@@ -11,7 +11,13 @@ class CategoryService {
         this.configStorage = new BucketNameStorage(supabaseInstance, "config");
     }
 
-    async createCategory(title, description, is_lead_add_without_product, file, created_by_user_id) {
+    async createCategory(
+        title,
+        description,
+        is_lead_add_without_product,
+        file,
+        created_by_user_id,
+    ) {
         try {
             let category = await this.categoryDatabase.createCategory(
                 title,

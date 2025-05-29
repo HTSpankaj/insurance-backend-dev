@@ -2330,9 +2330,10 @@ const arr = [
 
 const createClient = require("@supabase/supabase-js").createClient;
 
-const supabaseInstance = createClient('https://kcpzbvtcpclejrpvilmm.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjcHpidnRjcGNsZWpycHZpbG1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzNDUxNzksImV4cCI6MjA1NjkyMTE3OX0.CFL8aw73MbKCeJ-qWMFWjagaoScjZtkAayzfnnt6Rkg')
-
-
+const supabaseInstance = createClient(
+    "https://kcpzbvtcpclejrpvilmm.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjcHpidnRjcGNsZWpycHZpbG1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzNDUxNzksImV4cCI6MjA1NjkyMTE3OX0.CFL8aw73MbKCeJ-qWMFWjagaoScjZtkAayzfnnt6Rkg",
+);
 
 // let count = 0;
 
@@ -2343,19 +2344,17 @@ const supabaseInstance = createClient('https://kcpzbvtcpclejrpvilmm.supabase.co'
 //                 const element = res.data[key];
 //                 const result = await supabaseInstance.from("state").delete().eq("id", element.id)
 //                 if (result.error) {
-//                     count++ 
+//                     count++
 //                 }
 //             }
 //         }
 
-
 //         console.log(count);
-        
+
 //     }
 // }).catch((err) => {
 //     console.log(err)
 // })
-
 
 // supabaseInstance.from("city").delete().eq("id", '7302aa0a-fa21-4926-811b-2514feddd086').then((res) => {
 //     console.log(res)

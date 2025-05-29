@@ -108,7 +108,14 @@ class LeadDatabase {
         }
     }
 
-    async createLeadProductRelation(lead_id, product_id, category_id, advisor_id, priority, additional_note) {
+    async createLeadProductRelation(
+        lead_id,
+        product_id,
+        category_id,
+        advisor_id,
+        priority,
+        additional_note,
+    ) {
         try {
             console.log("Inserting into lead_product_relation table:", {
                 lead_id,

@@ -59,9 +59,15 @@ class LeadProductRelationDatabase {
         }
     }
 
-    async getLeadProductRelationByAdvisorIdDatabase(page_number, limit, advisor_id) {
+    async getLeadProductRelationByAdvisorIdDatabase(
+        page_number,
+        limit,
+        advisor_id,
+        start_date,
+        end_date,
+    ) {
         const offset = (page_number - 1) * limit;
-        const { data, total_count, error } = await this.db
+        let query = this.db
             .from(tableName)
             .select(
                 `
@@ -76,6 +82,15 @@ class LeadProductRelationDatabase {
             .eq("advisor_id", advisor_id)
             .order("created_at", { ascending: false })
             .range(offset, offset + limit - 1);
+
+        if (start_date) {
+            query = query.gte("created_at", start_date);
+        }
+        if (end_date) {
+            query = query.lte("created_at", end_date);
+        }
+
+        const { data, total_count, error } = await query;
         if (error) {
             console.error("Error in getLeadProductRelationByAdvisorIdDatabase:", error);
             throw new Error(

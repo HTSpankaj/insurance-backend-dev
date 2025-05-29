@@ -230,34 +230,38 @@ exports.getLeadListProductByAdvisorIdController = async (req, res) => {
       description: 'Number of records per page (default: 10)',
       default: 10 
     }
-      #swagger.parameters['advisor_id'] = {
+    #swagger.parameters['advisor_id'] = {
         in: 'query',
         type: 'string',
         required: true,
         description: 'Advisor ID'
-      }
-    #swagger.responses[200] = {
-        schema: {
-            success: true,
-            data: [],
-            metadata: {
-                page: 1,
-                per_page: 10,
-                total_count: 120,
-                total_pages: 12
-            }
-        }
+    }
+    #swagger.parameters['start_date'] = {
+        in: 'query',
+        type: 'string',
+        required: false,
+        description: 'Start date (YYYY-MM-DD)'
+    }
+    #swagger.parameters['end_date'] = {
+        in: 'query',
+        type: 'string',
+        required: false,
+        description: 'End date (YYYY-MM-DD)'
     }
     */
     try {
         const pageNumber = parseInt(req.query.page_number) || 1;
         const limit = parseInt(req.query.limit) || 10;
         const advisor_id = req.query.advisor_id;
+        const start_date = req.query.start_date || null;
+        const end_date = req.query.end_date || null;
 
         const result = await leadService.getLeadProductRelationByAdvisorIdService(
             pageNumber,
             limit,
             advisor_id,
+            start_date,
+            end_date,
         );
 
         return res.status(200).json({
@@ -358,7 +362,7 @@ exports.addLeadController = async (req, res) => {
             priority,
             additinal_note,
             product_id,
-            category_id
+            category_id,
         } = req.body;
 
         const advisor_id = res.locals.tokenData?.advisor_id; // Extract advisor_id from token
@@ -394,7 +398,6 @@ exports.addLeadController = async (req, res) => {
             throw new Error("Additional note must be a non-empty string if provided");
         }
 
-        
         if (!product_id && !category_id) {
             throw new Error("Either product_id or category_id is required");
         } else if (product_id && category_id) {
