@@ -111,8 +111,8 @@ class LeadProductRelationDatabase {
                     product_id(product_id, product_name, description, financial_description, product_display_id, company_id(company_id, company_name, company_display_id, logo_url), sub_category_id(sub_category_id, title, category_id(category_id, title))),
                     advisor_id(advisor_id,name, join_as, mobile_number, email, advisor_display_id, created_at),
                     before_issuance_excel_data_id(policy_amount, commission_amount),
-                    lead_product_relationship_manager_relation(relationship_manager_id(rm_id, name, contact_number, region:relationship_manager_region_relations(*, region_id(region_id, title))))
-                    category_id(category_id, title),
+                    lead_product_relationship_manager_relation(relationship_manager_id(rm_id, name, contact_number, region:relationship_manager_region_relations(*, region_id(region_id, title)))),
+                    category_id(category_id, title, description, logo_url)
                     `,
                 )
                 .eq("lead_product_relation_display_id", lead_product_relation_display_id)
