@@ -53,6 +53,22 @@ class CompanyDatabase {
         }
     }
 
+    async checkCompanyDatabase(company_name) {
+        try {
+            const { data, error } = await this.db
+                .from(companyTableName)
+                .select()
+                .ilike("company_name", company_name)
+                .limit(1);
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            console.error("Error in checkCompanyDatabase:", error);
+            throw new Error(`Failed to check company: ${error.message || JSON.stringify(error)}`);
+        }
+    }
+
     async updateCompany(
         company_id,
         company_name,

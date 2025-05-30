@@ -1,6 +1,7 @@
 const express = require("express");
 const {
     createCompanyController,
+    checkCompanyController,
     getCompanyListController,
     getConvertedLeadsByCompanyIdController,
     getCompanyDetailsByIdWithStatisticsController,
@@ -11,6 +12,7 @@ const { upload } = require("../../../middleware/multer.middleware");
 const router = express.Router();
 
 router.post("/create-company", upload, createCompanyController);
+router.post("/check-company", upload, checkCompanyController);
 router.put("/update-company", upload, updateCompanyController);
 router.get("/company-list", getCompanyListController);
 router.get("/get-company-details/:id", getCompanyDetailsByCompanyIdController);

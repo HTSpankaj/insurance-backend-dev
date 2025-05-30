@@ -41,6 +41,7 @@ class ProductDatabase {
                     .from(productTableName)
                     .select()
                     .eq("product_name", product_name)
+                    .eq("company_id", company_id)
                     .limit(1)
                     .eq("is_delete", false);
 
@@ -92,6 +93,7 @@ class ProductDatabase {
                     .from(productTableName)
                     .select()
                     .eq("product_name", product_name)
+                    .eq("company_id", company_id)
                     .eq("is_delete", false)
                     .neq("product_id", product_id)
                     .limit(1);

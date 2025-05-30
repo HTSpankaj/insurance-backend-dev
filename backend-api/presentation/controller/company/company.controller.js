@@ -178,6 +178,51 @@ exports.createCompanyController = async (req, res) => {
     }
 };
 
+exports.checkCompanyController = async (req, res) => {
+    /*
+    #swagger.tags = ['Company']
+    #swagger.autoBody = false
+    #swagger.description = 'check Create company'
+     #swagger.parameters['body'] ={
+        in: 'body',
+        description: 'Add User',
+        schema: {
+          "company_name": "",
+        }
+    }
+    */
+    try {
+        const {
+            company_name,
+        } = req.body;
+
+        if (!company_name || company_name.trim().length < 2) {
+            throw new Error("Company name must be a string with at least 2 characters");
+        }
+
+        const result = await companyService.checkCompany(
+            company_name,
+        );
+
+        if(result?.length > 0) {
+            return res.status(200).json({
+                success: false,
+                error: { message: "Company name already exists!" },
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            data: "Company name is available",
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+};
+
 exports.updateCompanyController = async (req, res) => {
     /*
     #swagger.tags = ['Company']

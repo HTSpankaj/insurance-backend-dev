@@ -89,6 +89,10 @@ class CompanyService {
         }
     }
 
+    async checkCompanyService(company_name) {
+        return this.companyDatabase.checkCompanyDatabase(company_name);
+    }
+
     async updateCompany(
         company_id,
         company_name,
