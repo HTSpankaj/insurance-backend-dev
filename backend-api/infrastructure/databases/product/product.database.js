@@ -20,7 +20,7 @@ class ProductDatabase {
         financial_description,
         product_tax,
         cover_amount_tax,
-        is_publish,
+        is_publish
     ) {
         try {
             let postBody = {
@@ -75,7 +75,7 @@ class ProductDatabase {
         financial_description,
         product_tax,
         cover_amount_tax,
-        is_publish,
+        is_publish
     ) {
         try {
             let postBody = {};

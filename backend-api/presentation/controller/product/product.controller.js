@@ -85,6 +85,7 @@ exports.addProductController = async (req, res) => {
             product_tax = 0,
             cover_amount_tax = 0,
             is_publish,
+            promotional_video_url = null,
         } = req.body;
 
         const product_brochure_file = req.files?.product_brochure_url?.[0];
@@ -118,6 +119,10 @@ exports.addProductController = async (req, res) => {
             throw new Error("Financial description must be a string with at least 5 characters");
         }
 
+        if (!promotional_video_file && !promotional_video_url) {
+            throw new Error("Promotional video is required");
+        }
+
         const validateFile = (file, fieldName, allowedTypes) => {
             if (!file) throw new Error(`${fieldName} is required`);
             if (!allowedTypes.includes(file.mimetype)) {
@@ -126,11 +131,13 @@ exports.addProductController = async (req, res) => {
         };
 
         validateFile(product_brochure_file, "product_brochure_url", ["application/pdf"]);
-        validateFile(promotional_video_file, "promotional_video_url", [
-            "video/mp4",
-            "video/avi",
-            "video/mpeg",
-        ]);
+        if (promotional_video_file) {
+            validateFile(promotional_video_file, "promotional_video_url", [
+                "video/mp4",
+                "video/avi",
+                "video/mpeg",
+            ]);
+        }
         validateFile(promotional_image_file, "promotional_image_url", [
             "image/jpeg",
             "image/png",
@@ -146,6 +153,7 @@ exports.addProductController = async (req, res) => {
             product_tax,
             cover_amount_tax,
             is_publish,
+            promotional_video_url,
             product_brochure_file,
             promotional_video_file,
             promotional_image_file,
@@ -252,6 +260,7 @@ exports.updateProductController = async (req, res) => {
             product_tax = null,
             cover_amount_tax = null,
             is_publish,
+            promotional_video_url = null,
         } = req.body;
 
         const product_brochure_file = req.files?.product_brochure_url?.[0] || null;
@@ -328,6 +337,7 @@ exports.updateProductController = async (req, res) => {
             product_tax,
             cover_amount_tax,
             is_publish,
+            promotional_video_url,
             product_brochure_file,
             promotional_video_file,
             promotional_image_file,

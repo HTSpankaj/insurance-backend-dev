@@ -16,6 +16,7 @@ class ProductService {
         product_tax,
         cover_amount_tax,
         is_publish,
+        promotional_video_url,
         product_brochure_file,
         promotional_video_file,
         promotional_image_file,
@@ -36,7 +37,7 @@ class ProductService {
             await this.uploadSupportingDocuments(
                 product.product_id,
                 product_brochure_file,
-                promotional_video_file,
+                promotional_video_file || promotional_video_url,
                 promotional_image_file,
             );
 
@@ -57,6 +58,7 @@ class ProductService {
         product_tax,
         cover_amount_tax,
         is_publish,
+        promotional_video_url,
         product_brochure_file,
         promotional_video_file,
         promotional_image_file,
@@ -72,15 +74,17 @@ class ProductService {
                 financial_description,
                 product_tax,
                 cover_amount_tax,
-                is_publish,
+                is_publish
             );
 
             // Upload files to Supabase bucket
 
             await this.uploadSupportingDocuments(
+                company_id,
+                company_id,
                 product_id,
                 product_brochure_file,
-                promotional_video_file,
+                promotional_video_file || promotional_video_url,
                 promotional_image_file,
             );
 
@@ -93,6 +97,7 @@ class ProductService {
     }
 
     async uploadSupportingDocuments(
+        company_id,
         product_id,
         product_brochure_file,
         promotional_video_file,
@@ -101,8 +106,8 @@ class ProductService {
         const uploadFile = async (file, fileName) => {
             const fileExtension = file.mimetype.split("/")[1];
 
-            const filePath = `company_id/product_id/${product_id}/${fileName}-${Date.now()}.${fileExtension}`;
-            const { error } = await this.storage.uploadFile(filePath, file.buffer, file.mimetype);
+            const filePath = `${company_id}/${product_id}/${fileName}.${fileExtension}`;
+            const { error } = await this.storage.uploadFile(filePath, file.buffer, file.mimetype, true);
             if (error) throw error;
             return this.storage.getPublicUrl(filePath);
         };
@@ -113,7 +118,9 @@ class ProductService {
         }
 
         let promotional_video_url = null;
-        if (promotional_video_file) {
+        if (typeof promotional_video_file === "string") {
+            promotional_video_url = promotional_video_file;
+        } else if (promotional_video_file) {
             promotional_video_url = await uploadFile(promotional_video_file, "video");
         }
 

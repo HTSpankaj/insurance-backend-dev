@@ -132,7 +132,7 @@ module.exports = {
 function checkByPayout(payoutType, diffMonths) {
     switch (payoutType) {
         case "Monthly":
-            return diffMonths >= 1;
+            return diffMonths >= 1 || diffMonths === 0;
         case "Quarterly":
             return diffMonths >= 3;
         case "HalfYearly":
