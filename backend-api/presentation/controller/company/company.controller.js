@@ -115,7 +115,7 @@ exports.createCompanyController = async (req, res) => {
         if (!contact_person || !/^\d{10}$/.test(contact_person)) {
             throw new Error("Contact person must be a 10-digit phone number");
         }
-        if (!irdai_license_number || irdai_license_number.trim().length === 3) {
+        if (!irdai_license_number) {
             throw new Error("IRDAI license number must be a string with 3 characters");
         }
         if (
@@ -192,19 +192,15 @@ exports.checkCompanyController = async (req, res) => {
     }
     */
     try {
-        const {
-            company_name,
-        } = req.body;
+        const { company_name } = req.body;
 
         if (!company_name || company_name.trim().length < 2) {
             throw new Error("Company name must be a string with at least 2 characters");
         }
 
-        const result = await companyService.checkCompany(
-            company_name,
-        );
+        const result = await companyService.checkCompany(company_name);
 
-        if(result?.length > 0) {
+        if (result?.length > 0) {
             return res.status(200).json({
                 success: false,
                 error: { message: "Company name already exists!" },
@@ -345,7 +341,7 @@ exports.updateCompanyController = async (req, res) => {
         if (!contact_person || !/^\d{10}$/.test(contact_person)) {
             throw new Error("Contact person must be a 10-digit phone number");
         }
-        if (!irdai_license_number || irdai_license_number.trim().length === 3) {
+        if (!irdai_license_number) {
             throw new Error("IRDAI license number must be a string with 3 characters");
         }
         if (
