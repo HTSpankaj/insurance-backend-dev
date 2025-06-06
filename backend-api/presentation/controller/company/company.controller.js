@@ -115,8 +115,8 @@ exports.createCompanyController = async (req, res) => {
         if (!contact_person || !/^\d{10}$/.test(contact_person)) {
             throw new Error("Contact person must be a 10-digit phone number");
         }
-        if (!irdai_license_number || irdai_license_number.trim().length < 5) {
-            throw new Error("IRDAI license number must be a string with at least 5 characters");
+        if (!irdai_license_number || irdai_license_number.trim().length === 3) {
+            throw new Error("IRDAI license number must be a string with 3 characters");
         }
         if (
             !tax_gstin_number ||
@@ -345,8 +345,8 @@ exports.updateCompanyController = async (req, res) => {
         if (!contact_person || !/^\d{10}$/.test(contact_person)) {
             throw new Error("Contact person must be a 10-digit phone number");
         }
-        if (!irdai_license_number || irdai_license_number.trim().length < 5) {
-            throw new Error("IRDAI license number must be a string with at least 5 characters");
+        if (!irdai_license_number || irdai_license_number.trim().length === 3) {
+            throw new Error("IRDAI license number must be a string with 3 characters");
         }
         if (
             !tax_gstin_number ||
