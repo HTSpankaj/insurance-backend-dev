@@ -1,3 +1,5 @@
+const { supabaseInstance } = require("./supabase-db");
+
 const arr = [
     {
         "stateName": "Andhra pradesh",
@@ -2328,12 +2330,7 @@ const arr = [
     },
 ];
 
-const createClient = require("@supabase/supabase-js").createClient;
-
-const supabaseInstance = createClient(
-    "https://kcpzbvtcpclejrpvilmm.supabase.co",
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtjcHpidnRjcGNsZWpycHZpbG1tIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDEzNDUxNzksImV4cCI6MjA1NjkyMTE3OX0.CFL8aw73MbKCeJ-qWMFWjagaoScjZtkAayzfnnt6Rkg",
-);
+supabaseInstance;
 
 // let count = 0;
 
@@ -2361,3 +2358,44 @@ const supabaseInstance = createClient(
 // }).catch((err) => {
 //     console.log(err)
 // })
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~```
+async function addStateAndCity() {
+    for (const stateObj of arr) {
+        const { data, error } = await supabaseInstance
+            .from("state")
+            .insert({
+                title: stateObj.stateName,
+            })
+            .select()
+            .maybeSingle();
+
+        if (error) {
+            console.log("Error in addStateAndCity", error);
+        }
+        if (data) {
+            for (const cityObj of stateObj.city) {
+                const { data: city, error: cityError } = await supabaseInstance
+                    .from("city")
+                    .insert({
+                        title: cityObj.cityName,
+                        state_id: data.id,
+                    })
+                    .select()
+                    .maybeSingle();
+
+                if (cityError) {
+                    console.log("Error in addStateAndCity", cityError);
+                }
+            }
+        }
+    }
+}
+
+// addStateAndCity();
+
+// "stateName": "Andhra pradesh",
+//         "city": [
+//             {
+//                 "cityName": "Anantapur",
+//             },

@@ -35,6 +35,7 @@ class ProductService {
             );
 
             await this.uploadSupportingDocuments(
+                company_id,
                 product.product_id,
                 product_brochure_file,
                 promotional_video_file || promotional_video_url,
@@ -74,13 +75,12 @@ class ProductService {
                 financial_description,
                 product_tax,
                 cover_amount_tax,
-                is_publish
+                is_publish,
             );
 
             // Upload files to Supabase bucket
 
             await this.uploadSupportingDocuments(
-                company_id,
                 company_id,
                 product_id,
                 product_brochure_file,
@@ -107,7 +107,12 @@ class ProductService {
             const fileExtension = file.mimetype.split("/")[1];
 
             const filePath = `${company_id}/${product_id}/${fileName}.${fileExtension}`;
-            const { error } = await this.storage.uploadFile(filePath, file.buffer, file.mimetype, true);
+            const { error } = await this.storage.uploadFile(
+                filePath,
+                file.buffer,
+                file.mimetype,
+                true,
+            );
             if (error) throw error;
             return this.storage.getPublicUrl(filePath);
         };

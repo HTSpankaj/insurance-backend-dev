@@ -11,7 +11,7 @@ var indexRouter = require("./routes/index");
 const dynamicCors = require("./configs/cors.config");
 
 // Schedule job
-// require("./scheduler/invoice/invoiceCreation.scheduler");
+require("./scheduler/invoice/invoiceCreation.scheduler");
 
 var app = express();
 
@@ -28,8 +28,8 @@ if (process.env.NODE_ENV?.trim() || process.env.NODE_ENV?.trim() === "developmen
 }
 
 app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 

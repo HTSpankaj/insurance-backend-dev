@@ -153,17 +153,21 @@ class LeadService {
         }
     }
 
-    async getLeadProductRelationByAdvisorIdService(page_number, limit, advisor_id,
-            start_date,
-            end_date,) {
+    async getLeadProductRelationByAdvisorIdService(
+        page_number,
+        limit,
+        advisor_id,
+        start_date,
+        end_date,
+    ) {
         try {
             const { data, total_count } =
                 await this.leadProductRelationDatabase.getLeadProductRelationByAdvisorIdDatabase(
                     page_number,
                     limit,
                     advisor_id,
-            start_date,
-            end_date,
+                    start_date,
+                    end_date,
                 );
             const total_pages = Math.ceil(total_count / limit);
             return {

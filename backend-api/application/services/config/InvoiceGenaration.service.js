@@ -6,7 +6,9 @@ class InvoiceGenerationService {
      * @param {SupabaseClient} supabaseInstance - The Supabase instance
      */
     constructor(supabaseInstance) {
-        this.invoiceTemplateGenerationDatabase = new InvoiceTemplateGenerationDatabase(supabaseInstance);
+        this.invoiceTemplateGenerationDatabase = new InvoiceTemplateGenerationDatabase(
+            supabaseInstance,
+        );
     }
 }
 

@@ -1,10 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const { loginValidateInput } = require('../../../validator/users/auth.validator');
-const { logInUser, refresh, logOutUser } = require('../../../presentation/controller/users/auth.controller');
+const { loginValidateInput } = require("../../../validator/users/auth.validator");
+const {
+    logInUser,
+    refresh,
+    logOutUser,
+} = require("../../../presentation/controller/users/auth.controller");
 
-const { authenticateToken } = require('../../../middleware/auth');
+const { authenticateToken } = require("../../../middleware/auth");
 
 router.post("/login", loginValidateInput, logInUser);
 router.post("/refresh", authenticateToken, refresh);

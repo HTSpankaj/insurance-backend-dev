@@ -1,3 +1,3 @@
 const { supabaseInstance } = require("./supabaseClient");
 
-module.exports = {supabaseInstance}
+module.exports = { supabaseInstance };

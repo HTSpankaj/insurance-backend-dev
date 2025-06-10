@@ -3,11 +3,15 @@ const AdvisorDatabase = require("../../../infrastructure/databases/advisor/advis
 const BucketNameStorage = require("../../../infrastructure/storage/bucketName.storage.js");
 const authUtil = require("../../../utils/auth.util.js");
 const { generateOtpToken, verifyOtpToken } = require("../../../utils/jwt.util.js");
+const { sendBrevoEmailMessage } = require("../../../integration/brevo/email.brevo.integration.js");
+const OTPSendService = require("../../../services/notification/otpSend.service.js");
+const { generateOtp } = require("../../../utils/crypto.util.js");
 
 class AdvisorService {
     constructor(supabaseInstance) {
         this.advisorDatabase = new AdvisorDatabase(supabaseInstance);
         this.advisorStorage = new BucketNameStorage(supabaseInstance, "advisor");
+        this.oTPSendService = new OTPSendService(supabaseInstance);
     }
 
     async createAdvisor(
@@ -244,8 +248,14 @@ class AdvisorService {
                 // throw new Error("Mobile number not found");
                 await this.advisorDatabase.upsertNotRegisteredAdvisorDatabase(mobile_number);
             }
-            // const otp = generateOtp(4);
-            const otp = 1234;
+
+            let otp = generateOtp(4);
+            if (process.env.NODE_ENV?.trim() === "development") {
+                otp = 1234;
+            } else {
+                const oTPSendServiceRes = await this.oTPSendService.sendOtpToAdvisorThroughSms(mobile_number, otp);
+                console.log("oTPSendServiceRes", oTPSendServiceRes);
+            }
             const token = generateOtpToken({ mobile_number, otp, purpose_for });
 
             return { token, mobile_number };
@@ -311,9 +321,16 @@ class AdvisorService {
                 throw new Error("Email already registered");
             }
 
-            // const otp = generateOtp(4);
-            const otp = 1234;
-            const token = generateOtpToken({ email, otp });
+            let otp = generateOtp(4);
+
+            if (process.env.NODE_ENV?.trim() === "development") {
+                otp = 1234;
+            } else {
+                const oTPSendServiceRes = await this.oTPSendService.sendOtpToAdvisorThroughEmail("pankajagade.pa@gmail.com", otp);
+                console.log("oTPSendServiceRes", oTPSendServiceRes);
+            }
+            
+            let token = generateOtpToken({ email, otp });
 
             return { token, email };
         } catch (error) {

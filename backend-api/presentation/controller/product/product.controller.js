@@ -164,6 +164,8 @@ exports.addProductController = async (req, res) => {
             data: result,
         });
     } catch (error) {
+        console.error("Error in product add Controller:", error);
+
         return res.status(400).json({
             success: false,
             error: { message: error.message || "Something went wrong!" },
