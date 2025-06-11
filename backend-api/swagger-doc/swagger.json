@@ -892,6 +892,13 @@
             "description": "Description of the category"
           },
           {
+            "name": "is_lead_add_without_product",
+            "in": "formData",
+            "type": "boolean",
+            "required": true,
+            "description": "Is lead add without product"
+          },
+          {
             "name": "file",
             "in": "formData",
             "type": "file",
@@ -908,6 +915,9 @@
                   "example": "any"
                 },
                 "description": {
+                  "example": "any"
+                },
+                "is_lead_add_without_product": {
                   "example": "any"
                 }
               }
@@ -3275,6 +3285,13 @@
             "description": "Publish status (true or false)"
           },
           {
+            "name": "is_auto_assign_rm",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Auto assign RM status (true or false)"
+          },
+          {
             "name": "logo_file",
             "in": "formData",
             "type": "file",
@@ -3301,6 +3318,41 @@
             "type": "file",
             "required": true,
             "description": "Business certification file (PDF, JPEG, or PNG)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/company/check-company": {
+      "post": {
+        "tags": [
+          "Company"
+        ],
+        "description": "check Create company",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add User",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "company_name": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
           }
         ],
         "responses": {
@@ -3381,6 +3433,13 @@
             "type": "string",
             "required": true,
             "description": "Publish status (true or false)"
+          },
+          {
+            "name": "is_auto_assign_rm",
+            "in": "formData",
+            "type": "string",
+            "required": true,
+            "description": "Auto assign RM status (true or false)"
           },
           {
             "name": "logo_file",
@@ -3878,49 +3937,25 @@
             "type": "string",
             "required": true,
             "description": "Advisor ID"
+          },
+          {
+            "name": "start_date",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "Start date (YYYY-MM-DD)"
+          },
+          {
+            "name": "end_date",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "End date (YYYY-MM-DD)"
           }
         ],
         "responses": {
           "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": {
-                  "type": "boolean",
-                  "example": true
-                },
-                "data": {
-                  "type": "array",
-                  "example": [],
-                  "items": {}
-                },
-                "metadata": {
-                  "type": "object",
-                  "properties": {
-                    "page": {
-                      "type": "number",
-                      "example": 1
-                    },
-                    "per_page": {
-                      "type": "number",
-                      "example": 10
-                    },
-                    "total_count": {
-                      "type": "number",
-                      "example": 120
-                    },
-                    "total_pages": {
-                      "type": "number",
-                      "example": 12
-                    }
-                  }
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"
@@ -4006,7 +4041,11 @@
                 },
                 "product_id": {
                   "type": "string",
-                  "example": "550e8400-e29b-41d4-a716-446655440001"
+                  "example": ""
+                },
+                "category_id": {
+                  "type": "string",
+                  "example": ""
                 }
               }
             }
@@ -4312,6 +4351,9 @@
                 },
                 "is_publish": {
                   "example": "any"
+                },
+                "promotional_video_url": {
+                  "example": "any"
                 }
               }
             }
@@ -4456,6 +4498,9 @@
                 },
                 "is_publish": {
                   "example": "any"
+                },
+                "promotional_video_url": {
+                  "example": "any"
                 }
               }
             }
@@ -4592,6 +4637,34 @@
             "type": "boolean",
             "required": false,
             "description": "Filter by is_product_publish"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/product/get-product-by-product-id/{product_id}": {
+      "get": {
+        "tags": [
+          "Product"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "product_id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "product UUID"
           }
         ],
         "responses": {

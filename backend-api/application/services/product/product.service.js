@@ -191,6 +191,7 @@ class ProductService {
                 limit,
                 category_id,
                 sub_category_id,
+                null,
                 search,
                 is_company_publish,
                 is_product_publish,
@@ -202,6 +203,10 @@ class ProductService {
                 `Failed to fetch products by category: ${error.message || JSON.stringify(error)}`,
             );
         }
+    }
+
+    async getProductByProductIdService(product_id) {
+        return await this.productDatabase.getProductsByCategoryId(1,1, null, null, product_id, null, null, null);
     }
 
     async deleteProductByIdService(product_id) {

@@ -526,6 +526,23 @@ exports.getProductsByCategoryIdController = async (req, res) => {
     }
 };
 
+exports.getProductByProductIdController = async (req, res) => {
+    /*
+        #swagger.tags = ['Product']
+        #swagger.parameters['product_id'] = { in: 'path', type: 'string', required: true, description: 'product UUID' }
+    */
+    try {
+        const { product_id } = req.params;
+        const result = await productService.getProductByProductIdService(product_id);
+        return res.status(200).json({ success: true, data: result });
+    } catch (error) {
+        return res.status(400).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+}
+
 exports.deleteProductByIdController = async (req, res) => {
     /*
     #swagger.tags = ['Product']
