@@ -541,7 +541,7 @@ exports.getProductByProductIdController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 
 exports.deleteProductByIdController = async (req, res) => {
     /*

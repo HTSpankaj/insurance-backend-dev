@@ -8,7 +8,7 @@ function sendBrevoWhatsAppMessage(text, contactNumbers) {
 
     return new Promise((resolve, reject) => {
         const data = {
-            brevoConfig?.whatsappSenderNumber,
+            senderNumber: brevoConfig?.whatsappSenderNumber,
             text,
             contactNumbers,
         };

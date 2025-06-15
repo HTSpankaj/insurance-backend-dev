@@ -57,7 +57,10 @@ class OTPSendService {
                 );
                 console.log("smsContent", smsContent);
 
-                const sendBrevoSmsMessageRes = await sendBrevoSmsMessage(advisorMobileNumber, smsContent);
+                const sendBrevoSmsMessageRes = await sendBrevoSmsMessage(
+                    advisorMobileNumber,
+                    smsContent,
+                );
                 console.log("sendBrevoSmsMessageRes", sendBrevoSmsMessageRes);
             }
         }

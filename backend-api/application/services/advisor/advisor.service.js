@@ -251,12 +251,18 @@ class AdvisorService {
 
             let otp = generateOtp(4);
             console.log("process.env.NODE_ENV?.trim()", process.env.NODE_ENV?.trim());
-            console.log("process.env.NODE_ENV?.trim() === development", process.env.NODE_ENV?.trim() === "development");
-            
+            console.log(
+                "process.env.NODE_ENV?.trim() === development",
+                process.env.NODE_ENV?.trim() === "development",
+            );
+
             if (process.env.NODE_ENV?.trim() === "development") {
                 otp = 1234;
             } else {
-                const oTPSendServiceRes = await this.oTPSendService.sendOtpToAdvisorThroughSms(mobile_number, otp);
+                const oTPSendServiceRes = await this.oTPSendService.sendOtpToAdvisorThroughSms(
+                    mobile_number,
+                    otp,
+                );
                 console.log("oTPSendServiceRes", oTPSendServiceRes);
             }
             const token = generateOtpToken({ mobile_number, otp, purpose_for });
@@ -329,10 +335,13 @@ class AdvisorService {
             if (process.env.NODE_ENV?.trim() === "development") {
                 otp = 1234;
             } else {
-                const oTPSendServiceRes = await this.oTPSendService.sendOtpToAdvisorThroughEmail("pankajagade.pa@gmail.com", otp);
+                const oTPSendServiceRes = await this.oTPSendService.sendOtpToAdvisorThroughEmail(
+                    "pankajagade.pa@gmail.com",
+                    otp,
+                );
                 console.log("oTPSendServiceRes", oTPSendServiceRes);
             }
-            
+
             let token = generateOtpToken({ email, otp });
 
             return { token, email };

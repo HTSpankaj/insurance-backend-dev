@@ -5,7 +5,7 @@ const {
 } = require("../../../validator/Issuance/bankMis.validator");
 const {
     afterBankMisExcelDataController,
-    getExcelDataForBankMisDownloadController
+    getExcelDataForBankMisDownloadController,
 } = require("../../../presentation/controller/issuance/bankMis.controller");
 
 const router = express.Router();

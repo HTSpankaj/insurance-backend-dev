@@ -15,7 +15,13 @@ class AdvisorAssignNotificationService {
     }
 
     // CategoryName, ProductName, LeadName
-    async sendAutoAdvisorAssignNotification(relationshipManagerEmail, relationshipManagerMobileNumber, relationshipManagerName, advisorMobileNumber, variableValuesObject) {
+    async sendAutoAdvisorAssignNotification(
+        relationshipManagerEmail,
+        relationshipManagerMobileNumber,
+        relationshipManagerName,
+        advisorMobileNumber,
+        variableValuesObject,
+    ) {
         const getNotificationTriggerMessagesByTitleRes =
             await this.notificationTriggerMessagesDatabase.getNotificationTriggerMessagesByTitle(
                 "Auto-Assign Lead",
@@ -43,7 +49,7 @@ class AdvisorAssignNotificationService {
                     );
                     console.log("sendBrevoEmailMessageRes", sendBrevoEmailMessageRes);
                 }
-                
+
                 //* -- SMS
                 if (messageData?.is_sms) {
                     const smsContent = replaceVariables(
@@ -53,7 +59,10 @@ class AdvisorAssignNotificationService {
                     );
                     console.log("smsContent", smsContent);
 
-                    const sendBrevoSmsMessageRes = await sendBrevoSmsMessage(relationshipManagerMobileNumber, smsContent);
+                    const sendBrevoSmsMessageRes = await sendBrevoSmsMessage(
+                        relationshipManagerMobileNumber,
+                        smsContent,
+                    );
                     console.log("sendBrevoSmsMessageRes", sendBrevoSmsMessageRes);
                 }
 
@@ -66,14 +75,23 @@ class AdvisorAssignNotificationService {
                     );
                     console.log("whatsappContent", whatsappContent);
 
-                    const sendBrevoWhatsAppMessageRes = await sendBrevoWhatsAppMessage(whatsappContent, relationshipManagerMobileNumber);
+                    const sendBrevoWhatsAppMessageRes = await sendBrevoWhatsAppMessage(
+                        whatsappContent,
+                        relationshipManagerMobileNumber,
+                    );
                     console.log("sendBrevoWhatsAppMessageRes", sendBrevoWhatsAppMessageRes);
                 }
             }
         }
     }
 
-    async sendManualAdvisorAssignNotification(relationshipManagerEmail, relationshipManagerMobileNumber, relationshipManagerName, advisorMobileNumber, variableValuesObject) {
+    async sendManualAdvisorAssignNotification(
+        relationshipManagerEmail,
+        relationshipManagerMobileNumber,
+        relationshipManagerName,
+        advisorMobileNumber,
+        variableValuesObject,
+    ) {
         const getNotificationTriggerMessagesByTitleRes =
             await this.notificationTriggerMessagesDatabase.getNotificationTriggerMessagesByTitle(
                 "Manual-Assign Lead",
@@ -101,7 +119,7 @@ class AdvisorAssignNotificationService {
                     );
                     console.log("sendBrevoEmailMessageRes", sendBrevoEmailMessageRes);
                 }
-                
+
                 //* -- SMS
                 if (messageData?.is_sms) {
                     const smsContent = replaceVariables(
@@ -111,7 +129,10 @@ class AdvisorAssignNotificationService {
                     );
                     console.log("smsContent", smsContent);
 
-                    const sendBrevoSmsMessageRes = await sendBrevoSmsMessage(relationshipManagerMobileNumber, smsContent);
+                    const sendBrevoSmsMessageRes = await sendBrevoSmsMessage(
+                        relationshipManagerMobileNumber,
+                        smsContent,
+                    );
                     console.log("sendBrevoSmsMessageRes", sendBrevoSmsMessageRes);
                 }
 
@@ -124,7 +145,10 @@ class AdvisorAssignNotificationService {
                     );
                     console.log("whatsappContent", whatsappContent);
 
-                    const sendBrevoWhatsAppMessageRes = await sendBrevoWhatsAppMessage(whatsappContent, relationshipManagerMobileNumber);
+                    const sendBrevoWhatsAppMessageRes = await sendBrevoWhatsAppMessage(
+                        whatsappContent,
+                        relationshipManagerMobileNumber,
+                    );
                     console.log("sendBrevoWhatsAppMessageRes", sendBrevoWhatsAppMessageRes);
                 }
             }

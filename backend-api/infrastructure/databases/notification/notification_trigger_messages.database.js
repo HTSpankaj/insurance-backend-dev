@@ -13,17 +13,24 @@ class NotificationTriggerMessagesDatabase {
     }
 
     async getNotificationTriggerMessagesByTitle(title) {
-        const { data, error } = await this.db.from(NotificationTriggerListTableName).select("*").eq("title", title).maybeSingle();
+        const { data, error } = await this.db
+            .from(NotificationTriggerListTableName)
+            .select("*")
+            .eq("title", title)
+            .maybeSingle();
         if (data) {
-            const { data: messageData, error: messageError } = await this.db.from(NotificationTriggerMessagesTableName).select("*").eq("notification_trigger_list_id", data?.id).eq("is_active", true);
+            const { data: messageData, error: messageError } = await this.db
+                .from(NotificationTriggerMessagesTableName)
+                .select("*")
+                .eq("notification_trigger_list_id", data?.id)
+                .eq("is_active", true);
             if (messageData?.length > 0) {
                 return {
                     messageData: messageData,
-                    triggerData: data
+                    triggerData: data,
                 };
             } else {
                 return null;
-                
             }
         } else {
             return null;
@@ -37,36 +44,81 @@ class NotificationTriggerMessagesDatabase {
     }
 
     async getNotificationTriggerMessagesDatabase() {
-        const { data, error } = await this.db.from(NotificationTriggerMessagesTableName).select("*, notification_trigger_list_id(*)");
+        const { data, error } = await this.db
+            .from(NotificationTriggerMessagesTableName)
+            .select("*, notification_trigger_list_id(*)");
         if (error) throw error;
         return data;
     }
 
-    async addNotificationTriggerMessagesDatabase(notification_trigger_list_id,recipient,title,is_sms,is_email,is_whatsapp,email_subject,email_message,whatsapp_message,sms_message,is_active) {
-
-        const { data: notificationTriggerListData, error: notificationTriggerListError } = await this.db.from(NotificationTriggerListTableName).select("*").eq("id", notification_trigger_list_id).eq("recipient", recipient).limit(1);
+    async addNotificationTriggerMessagesDatabase(
+        notification_trigger_list_id,
+        recipient,
+        title,
+        is_sms,
+        is_email,
+        is_whatsapp,
+        email_subject,
+        email_message,
+        whatsapp_message,
+        sms_message,
+        is_active,
+    ) {
+        const { data: notificationTriggerListData, error: notificationTriggerListError } =
+            await this.db
+                .from(NotificationTriggerMessagesTableName)
+                .select("*")
+                .eq("id", notification_trigger_list_id)
+                .eq("recipient", recipient)
+                .limit(1);
         if (notificationTriggerListData?.length > 0) {
             const err = {
                 message: "Message already exists with same notification trigger and recipient.",
-            }
+            };
             throw err;
         } else if (notificationTriggerListError) {
             throw notificationTriggerListError;
         } else {
             const { data, error } = await this.db
                 .from(NotificationTriggerMessagesTableName)
-                .insert({ notification_trigger_list_id,recipient,title,is_sms,is_email,is_whatsapp,email_subject,email_message,whatsapp_message,sms_message,is_active })
+                .insert({
+                    notification_trigger_list_id,
+                    recipient,
+                    title,
+                    is_sms,
+                    is_email,
+                    is_whatsapp,
+                    email_subject,
+                    email_message,
+                    whatsapp_message,
+                    sms_message,
+                    is_active,
+                })
                 .select()
                 .maybeSingle();
-    
+
             if (error) throw error;
             return data;
         }
     }
 
-    async updateNotificationTriggerMessagesDatabase(id, notification_trigger_list_id,recipient,title,is_sms,is_email,is_whatsapp,email_subject,email_message,whatsapp_message,sms_message,is_active) {
+    async updateNotificationTriggerMessagesDatabase(
+        id,
+        notification_trigger_list_id,
+        recipient,
+        title,
+        is_sms,
+        is_email,
+        is_whatsapp,
+        email_subject,
+        email_message,
+        whatsapp_message,
+        sms_message,
+        is_active,
+    ) {
         let postBody = {};
-        if (notification_trigger_list_id) postBody.notification_trigger_list_id = notification_trigger_list_id;
+        if (notification_trigger_list_id)
+            postBody.notification_trigger_list_id = notification_trigger_list_id;
         if (recipient) postBody.recipient = recipient;
         if (title) postBody.title = title;
         if (is_sms === true || is_sms === false) postBody.is_sms = is_sms;
@@ -78,11 +130,17 @@ class NotificationTriggerMessagesDatabase {
         if (sms_message) postBody.sms_message = sms_message;
         if (is_active === true || is_active === false) postBody.is_active = is_active;
 
-        const { data: notificationTriggerListData, error: notificationTriggerListError } = await this.db.from(NotificationTriggerListTableName).select("*").eq("id", notification_trigger_list_id).eq("recipient", recipient).limit(1);
+        const { data: notificationTriggerListData, error: notificationTriggerListError } =
+            await this.db
+                .from(NotificationTriggerMessagesTableName)
+                .select("*")
+                .eq("id", notification_trigger_list_id)
+                .eq("recipient", recipient)
+                .limit(1);
         if (notificationTriggerListData?.length > 0) {
             const err = {
                 message: "Notification trigger already exists with same recipient.",
-            }
+            };
             throw err;
         } else if (notificationTriggerListError) {
             throw notificationTriggerListError;
@@ -110,6 +168,5 @@ class NotificationTriggerMessagesDatabase {
         return data;
     }
 }
-
 
 module.exports = NotificationTriggerMessagesDatabase;

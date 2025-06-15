@@ -8,8 +8,8 @@ exports.getNotificationTriggerListController = async (req, res) => {
     #swagger.tags = ['Notification']
     #swagger.description = 'Get notification trigger list'
     */
-   try {
-       const result = await notificationTriggerMessagesService.getNotificationTriggerListService();
+    try {
+        const result = await notificationTriggerMessagesService.getNotificationTriggerListService();
         return res.status(200).json({
             success: true,
             message: "Get advisor access config successfully.",
@@ -29,7 +29,8 @@ exports.getNotificationTriggerMessagesController = async (req, res) => {
     #swagger.description = 'Get notification trigger messages'
     */
     try {
-        const result = await notificationTriggerMessagesService.getNotificationTriggerMessagesService();
+        const result =
+            await notificationTriggerMessagesService.getNotificationTriggerMessagesService();
         return res.status(200).json({
             success: true,
             message: "Get notification trigger messages successfully.",
@@ -41,7 +42,7 @@ exports.getNotificationTriggerMessagesController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 
 exports.addNotificationTriggerMessagesController = async (req, res) => {
     /*
@@ -65,8 +66,33 @@ exports.addNotificationTriggerMessagesController = async (req, res) => {
     }
     */
     try {
-        const { notification_trigger_list_id,recipient,title,is_sms,is_email,is_whatsapp,email_subject,email_message,whatsapp_message,sms_message,is_active } = req.body;
-        const result = await notificationTriggerMessagesService.addNotificationTriggerMessagesService(notification_trigger_list_id,recipient,title,is_sms,is_email,is_whatsapp,email_subject,email_message,whatsapp_message,sms_message,is_active);
+        const {
+            notification_trigger_list_id,
+            recipient,
+            title,
+            is_sms,
+            is_email,
+            is_whatsapp,
+            email_subject,
+            email_message,
+            whatsapp_message,
+            sms_message,
+            is_active,
+        } = req.body;
+        const result =
+            await notificationTriggerMessagesService.addNotificationTriggerMessagesService(
+                notification_trigger_list_id,
+                recipient,
+                title,
+                is_sms,
+                is_email,
+                is_whatsapp,
+                email_subject,
+                email_message,
+                whatsapp_message,
+                sms_message,
+                is_active,
+            );
         return res.status(200).json({
             success: true,
             message: "Add notification trigger messages successfully.",
@@ -78,7 +104,7 @@ exports.addNotificationTriggerMessagesController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 
 exports.updateNotificationTriggerMessagesController = async (req, res) => {
     /*
@@ -102,10 +128,37 @@ exports.updateNotificationTriggerMessagesController = async (req, res) => {
         }
     }
     */
-    
+
     try {
-        const { id, notification_trigger_list_id,recipient,title,is_sms,is_email,is_whatsapp,email_subject,email_message,whatsapp_message,sms_message,is_active } = req.body;
-        const result = await notificationTriggerMessagesService.updateNotificationTriggerMessagesService(id, notification_trigger_list_id,recipient,title,is_sms,is_email,is_whatsapp,email_subject,email_message,whatsapp_message,sms_message,is_active);
+        const {
+            id,
+            notification_trigger_list_id,
+            recipient,
+            title,
+            is_sms,
+            is_email,
+            is_whatsapp,
+            email_subject,
+            email_message,
+            whatsapp_message,
+            sms_message,
+            is_active,
+        } = req.body;
+        const result =
+            await notificationTriggerMessagesService.updateNotificationTriggerMessagesService(
+                id,
+                notification_trigger_list_id,
+                recipient,
+                title,
+                is_sms,
+                is_email,
+                is_whatsapp,
+                email_subject,
+                email_message,
+                whatsapp_message,
+                sms_message,
+                is_active,
+            );
         return res.status(200).json({
             success: true,
             message: "Update notification trigger messages successfully.",
@@ -117,7 +170,7 @@ exports.updateNotificationTriggerMessagesController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};
 
 exports.deleteNotificationTriggerMessagesController = async (req, res) => {
     /*
@@ -132,7 +185,8 @@ exports.deleteNotificationTriggerMessagesController = async (req, res) => {
     */
     try {
         const { id } = req.body;
-        const result = await notificationTriggerMessagesService.deleteNotificationTriggerMessagesService(id);
+        const result =
+            await notificationTriggerMessagesService.deleteNotificationTriggerMessagesService(id);
         return res.status(200).json({
             success: true,
             message: "Delete notification trigger messages successfully.",
@@ -144,4 +198,4 @@ exports.deleteNotificationTriggerMessagesController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};

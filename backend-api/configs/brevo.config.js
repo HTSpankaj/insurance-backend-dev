@@ -7,7 +7,7 @@ exports.brevoConfig = {
 
     // SMS
     smsSender: "",
-    
+
     // WhatsApp
     whatsappSenderNumber: "",
 };

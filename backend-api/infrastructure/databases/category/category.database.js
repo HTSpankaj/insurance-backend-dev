@@ -91,8 +91,8 @@ class CategoryDatabase {
                 .from(tableName)
                 .select("*, sub_category(*)", { count: "exact" })
                 .eq("is_delete", false)
-                .order("created_at", { ascending: false })
-            
+                .order("created_at", { ascending: false });
+
             if (!is_all) {
                 query = query.range(offset, offset + limit - 1);
             }
@@ -144,13 +144,20 @@ class CategoryDatabase {
         }
     }
 
-    async updateCategoryDatabase(category_id, title, description, is_lead_add_without_product, logo_url) {
+    async updateCategoryDatabase(
+        category_id,
+        title,
+        description,
+        is_lead_add_without_product,
+        logo_url,
+    ) {
         try {
             let postBody = {};
             if (title) postBody.title = title;
             if (description) postBody.description = description;
             if (logo_url) postBody.logo_url = logo_url;
-            if (is_lead_add_without_product === true || is_lead_add_without_product === false) postBody.is_lead_add_without_product = is_lead_add_without_product;
+            if (is_lead_add_without_product === true || is_lead_add_without_product === false)
+                postBody.is_lead_add_without_product = is_lead_add_without_product;
 
             if (title) {
                 const existingCategory = await this.db

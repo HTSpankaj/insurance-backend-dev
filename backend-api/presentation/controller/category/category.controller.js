@@ -85,7 +85,11 @@ exports.getCategoriesWithSubCategoriesController = async (req, res) => {
         const limit = parseInt(req.query.limit) || 10;
         const is_all = req?.query?.is_all == "true";
 
-        const result = await categoryService.getCategoriesWithSubCategories(pageNumber, limit, is_all);
+        const result = await categoryService.getCategoriesWithSubCategories(
+            pageNumber,
+            limit,
+            is_all,
+        );
         return res.status(result.success ? 200 : 400).json(result);
     } catch (error) {
         return res

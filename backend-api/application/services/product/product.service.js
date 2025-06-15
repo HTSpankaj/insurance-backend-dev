@@ -206,7 +206,16 @@ class ProductService {
     }
 
     async getProductByProductIdService(product_id) {
-        return await this.productDatabase.getProductsByCategoryId(1,1, null, null, product_id, null, null, null);
+        return await this.productDatabase.getProductsByCategoryId(
+            1,
+            1,
+            null,
+            null,
+            product_id,
+            null,
+            null,
+            null,
+        );
     }
 
     async deleteProductByIdService(product_id) {

@@ -185,14 +185,20 @@ class CategoryService {
         }
     }
 
-    async updateCategoryService(category_id, title, description, is_lead_add_without_product, file) {
+    async updateCategoryService(
+        category_id,
+        title,
+        description,
+        is_lead_add_without_product,
+        file,
+    ) {
         try {
             let category = await this.categoryDatabase.updateCategoryDatabase(
                 category_id,
                 title,
                 description,
                 is_lead_add_without_product,
-                null
+                null,
             );
 
             if (file && category_id) {
