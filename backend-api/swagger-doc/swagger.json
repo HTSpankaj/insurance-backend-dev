@@ -1015,6 +1015,13 @@
             "description": "Description of the category"
           },
           {
+            "name": "is_lead_add_without_product",
+            "in": "formData",
+            "type": "boolean",
+            "required": true,
+            "description": "Is lead add without product"
+          },
+          {
             "name": "file",
             "in": "formData",
             "type": "file",
@@ -1034,6 +1041,9 @@
                   "example": "any"
                 },
                 "description": {
+                  "example": "any"
+                },
+                "is_lead_add_without_product": {
                   "example": "any"
                 }
               }
@@ -1141,6 +1151,13 @@
         ],
         "description": "Get categories with pagination",
         "parameters": [
+          {
+            "name": "is_all",
+            "in": "query",
+            "description": "Get all categories",
+            "required": false,
+            "type": "boolean"
+          },
           {
             "name": "page_number",
             "in": "query",
@@ -5932,6 +5949,45 @@
         }
       }
     },
+    "/api/issuance/bank-mis/get-excel-data-for-bank-mis-download": {
+      "get": {
+        "tags": [
+          "Issuance"
+        ],
+        "description": "get excel data For bank mis download",
+        "parameters": [
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Page number (default: 1)",
+            "example": 1,
+            "default": 1
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "required": false,
+            "description": "Number of courses per page (default: 10)",
+            "example": 10,
+            "default": 10
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/issuance/bank-mis/insert-excel-data": {
       "post": {
         "tags": [
@@ -7319,6 +7375,230 @@
               "properties": {
                 "id": {
                   "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/notification/get-notification-trigger-list": {
+      "get": {
+        "tags": [
+          "Notification"
+        ],
+        "description": "Get notification trigger list",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/notification/get-notification-trigger-messages": {
+      "get": {
+        "tags": [
+          "Notification"
+        ],
+        "description": "Get notification trigger messages",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/notification/add-notification-trigger-messages": {
+      "post": {
+        "tags": [
+          "Notification"
+        ],
+        "description": "Add notification trigger messages",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "notification_trigger_list_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "recipient": {
+                  "type": "string",
+                  "example": ""
+                },
+                "title": {
+                  "type": "string",
+                  "example": ""
+                },
+                "is_sms": {
+                  "type": "string",
+                  "example": ""
+                },
+                "is_email": {
+                  "type": "string",
+                  "example": ""
+                },
+                "is_whatsapp": {
+                  "type": "string",
+                  "example": ""
+                },
+                "email_subject": {
+                  "type": "string",
+                  "example": ""
+                },
+                "email_message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "whatsapp_message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "sms_message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "is_active": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/notification/update-notification-trigger-messages": {
+      "put": {
+        "tags": [
+          "Notification"
+        ],
+        "description": "Update notification trigger messages",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "notification_trigger_list_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "recipient": {
+                  "type": "string",
+                  "example": ""
+                },
+                "title": {
+                  "type": "string",
+                  "example": ""
+                },
+                "is_sms": {
+                  "type": "string",
+                  "example": ""
+                },
+                "is_email": {
+                  "type": "string",
+                  "example": ""
+                },
+                "is_whatsapp": {
+                  "type": "string",
+                  "example": ""
+                },
+                "email_subject": {
+                  "type": "string",
+                  "example": ""
+                },
+                "email_message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "whatsapp_message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "sms_message": {
+                  "type": "string",
+                  "example": ""
+                },
+                "is_active": {
+                  "type": "boolean",
+                  "example": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/api/notification/delete-notification-trigger-messages": {
+      "delete": {
+        "tags": [
+          "Notification"
+        ],
+        "description": "Delete notification trigger messages",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": ""
                 }
               }
             }

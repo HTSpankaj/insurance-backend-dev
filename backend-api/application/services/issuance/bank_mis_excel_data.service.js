@@ -193,6 +193,13 @@ class BankMisExcelDataService {
             });
         });
     }
+
+    async getExcelDataForBankMisDownloadService(page_number, limit) {
+        return await this.bankMisDatabase.getExcelDataForBankMisDownloadDatabase(
+            page_number,
+            limit,
+        );
+    }
 }
 
 module.exports = BankMisExcelDataService;

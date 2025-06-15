@@ -63,6 +63,7 @@ class CategoryService {
                 category_id,
                 null,
                 null,
+                null,
                 logo_url,
             );
         }
@@ -100,19 +101,26 @@ class CategoryService {
         }
     }
 
-    async getCategoriesWithSubCategories(pageNumber, limit) {
+    async getCategoriesWithSubCategories(pageNumber, limit, is_all) {
         try {
             const { data, total } = await this.categoryDatabase.getCategoriesWithSubCategories(
                 pageNumber,
                 limit,
+                is_all,
             );
             return {
                 success: true,
                 data: {
                     categories: data,
-                    total,
-                    page: pageNumber,
                     limit,
+                    total: total,
+                    ...(!is_all
+                        ? {
+                              page: pageNumber,
+                              per_page: limit,
+                              total_pages: Math.ceil(total / limit),
+                          }
+                        : {}),
                 },
             };
         } catch (error) {
@@ -177,12 +185,14 @@ class CategoryService {
         }
     }
 
-    async updateCategoryService(category_id, title, description, file) {
+    async updateCategoryService(category_id, title, description, is_lead_add_without_product, file) {
         try {
             let category = await this.categoryDatabase.updateCategoryDatabase(
                 category_id,
                 title,
                 description,
+                is_lead_add_without_product,
+                null
             );
 
             if (file && category_id) {

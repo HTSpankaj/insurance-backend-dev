@@ -84,15 +84,20 @@ class CategoryDatabase {
         }
     }
 
-    async getCategoriesWithSubCategories(pageNumber, limit) {
+    async getCategoriesWithSubCategories(pageNumber, limit, is_all) {
         try {
             const offset = (pageNumber - 1) * limit;
-            const { data, error, count } = await this.db
+            let query = this.db
                 .from(tableName)
                 .select("*, sub_category(*)", { count: "exact" })
                 .eq("is_delete", false)
                 .order("created_at", { ascending: false })
-                .range(offset, offset + limit - 1);
+            
+            if (!is_all) {
+                query = query.range(offset, offset + limit - 1);
+            }
+
+            const { data, error, count } = await query;
 
             if (error) throw error;
             return { data, total: count };
@@ -139,12 +144,13 @@ class CategoryDatabase {
         }
     }
 
-    async updateCategoryDatabase(category_id, title, description, logo_url) {
+    async updateCategoryDatabase(category_id, title, description, is_lead_add_without_product, logo_url) {
         try {
             let postBody = {};
             if (title) postBody.title = title;
             if (description) postBody.description = description;
             if (logo_url) postBody.logo_url = logo_url;
+            if (is_lead_add_without_product === true || is_lead_add_without_product === false) postBody.is_lead_add_without_product = is_lead_add_without_product;
 
             if (title) {
                 const existingCategory = await this.db

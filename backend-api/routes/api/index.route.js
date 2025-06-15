@@ -23,6 +23,7 @@ const advisorRoute = require("./advisor/advisor.route"); // New advisor route
 const regionRouter = require("./region/region.route");
 const coursemoduleRoutes = require("./course/coursemodule.routes");
 const configRoutes = require("./config/index.route");
+const notificationRoutes = require("./notification/index.route");
 
 // Import authentication middleware
 const { authenticateToken } = require("../../middleware/auth");
@@ -56,5 +57,6 @@ router.use("/course", coursemoduleRoutes);
 router.use("/issuance", authenticateToken, issuanceRouter);
 router.use("/remuneration", remunerationRouter);
 router.use("/config", configRoutes);
+router.use("/notification", notificationRoutes);
 
 module.exports = router;

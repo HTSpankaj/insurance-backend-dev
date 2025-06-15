@@ -57,6 +57,22 @@ class BankMisDatabase {
             };
         }
     }
+
+    async getExcelDataForBankMisDownloadDatabase(page_number, limit) {
+        try {
+            const offset = (page_number - 1) * limit;
+            const { data, error } = await this.db.rpc("get_payment_list_for_download_mis_excel", {
+                offset_val: offset,
+                limit_val: limit,
+                start_date_val: null,
+                end_date_val: null,
+            });
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to get excel data for after issuance excel: ${error.message}`);
+        }
+    }
 }
 
 module.exports = BankMisDatabase;

@@ -73,11 +73,19 @@ exports.getCategoriesWithSubCategoriesController = async (req, res) => {
     /*
     #swagger.tags = ['Category']
     #swagger.description = 'Get categories with pagination'
+    #swagger.parameters['is_all'] = {
+        in: 'query',
+        description: 'Get all categories',
+        required: false,
+        type: 'boolean'
+    }
   */
     try {
         const pageNumber = parseInt(req.query.page_number) || 1;
         const limit = parseInt(req.query.limit) || 10;
-        const result = await categoryService.getCategoriesWithSubCategories(pageNumber, limit);
+        const is_all = req?.query?.is_all == "true";
+
+        const result = await categoryService.getCategoriesWithSubCategories(pageNumber, limit, is_all);
         return res.status(result.success ? 200 : 400).json(result);
     } catch (error) {
         return res
@@ -166,17 +174,19 @@ exports.updateCategoryController = async (req, res) => {
     #swagger.parameters['category_id'] = { in: 'formData', type: 'string', required: true, description: 'Id of the category' }
     #swagger.parameters['title'] = { in: 'formData', type: 'string', required: true, description: 'Title of the category' }
     #swagger.parameters['description'] = { in: 'formData', type: 'string', required: true, description: 'Description of the category' }
+    #swagger.parameters['is_lead_add_without_product'] = { in: 'formData', type: 'boolean', required: true, description: 'Is lead add without product' } 
     #swagger.parameters['file'] = { in: 'formData', type: 'file', required: true, description: 'category image' }
   
   */
     try {
-        const { category_id, title, description } = req.body;
+        const { category_id, title, description, is_lead_add_without_product } = req.body;
         const file = req.files?.file?.[0];
 
         const result = await categoryService.updateCategoryService(
             category_id,
             title,
             description,
+            is_lead_add_without_product,
             file,
         );
         return res.status(result.success ? 200 : 400).json(result);
