@@ -46,7 +46,8 @@ class NotificationTriggerMessagesDatabase {
     async getNotificationTriggerMessagesDatabase() {
         const { data, error } = await this.db
             .from(NotificationTriggerMessagesTableName)
-            .select("*, notification_trigger_list_id(*)");
+            .select("*, notification_trigger_list_id(*)")
+            .order("created_at", { ascending: false });
         if (error) throw error;
         return data;
     }
@@ -130,20 +131,26 @@ class NotificationTriggerMessagesDatabase {
         if (sms_message) postBody.sms_message = sms_message;
         if (is_active === true || is_active === false) postBody.is_active = is_active;
 
-        const { data: notificationTriggerListData, error: notificationTriggerListError } =
-            await this.db
-                .from(NotificationTriggerMessagesTableName)
-                .select("*")
-                .eq("id", notification_trigger_list_id)
-                .eq("recipient", recipient)
-                .limit(1);
-        if (notificationTriggerListData?.length > 0) {
-            const err = {
-                message: "Notification trigger already exists with same recipient.",
-            };
-            throw err;
-        } else if (notificationTriggerListError) {
-            throw notificationTriggerListError;
+        if (notification_trigger_list_id || recipient) {
+            let query = this.db.from(NotificationTriggerMessagesTableName).select("*");
+
+            if (notification_trigger_list_id) {
+                query = query.eq("notification_trigger_list_id", notification_trigger_list_id);
+            }
+            if (recipient) {
+                query = query.eq("recipient", recipient);
+            }
+
+            const { data: notificationTriggerListData, error: notificationTriggerListError } =
+                await query.neq("id", id).limit(1);
+            if (notificationTriggerListData?.length > 0) {
+                const err = {
+                    message: "Notification trigger already exists with same recipient.",
+                };
+                throw err;
+            } else if (notificationTriggerListError) {
+                throw notificationTriggerListError;
+            }
         }
 
         const { data, error } = await this.db
