@@ -142,7 +142,8 @@ class LeadDatabase {
                         product_name, company_id(company_id, company_name),
                         sub_category_id(sub_category_id, title, category_id(category_id, title))
                     ),
-                    lead_id(lead_id, name, email, contact_number, city_id(id, title, state_id(id, title)))
+                    lead_id(lead_id, name, email, contact_number, city_id(id, title, state_id(id, title))),
+                    advisor_id(name, mobile_number, email)
                 `,
                 )
                 .maybeSingle();

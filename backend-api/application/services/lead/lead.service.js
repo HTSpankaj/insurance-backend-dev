@@ -2,6 +2,8 @@ const LeadDatabase = require("../../../infrastructure/databases/lead/lead.databa
 const LeadProductRelationshipManagerRelationDatabase = require("../../../infrastructure/databases/relationship-manager/lead_product_relationship_manager_relation.database");
 const LeadProductRelationDatabase = require("../../../infrastructure/databases/lead_product_relation/lead_product_relation.database.js");
 const { generateOtpToken, verifyOtpToken } = require("../../../utils/jwt.util.js");
+const AdvisorAssignNotificationService = require("../../../services/notification/advisorAssignNotification.service.js");
+const RelationshipManagerDatabase = require("../../../infrastructure/databases/relationship-manager/relationship-manager.database.js");
 
 class LeadService {
     constructor(supabaseInstance) {
@@ -9,6 +11,8 @@ class LeadService {
         this.leadProductRelationshipManagerRelationDatabase =
             new LeadProductRelationshipManagerRelationDatabase(supabaseInstance);
         this.leadProductRelationDatabase = new LeadProductRelationDatabase(supabaseInstance);
+        this.advisorAssignNotificationService = new AdvisorAssignNotificationService(supabaseInstance);
+        this.relationshipManagerDatabase = new RelationshipManagerDatabase(supabaseInstance);
     }
 
     async getLeadList(
@@ -101,13 +105,31 @@ class LeadService {
                         leadCityId,
                         leadStateId,
                     );
-                // console.log(
-                //     "leadProductRelationshipManagerRelationDatabaseResponse",
-                //     leadProductRelationshipManagerRelationDatabaseResponse,
-                // );
+                console.log(
+                    "leadProductRelationshipManagerRelationDatabaseResponse",
+                    leadProductRelationshipManagerRelationDatabaseResponse,
+                );
 
                 // Todo: Send whatsapp message to Relationship Manager
                 if (leadProductRelationshipManagerRelationDatabaseResponse) {
+
+                    // this.relationshipManagerDatabase.getRelationshipManagerDetailsById(
+                        
+                    // )
+                    // const variable = {
+                    //     CategoryName: createLeadProductRelationResponse?.product_id?.sub_category_id?.category_id?.title,
+                    //     ProductName: createLeadProductRelationResponse?.product_id?.product_name,
+                    //     LeadName: name,
+                    // }
+
+                    // this.advisorAssignNotificationService.sendAutoAdvisorAssignNotification(
+                    //     relationshipManagerEmail,
+                    //     relationshipManagerMobileNumber,
+                    //     relationshipManagerName,
+                        
+                    //     createLeadProductRelationResponse?.advisor_id?.name,
+                    //     variable,
+                    // )
                 }
             }
 

@@ -258,6 +258,28 @@ class RelationshipManagerDatabase {
             );
         }
     }
+
+    async getRelationshipManagerDetailsById(rm_id) {
+        try {
+            const { data, error } = await this.db
+                .from(relationshipManagerTableName)
+                .select("*")
+                .eq("rm_id", rm_id)
+                .eq("is_delete", false);
+
+            if (error) {
+                console.error("Supabase error in getRelationshipManagerDetailsById:", error);
+                throw error;
+            }
+
+            return data;
+        } catch (error) {
+            console.error("Error in getRelationshipManagerDetailsById:", error);
+            throw new Error(
+                `Failed to fetch relationship manager details: ${error.message || JSON.stringify(error)}`,
+            );
+        }
+    }
 }
 
 module.exports = RelationshipManagerDatabase;

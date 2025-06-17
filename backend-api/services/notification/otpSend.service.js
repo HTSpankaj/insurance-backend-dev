@@ -31,9 +31,10 @@ class OTPSendService {
                 console.log("emailContent", emailContent);
 
                 const sendBrevoEmailMessageRes = await sendBrevoEmailMessage(
-                    getNotificationTriggerMessagesByTitleRes?.messageData?.email_subject,
+                    messageData?.email_subject,
                     emailContent,
                     [{ email: advisorEmail, name: "Advisor" }],
+                    []
                 );
                 console.log("sendBrevoEmailMessageRes", sendBrevoEmailMessageRes);
             }
