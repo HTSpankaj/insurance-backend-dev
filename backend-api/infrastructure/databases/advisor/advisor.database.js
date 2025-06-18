@@ -566,6 +566,21 @@ class AdvisorDatabase {
             );
         }
     }
+
+    async getAdvisorProfileDatabase(advisor_id) {
+        try {
+            const { data, error } = await this.db
+                .from(tableName)
+                .select("*, advisor_onboarding_status_id(title), bank_details(*)")
+                .eq("advisor_id", advisor_id)
+                .maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to fetch advisor: ${error.message || JSON.stringify(error)}`);
+        } 
+    }
 }
 
 module.exports = AdvisorDatabase;

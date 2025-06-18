@@ -577,6 +577,10 @@ class AdvisorService {
             );
         }
     }
+
+    async getAdvisorProfileService(advisor_id) {
+        return this.advisorDatabase.getAdvisorProfileDatabase(advisor_id);
+    }
 }
 
 module.exports = AdvisorService;

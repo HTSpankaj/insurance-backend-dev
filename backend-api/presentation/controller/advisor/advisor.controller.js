@@ -822,3 +822,24 @@ exports.getAdvisorStatisticsByAdvisorIdController = async (req, res) => {
         });
     }
 };
+
+exports.getAdvisorProfileController = async (req, res) => {
+    /*
+    #swagger.tags = ['Advisor']
+    #swagger.description = 'Get advisor profile'
+    */
+    try {
+        const advisor_id = res.locals.tokenData?.advisor_id;
+        const result = await advisorService.getAdvisorProfileService(advisor_id);
+        return res.status(200).json({
+            success: true,
+            message: "Get advisor profile successfully.",
+            data: result,
+        });
+    } catch (error) {
+        return res.status(500).json({
+            success: false,
+            error: { message: error.message || "Something went wrong!" },
+        });
+    }
+}

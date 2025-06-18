@@ -18,6 +18,7 @@ const {
     activeInactiveAdvisorController,
     resubmitAdvisorRegistrationController,
     getAdvisorStatisticsByAdvisorIdController,
+    getAdvisorProfileController,
 } = require("../../../presentation/controller/advisor/advisor.controller");
 
 const {
@@ -79,6 +80,13 @@ router.get(
     authenticateToken,
     getAdvisorStatisticsByAdvisorIdController,
 );
+
+router.get(
+    "/advisor-profile-details",
+    authenticateToken,
+    getAdvisorProfileController,
+);
+
 // router.put("/advisor-request-resubmit", authenticateToken, resubmitAdvisorRequestController);
 
 //* Company Access

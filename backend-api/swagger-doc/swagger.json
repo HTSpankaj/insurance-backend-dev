@@ -3090,6 +3090,25 @@
         }
       }
     },
+    "/api/advisor/advisor-profile-details": {
+      "get": {
+        "tags": [
+          "Advisor"
+        ],
+        "description": "Get advisor profile",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/advisor/get-advisor-company-access": {
       "get": {
         "tags": [
