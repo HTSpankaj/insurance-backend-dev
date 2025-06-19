@@ -79,16 +79,20 @@ exports.updateHelpCenterController = async (req, res) => {
         schema: {
             title: "",
             description: "",
-            contact_number: ""
+            contact_number: "",
+            email: "",
+            location: ""
         }
     }
     */
     try {
-        const { title, description, contact_number } = req.body;
+        const { title, description, contact_number, email, location } = req.body;
         const result = await commonConfigService.updateHelpCenterService(
             title,
             description,
             contact_number,
+            email,
+            location
         );
         return res.status(200).json({
             success: true,

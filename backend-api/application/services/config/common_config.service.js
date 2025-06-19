@@ -21,11 +21,13 @@ class CommonConfigService {
         return await this.commonConfigDatabase.getHelpCenterDatabase();
     }
 
-    async updateHelpCenterService(title, description, contact_number) {
+    async updateHelpCenterService(title, description, contact_number, email, location) {
         return await this.commonConfigDatabase.updateHelpCenterDatabase(
             title,
             description,
             contact_number,
+            email,
+            location
         );
     }
 }

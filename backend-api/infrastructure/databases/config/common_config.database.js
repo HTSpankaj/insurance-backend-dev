@@ -59,11 +59,11 @@ class CommonConfigDatabase {
         }
     }
 
-    async updateHelpCenterDatabase(title, description, contact_number) {
+    async updateHelpCenterDatabase(title, description, contact_number, email, location) {
         try {
             const { data, error } = await this.db
                 .from(tableName)
-                .update({ config: { title, description, contact_number } })
+                .update({ config: { title, description, contact_number, email, location } })
                 .eq("id", helpCenterId)
                 .select()
                 .maybeSingle();
