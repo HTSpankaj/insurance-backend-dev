@@ -183,8 +183,14 @@ exports.updateCategoryController = async (req, res) => {
   
   */
     try {
-        const { category_id, title, description, is_lead_add_without_product } = req.body;
+        const { category_id, title, description } = req.body;
         const file = req.files?.file?.[0];
+        let is_lead_add_without_product = null;
+        if (req.body?.is_lead_add_without_product === 'true') {
+            is_lead_add_without_product = true;
+        } else  if (req.body?.is_lead_add_without_product === 'false') {
+            is_lead_add_without_product = false;
+        }
 
         const result = await categoryService.updateCategoryService(
             category_id,
