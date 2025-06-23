@@ -16,7 +16,6 @@ class AdvisorAssignNotificationService {
 
     // CategoryName, ProductName, LeadName
     async sendAutoAdvisorAssignNotification(
-        relationshipManagerEmail,
         relationshipManagerMobileNumber,
         relationshipManagerName,
         advisorMobileNumber,
@@ -34,21 +33,21 @@ class AdvisorAssignNotificationService {
 
             for (const messageData of getNotificationTriggerMessagesByTitleRes?.messageData) {
                 //* -- Email
-                if (messageData?.is_email) {
-                    const emailContent = replaceVariables(
-                        messageData?.email_message,
-                        triggerData?.variable_list,
-                        variableValuesObject,
-                    );
-                    console.log("emailContent", emailContent);
+                // if (messageData?.is_email) {
+                //     const emailContent = replaceVariables(
+                //         messageData?.email_message,
+                //         triggerData?.variable_list,
+                //         variableValuesObject,
+                //     );
+                //     console.log("emailContent", emailContent);
 
-                    const sendBrevoEmailMessageRes = await sendBrevoEmailMessage(
-                        messageData?.email_subject,
-                        emailContent,
-                        [{ email: relationshipManagerEmail, name: relationshipManagerName }],
-                    );
-                    console.log("sendBrevoEmailMessageRes", sendBrevoEmailMessageRes);
-                }
+                //     const sendBrevoEmailMessageRes = await sendBrevoEmailMessage(
+                //         messageData?.email_subject,
+                //         emailContent,
+                //         [{ email: relationshipManagerEmail, name: relationshipManagerName }],
+                //     );
+                //     console.log("sendBrevoEmailMessageRes", sendBrevoEmailMessageRes);
+                // }
 
                 //* -- SMS
                 if (messageData?.is_sms) {

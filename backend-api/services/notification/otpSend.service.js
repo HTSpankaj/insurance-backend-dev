@@ -34,7 +34,7 @@ class OTPSendService {
                     messageData?.email_subject,
                     emailContent,
                     [{ email: advisorEmail, name: "Advisor" }],
-                    []
+                    [],
                 );
                 console.log("sendBrevoEmailMessageRes", sendBrevoEmailMessageRes);
             }

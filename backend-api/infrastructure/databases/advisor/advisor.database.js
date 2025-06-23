@@ -579,7 +579,7 @@ class AdvisorDatabase {
             return data;
         } catch (error) {
             throw new Error(`Failed to fetch advisor: ${error.message || JSON.stringify(error)}`);
-        } 
+        }
     }
 }
 

@@ -347,6 +347,7 @@ exports.addLeadController = async (req, res) => {
           additinal_note: 'Urgent lead',
           product_id: '',
           category_id: '',
+          sub_category_id: '',
         }
       
     }
@@ -363,6 +364,7 @@ exports.addLeadController = async (req, res) => {
             additinal_note,
             product_id,
             category_id,
+            sub_category_id,
         } = req.body;
 
         const advisor_id = res.locals.tokenData?.advisor_id; // Extract advisor_id from token
@@ -429,6 +431,7 @@ exports.addLeadController = async (req, res) => {
             additinal_note || "",
             product_id || null,
             category_id || null,
+            sub_category_id || null,
             advisor_id,
         );
 

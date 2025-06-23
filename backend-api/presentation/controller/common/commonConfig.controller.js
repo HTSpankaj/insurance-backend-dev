@@ -92,7 +92,7 @@ exports.updateHelpCenterController = async (req, res) => {
             description,
             contact_number,
             email,
-            location
+            location,
         );
         return res.status(200).json({
             success: true,

@@ -842,4 +842,4 @@ exports.getAdvisorProfileController = async (req, res) => {
             error: { message: error.message || "Something went wrong!" },
         });
     }
-}
+};

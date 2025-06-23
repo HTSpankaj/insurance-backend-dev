@@ -70,12 +70,14 @@ class CategoryService {
         return updatedCategory;
     }
 
-    async getCategories(pageNumber, limit, is_all) {
+    async getCategories(pageNumber, limit, is_all, is_lead_add_without_product, is_active) {
         try {
             const { data, total } = await this.categoryDatabase.getCategories(
                 pageNumber,
                 limit,
                 is_all,
+                is_lead_add_without_product,
+                is_active,
             );
             return {
                 success: true,
@@ -101,12 +103,20 @@ class CategoryService {
         }
     }
 
-    async getCategoriesWithSubCategories(pageNumber, limit, is_all) {
+    async getCategoriesWithSubCategories(
+        pageNumber,
+        limit,
+        is_all,
+        is_lead_add_without_product,
+        is_active,
+    ) {
         try {
             const { data, total } = await this.categoryDatabase.getCategoriesWithSubCategories(
                 pageNumber,
                 limit,
                 is_all,
+                is_lead_add_without_product,
+                is_active,
             );
             return {
                 success: true,

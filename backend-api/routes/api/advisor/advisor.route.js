@@ -81,11 +81,7 @@ router.get(
     getAdvisorStatisticsByAdvisorIdController,
 );
 
-router.get(
-    "/advisor-profile-details",
-    authenticateToken,
-    getAdvisorProfileController,
-);
+router.get("/advisor-profile-details", authenticateToken, getAdvisorProfileController);
 
 // router.put("/advisor-request-resubmit", authenticateToken, resubmitAdvisorRequestController);
 

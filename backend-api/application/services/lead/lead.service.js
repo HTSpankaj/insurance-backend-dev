@@ -11,7 +11,9 @@ class LeadService {
         this.leadProductRelationshipManagerRelationDatabase =
             new LeadProductRelationshipManagerRelationDatabase(supabaseInstance);
         this.leadProductRelationDatabase = new LeadProductRelationDatabase(supabaseInstance);
-        this.advisorAssignNotificationService = new AdvisorAssignNotificationService(supabaseInstance);
+        this.advisorAssignNotificationService = new AdvisorAssignNotificationService(
+            supabaseInstance,
+        );
         this.relationshipManagerDatabase = new RelationshipManagerDatabase(supabaseInstance);
     }
 
@@ -64,6 +66,7 @@ class LeadService {
         additional_note,
         product_id,
         category_id,
+        sub_category_id,
         advisor_id,
     ) {
         try {
@@ -83,6 +86,7 @@ class LeadService {
                     lead.lead_id,
                     product_id,
                     category_id,
+                    sub_category_id,
                     advisor_id,
                     priority,
                     additional_note,
@@ -109,27 +113,23 @@ class LeadService {
                     "leadProductRelationshipManagerRelationDatabaseResponse",
                     leadProductRelationshipManagerRelationDatabaseResponse,
                 );
+                // leadProductRelationshipManagerRelationDatabaseResponse aa6337e8-bc67-4ee9-be14-de391f56b94a
 
                 // Todo: Send whatsapp message to Relationship Manager
                 if (leadProductRelationshipManagerRelationDatabaseResponse) {
-
-                    // this.relationshipManagerDatabase.getRelationshipManagerDetailsById(
-                        
-                    // )
-                    // const variable = {
-                    //     CategoryName: createLeadProductRelationResponse?.product_id?.sub_category_id?.category_id?.title,
-                    //     ProductName: createLeadProductRelationResponse?.product_id?.product_name,
-                    //     LeadName: name,
-                    // }
-
-                    // this.advisorAssignNotificationService.sendAutoAdvisorAssignNotification(
-                    //     relationshipManagerEmail,
-                    //     relationshipManagerMobileNumber,
-                    //     relationshipManagerName,
-                        
-                    //     createLeadProductRelationResponse?.advisor_id?.name,
-                    //     variable,
-                    // )
+                    const rmData = await this.relationshipManagerDatabase.getRelationshipManagerDetailsById(leadProductRelationshipManagerRelationDatabaseResponse);
+                    const variable = {
+                        CategoryName: createLeadProductRelationResponse?.product_id?.sub_category_id?.category_id?.title,
+                        ProductName: createLeadProductRelationResponse?.product_id?.product_name,
+                        LeadName: name,
+                    }
+                    
+                    this.advisorAssignNotificationService.sendAutoAdvisorAssignNotification(
+                        rmData?.contact_number,
+                        rmData?.name,
+                        createLeadProductRelationResponse?.advisor_id?.mobile_number,
+                        variable,
+                    )
                 }
             }
 

@@ -27,7 +27,7 @@ class CommonConfigService {
             description,
             contact_number,
             email,
-            location
+            location,
         );
     }
 }

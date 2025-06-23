@@ -62,20 +62,27 @@ class CategoryDatabase {
         }
     }
 
-    async getCategories(pageNumber, limit, is_all) {
+    async getCategories(pageNumber, limit, is_all, is_lead_add_without_product, is_active) {
         try {
             const offset = (pageNumber - 1) * limit;
             let query = this.db
                 .from(tableName)
                 .select("*", { count: "exact" })
-                .eq("is_delete", false)
-                .order("created_at", { ascending: false });
+                .eq("is_delete", false);
 
             if (!is_all) {
                 query = query.range(offset, offset + limit - 1);
             }
 
-            const { data, error, count } = await query;
+            if (is_lead_add_without_product !== null) {
+                query = query.eq("is_lead_add_without_product", is_lead_add_without_product);
+            }
+
+            if (is_active !== null) {
+                query = query.eq("is_active", is_active);
+            }
+
+            const { data, error, count } = await query.order("created_at", { ascending: false });
 
             if (error) throw error;
             return { data, total: count };
@@ -84,20 +91,33 @@ class CategoryDatabase {
         }
     }
 
-    async getCategoriesWithSubCategories(pageNumber, limit, is_all) {
+    async getCategoriesWithSubCategories(
+        pageNumber,
+        limit,
+        is_all,
+        is_lead_add_without_product,
+        is_active,
+    ) {
         try {
             const offset = (pageNumber - 1) * limit;
             let query = this.db
                 .from(tableName)
                 .select("*, sub_category(*)", { count: "exact" })
-                .eq("is_delete", false)
-                .order("created_at", { ascending: false });
+                .eq("is_delete", false);
+
+            if (is_lead_add_without_product !== null) {
+                query = query.eq("is_lead_add_without_product", is_lead_add_without_product);
+            }
+
+            if (is_active !== null) {
+                query = query.eq("is_active", is_active);
+            }
 
             if (!is_all) {
                 query = query.range(offset, offset + limit - 1);
             }
 
-            const { data, error, count } = await query;
+            const { data, error, count } = await query.order("created_at", { ascending: false });
 
             if (error) throw error;
             return { data, total: count };

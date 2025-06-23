@@ -21,9 +21,11 @@ function sendBrevoSmsMessage(recipient, content) {
 
         sendTransacSms = {
             "sender": brevoConfig.smsSender,
-            "recipient": recipient,
+            "recipient": "+91" + recipient,
             "content": content,
         };
+
+        console.log("recipient:", sendTransacSms.recipient);
 
         apiInstance.sendTransacSms(sendTransacSms).then(
             function (data) {
