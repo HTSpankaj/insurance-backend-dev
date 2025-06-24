@@ -69,19 +69,19 @@ class AdvisorDatabase {
         qualification,
     ) {
         try {
+            const body = {};
+            if (join_as) body.join_as = join_as;
+            if (name) body.name = name;
+            if (mobile_number) body.mobile_number = mobile_number;
+            if (email) body.email = email;
+            if (aadhar_card_number) body.aadhar_card_number = aadhar_card_number;
+            if (pan_card_number) body.pan_card_number = pan_card_number;
+            if (gstin_number) body.gstin_number = gstin_number;
+            if (qualification) body.qualification = qualification;
+
             const { data, error } = await this.db
                 .from(tableName)
-                .update({
-                    join_as,
-                    name,
-                    mobile_number,
-                    email,
-                    aadhar_card_number,
-                    pan_card_number,
-                    gstin_number,
-                    qualification,
-                    advisor_onboarding_status_id: 3,
-                })
+                .update(body)
                 .eq("advisor_id", advisor_id)
                 .select()
                 .maybeSingle();
