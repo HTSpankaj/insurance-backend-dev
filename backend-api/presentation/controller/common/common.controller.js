@@ -1,9 +1,11 @@
 const { supabaseInstance } = require("../../../supabase-db/index.js");
 const CityService = require("../../../application/services/stateCity/city.service.js");
 const StateService = require("../../../application/services/stateCity/state.service.js");
+const BecomeAdvisorService = require("../../../application/services/becomeAdvisor/becomeAdvisor.service.js");
 
 const stateService = new StateService(supabaseInstance);
 const cityService = new CityService(supabaseInstance);
+const becomeAdvisorService = new BecomeAdvisorService(supabaseInstance);
 
 //* State Controller
 exports.getStateController = async (req, res) => {
@@ -329,6 +331,41 @@ exports.deleteCityController = async (req, res) => {
             data: result,
         });
     } catch (error) {
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
+    }
+};
+
+exports.addBecomeAdvisorController = async (req, res) => {
+    /*
+    #swagger.tags = ['Common']
+
+    #swagger.description = 'Add become advisor.'
+    #swagger.parameters['body'] ={
+        in: 'body',
+        description: 'Add User',
+        schema: {
+          "name": "",
+          "email": "",
+          "contact_number": "",
+        }
+    }
+  */
+    try {
+        const { name, email, contact_number } = req.body;
+        const result = await becomeAdvisorService.addBecomeAdvisorService(
+            name,
+            email,
+            contact_number,
+        );
+        return res.status(201).json({
+            success: true,
+            message: "Become advisor successfully.",
+            data: result,
+        });
+    } catch (error) {
+        console.log(error);
         return res
             .status(500)
             .json({ success: false, error: error?.message || "Something went wrong!" });

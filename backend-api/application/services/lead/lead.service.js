@@ -117,19 +117,24 @@ class LeadService {
 
                 // Todo: Send whatsapp message to Relationship Manager
                 if (leadProductRelationshipManagerRelationDatabaseResponse) {
-                    const rmData = await this.relationshipManagerDatabase.getRelationshipManagerDetailsById(leadProductRelationshipManagerRelationDatabaseResponse);
+                    const rmData =
+                        await this.relationshipManagerDatabase.getRelationshipManagerDetailsById(
+                            leadProductRelationshipManagerRelationDatabaseResponse,
+                        );
                     const variable = {
-                        CategoryName: createLeadProductRelationResponse?.product_id?.sub_category_id?.category_id?.title,
+                        CategoryName:
+                            createLeadProductRelationResponse?.product_id?.sub_category_id
+                                ?.category_id?.title,
                         ProductName: createLeadProductRelationResponse?.product_id?.product_name,
                         LeadName: name,
-                    }
-                    
+                    };
+
                     this.advisorAssignNotificationService.sendAutoAdvisorAssignNotification(
                         rmData?.contact_number,
                         rmData?.name,
                         createLeadProductRelationResponse?.advisor_id?.mobile_number,
                         variable,
-                    )
+                    );
                 }
             }
 

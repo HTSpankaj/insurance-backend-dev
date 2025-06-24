@@ -149,7 +149,7 @@ class AdvisorService {
                 _frontAadharFilePath,
                 front_aadhar_card_file.buffer,
                 front_aadhar_card_file.mimetype,
-                false,
+                true,
             );
             if (frontAadharUploadResult) {
                 frontAadharPublicUrl = await this.advisorStorage.getPublicUrl(
@@ -164,7 +164,7 @@ class AdvisorService {
                 _backAadharFilePath,
                 back_aadhar_card_file.buffer,
                 back_aadhar_card_file.mimetype,
-                false,
+                true,
             );
             if (backAadharUploadResult) {
                 backAadharPublicUrl = await this.advisorStorage.getPublicUrl(
@@ -182,6 +182,7 @@ class AdvisorService {
                 _frontPanFilePath,
                 front_pan_card_file.buffer,
                 front_pan_card_file.mimetype,
+                true,
             );
             if (frontPanUploadResult) {
                 frontPanPublicUrl = await this.advisorStorage.getPublicUrl(
@@ -196,6 +197,7 @@ class AdvisorService {
                 _backPanFilePath,
                 back_pan_card_file.buffer,
                 back_pan_card_file.mimetype,
+                true,
             );
             if (backPanUploadResult) {
                 backPanPublicUrl = await this.advisorStorage.getPublicUrl(
@@ -212,6 +214,7 @@ class AdvisorService {
                 _gstInFilePath,
                 gstin_file.buffer,
                 gstin_file.mimetype,
+                true,
             );
             if (gstInUploadResult) {
                 gstinPublicUrl = await this.advisorStorage.getPublicUrl(gstInUploadResult?.path);
@@ -321,6 +324,11 @@ class AdvisorService {
         } catch (error) {
             throw new Error(error.message || "Verification failed");
         }
+    }
+
+    async getAdvisorByMobile(mobile_number) {
+        const user = await this.advisorDatabase.getAdvisorByMobile(mobile_number);
+        return user;
     }
     // New sendAdvisorEmailOtp method
     async sendAdvisorEmailOtp(email) {

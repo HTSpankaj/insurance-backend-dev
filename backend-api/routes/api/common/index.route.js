@@ -11,6 +11,7 @@ const {
     deleteCityController,
     updateStateController,
     deleteStateController,
+    addBecomeAdvisorController,
 } = require("../../../presentation/controller/common/common.controller");
 const {
     getTermAndConditionController,
@@ -40,5 +41,7 @@ router.get("/get-term-and-condition", getTermAndConditionController);
 router.put("/update-term-and-condition", updateTermAndConditionController);
 router.get("/get-help-center", getHelpCenterController);
 router.put("/update-help-center", updateHelpCenterController);
+
+router.put("/add-become-advisor", addBecomeAdvisorController);
 
 module.exports = router;

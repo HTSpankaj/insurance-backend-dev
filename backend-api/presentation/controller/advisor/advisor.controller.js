@@ -2,6 +2,10 @@ const { supabaseInstance } = require("../../../supabase-db/index.js");
 const AdvisorService = require("../../../application/services/advisor/advisor.service.js");
 const AdvisorCompanyAccessService = require("../../../application/services/advisor/advisor_company_access.service.js");
 const AdvisorCategoryAccessService = require("../../../application/services/advisor/advisor_catgory_access.service.js");
+const {
+    logInGenerateAndStoreToken,
+    refreshServiceForAdvisor,
+} = require("../../../utils/auth.util.js");
 
 const advisorService = new AdvisorService(supabaseInstance);
 const advisorCompanyAccessService = new AdvisorCompanyAccessService(supabaseInstance);
@@ -85,10 +89,18 @@ exports.createAdvisorController = async (req, res) => {
             gstin_file,
         );
 
+        const user = await advisorService.getAdvisorByMobile(mobile_number);
+        const logInTokens = logInGenerateAndStoreToken(user);
+
+        // console.log("user", user);
+        // console.log("logInTokens", logInTokens);
+
         return res.status(200).json({
             success: true,
             message: "Advisor registered successfully",
             data: result,
+            user: user,
+            token: logInTokens,
         });
     } catch (error) {
         console.error(error);
@@ -183,10 +195,15 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
             gstin_file,
         );
 
+        const user = await advisorService.getAdvisorByMobile(mobile_number);
+        const logInTokens = logInGenerateAndStoreToken(user);
+
         return res.status(200).json({
             success: true,
             message: "Advisor registered successfully",
             data: result,
+            user: user,
+            token: logInTokens,
         });
     } catch (error) {
         console.log(error);
@@ -194,6 +211,32 @@ exports.resubmitAdvisorRegistrationController = async (req, res) => {
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
+    }
+};
+
+exports.advisorRefreshTokenController = async (req, res) => {
+    /*
+        #swagger.tags = ['Advisor']
+        #swagger.description = 'Advisor refresh token'
+    */
+    try {
+        const token = await refreshServiceForAdvisor(req, res);
+        console.log("token", token);
+
+        if (!token) {
+            return res.status(401).json({ success: false, error: "Invalid refresh token" });
+        }
+
+        const user = await advisorService.getAdvisorByMobile(token.mobile_number);
+        const logInTokens = logInGenerateAndStoreToken(user);
+
+        console.log("user", user);
+        console.log("logInTokens", logInTokens);
+
+        return res.status(200).json({ success: true, data: user, token: logInTokens });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ success: false, error: error.message });
     }
 };
 

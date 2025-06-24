@@ -19,6 +19,7 @@ const {
     resubmitAdvisorRegistrationController,
     getAdvisorStatisticsByAdvisorIdController,
     getAdvisorProfileController,
+    advisorRefreshTokenController,
 } = require("../../../presentation/controller/advisor/advisor.controller");
 
 const {
@@ -34,7 +35,7 @@ const {
     advisorUpdateRegistrationValidator,
 } = require("../../../validator/advisor/advisor.validator");
 
-const { authenticateToken } = require("../../../middleware/auth");
+const { authenticateToken, advisorAuthenticateToken } = require("../../../middleware/auth");
 const { upload } = require("../../../middleware/multer.middleware");
 
 const router = express.Router();
@@ -56,6 +57,7 @@ router.post("/advisor-mobile-send-otp", advisorOtpValidateInput, sendAdvisorOtpC
 router.post("/advisor-mobile-verify", advisorVerifyValidateInput, verifyAdvisorMobileController);
 router.post("/advisor-email-send-otp", advisorEmailOtpValidateInput, sendAdvisorEmailOtpController);
 router.post("/advisor-email-verify", advisorEmailVerifyValidateInput, verifyAdvisorEmailController);
+router.post("/advisor-refresh-token", advisorAuthenticateToken, advisorRefreshTokenController);
 
 //!~~~~~~~~~~~~~~~~~~~ Request send from admin portal ~~~~~~~~~~~~~~~~~~~
 router.get("/advisor-statistics-number", authenticateToken, getAdvisorStatisticsController);

@@ -17,6 +17,28 @@ const logInGenerateAndStoreToken = payload => {
     }
 };
 
+const refreshServiceForAdvisor = async req => {
+    try {
+        const refresh_token = req.headers.authorization?.split(" ")[1];
+        if (!refresh_token && refresh_token === undefined) {
+            return false;
+        }
+        const isValidRefreshToken = auth.verifyToken(refresh_token);
+
+        if (isValidRefreshToken?.advisor_id) {
+            delete isValidRefreshToken.iat;
+            delete isValidRefreshToken.exp;
+
+            return isValidRefreshToken;
+        } else {
+            const _error = { message: "Invalid refresh token" };
+            throw _error;
+        }
+    } catch (error) {
+        const _error = error ? error : { message: "Internal Server Error" };
+        throw _error;
+    }
+};
 const refreshService = async req => {
     try {
         const refresh_token = req.headers.authorization?.split(" ")[1];
@@ -25,11 +47,11 @@ const refreshService = async req => {
         }
         const isValidRefreshToken = auth.verifyToken(refresh_token);
 
-        if (isValidRefreshToken.email) {
+        if (isValidRefreshToken?.advisor_id) {
             delete isValidRefreshToken.iat;
             delete isValidRefreshToken.exp;
 
-            const newAccessToken = auth.generateToken(
+            const newAccessToken = logInGenerateAndStoreToken(
                 isValidRefreshToken,
                 authConfig.accessTokenExpiry,
             );
@@ -53,5 +75,6 @@ const logOutService = async res => {
 module.exports = {
     logInGenerateAndStoreToken,
     refreshService,
+    refreshServiceForAdvisor,
     logOutService,
 };
