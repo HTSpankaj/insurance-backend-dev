@@ -28,12 +28,12 @@ class BecomeAdvisorDatabase {
     async getBecomeAdvisorDatabase(page_number, limit) {
         try {
             const offset = (page_number - 1) * limit;
-            const { data, error } = await this.db
+            const { data, error, count } = await this.db
                 .from(tableName)
-                .select("*")
+                .select("*", { count: "exact" })
                 .range(offset, offset + limit - 1);
             if (error) throw error;
-            return data;
+            return { data, total: count };
         } catch (error) {
             throw new Error(`Failed to get become advisor: ${error.message}`);
         }

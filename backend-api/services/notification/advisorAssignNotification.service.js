@@ -2,6 +2,7 @@ const NotificationTriggerMessagesDatabase = require("../../infrastructure/databa
 const { sendBrevoEmailMessage } = require("../../integration/brevo/email.brevo.integration");
 const { sendBrevoSmsMessage } = require("../../integration/brevo/sms.brevo.integration");
 const { sendBrevoWhatsAppMessage } = require("../../integration/brevo/whatsapp.brevo.integration");
+const { replaceVariables } = require("./functions");
 
 class AdvisorAssignNotificationService {
     /**
@@ -156,16 +157,3 @@ class AdvisorAssignNotificationService {
 }
 
 module.exports = AdvisorAssignNotificationService;
-
-// message = "Hello, your OTP is {{OTP}}"
-// variableList = [{"title": "OTP", "variable_name": "OTP"}]
-// valueList = {"OTP": "1234"}
-function replaceVariables(message, variableList, valueList) {
-    for (let i = 0; i < variableList.length; i++) {
-        const variable = variableList[i];
-        const variableName = variable.variable_name;
-        const value = valueList[variableName];
-        message = message.replace(`{{${variableName}}}`, value);
-    }
-    return message;
-}

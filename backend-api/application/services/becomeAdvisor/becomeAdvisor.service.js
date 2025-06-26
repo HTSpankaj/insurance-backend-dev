@@ -13,8 +13,29 @@ class BecomeAdvisorService {
         );
     }
 
-    async getBecomeAdvisorService() {
-        return await this.becomeAdvisorDatabase.getBecomeAdvisorDatabase();
+    async getBecomeAdvisorService(page_number, limit) {
+        try {
+            const { data, total } = await this.becomeAdvisorDatabase.getBecomeAdvisorDatabase(
+                page_number,
+                limit,
+            );
+            return {
+                success: true,
+                data,
+                metadata: {
+                    total_count: total,
+                    page: page_number,
+                    per_page: limit,
+                },
+            };
+        } catch (error) {
+            return {
+                success: false,
+                error: {
+                    message: error.message,
+                },
+            };
+        }
     }
 }
 

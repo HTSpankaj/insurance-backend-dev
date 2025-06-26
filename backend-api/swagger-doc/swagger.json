@@ -2103,7 +2103,7 @@
       }
     },
     "/api/common/add-become-advisor": {
-      "put": {
+      "post": {
         "tags": [
           "Common"
         ],
@@ -2135,6 +2135,41 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/common/get-become-advisor": {
+      "get": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Get become advisor.",
+        "parameters": [
+          {
+            "name": "page_number",
+            "in": "query",
+            "type": "integer",
+            "default": 1,
+            "description": "Page number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "default": 10,
+            "description": "Number of records per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "401": {
             "description": "Unauthorized"

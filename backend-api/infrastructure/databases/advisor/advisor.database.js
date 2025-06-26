@@ -79,6 +79,9 @@ class AdvisorDatabase {
             if (gstin_number) body.gstin_number = gstin_number;
             if (qualification) body.qualification = qualification;
 
+            //* Update onboarding status
+            body.advisor_onboarding_status_id = 3;
+
             const { data, error } = await this.db
                 .from(tableName)
                 .update(body)

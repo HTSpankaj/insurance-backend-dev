@@ -12,6 +12,7 @@ const {
     updateStateController,
     deleteStateController,
     addBecomeAdvisorController,
+    getBecomeAdvisorController,
 } = require("../../../presentation/controller/common/common.controller");
 const {
     getTermAndConditionController,
@@ -42,6 +43,7 @@ router.put("/update-term-and-condition", updateTermAndConditionController);
 router.get("/get-help-center", getHelpCenterController);
 router.put("/update-help-center", updateHelpCenterController);
 
-router.put("/add-become-advisor", addBecomeAdvisorController);
+router.post("/add-become-advisor", addBecomeAdvisorController);
+router.get("/get-become-advisor", getBecomeAdvisorController);
 
 module.exports = router;

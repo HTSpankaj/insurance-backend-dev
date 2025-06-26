@@ -4,6 +4,8 @@ const LeadProductRelationDatabase = require("../../../infrastructure/databases/l
 const { generateOtpToken, verifyOtpToken } = require("../../../utils/jwt.util.js");
 const AdvisorAssignNotificationService = require("../../../services/notification/advisorAssignNotification.service.js");
 const RelationshipManagerDatabase = require("../../../infrastructure/databases/relationship-manager/relationship-manager.database.js");
+const { generateOtp } = require("../../../utils/crypto.util.js");
+const OTPSendToLeadService = require("../../../services/notification/otpSendToLead.service.js");
 
 class LeadService {
     constructor(supabaseInstance) {
@@ -15,6 +17,7 @@ class LeadService {
             supabaseInstance,
         );
         this.relationshipManagerDatabase = new RelationshipManagerDatabase(supabaseInstance);
+        this.oTPSendToLeadService = new OTPSendToLeadService(supabaseInstance);
     }
 
     async getLeadList(
@@ -117,24 +120,27 @@ class LeadService {
 
                 // Todo: Send whatsapp message to Relationship Manager
                 if (leadProductRelationshipManagerRelationDatabaseResponse) {
-                    const rmData =
-                        await this.relationshipManagerDatabase.getRelationshipManagerDetailsById(
-                            leadProductRelationshipManagerRelationDatabaseResponse,
-                        );
-                    const variable = {
-                        CategoryName:
-                            createLeadProductRelationResponse?.product_id?.sub_category_id
-                                ?.category_id?.title,
-                        ProductName: createLeadProductRelationResponse?.product_id?.product_name,
-                        LeadName: name,
-                    };
+                    if (process.env.NODE_ENV?.trim() !== "development") {
+                        const rmData =
+                            await this.relationshipManagerDatabase.getRelationshipManagerDetailsById(
+                                leadProductRelationshipManagerRelationDatabaseResponse,
+                            );
+                        const variable = {
+                            CategoryName:
+                                createLeadProductRelationResponse?.product_id?.sub_category_id
+                                    ?.category_id?.title,
+                            ProductName:
+                                createLeadProductRelationResponse?.product_id?.product_name,
+                            LeadName: name,
+                        };
 
-                    this.advisorAssignNotificationService.sendAutoAdvisorAssignNotification(
-                        rmData?.contact_number,
-                        rmData?.name,
-                        createLeadProductRelationResponse?.advisor_id?.mobile_number,
-                        variable,
-                    );
+                        this.advisorAssignNotificationService.sendAutoAdvisorAssignNotification(
+                            rmData?.contact_number,
+                            rmData?.name,
+                            createLeadProductRelationResponse?.advisor_id?.mobile_number,
+                            variable,
+                        );
+                    }
                 }
             }
 
@@ -216,8 +222,18 @@ class LeadService {
 
     async sendLeadOtp(mobile_number) {
         try {
-            // const otp = generateOtp(4);
-            const otp = 1234;
+            let otp = generateOtp(4);
+
+            if (process.env.NODE_ENV?.trim() === "development") {
+                otp = 1234;
+            } else {
+                const oTPSendServiceRes = await this.oTPSendToLeadService.sendOtpToLeadThroughSms(
+                    mobile_number,
+                    otp,
+                );
+                console.log("oTPSendServiceRes", oTPSendServiceRes);
+            }
+
             const token = generateOtpToken({ mobile_number, otp });
 
             return { token, mobile_number };
@@ -253,8 +269,17 @@ class LeadService {
 
     async sendEmailOtp(email) {
         try {
-            // const otp = generateOtp(4);
-            const otp = 1234;
+            let otp = generateOtp(4);
+
+            if (process.env.NODE_ENV?.trim() === "development") {
+                otp = 1234;
+            } else {
+                const oTPSendServiceRes = await this.oTPSendToLeadService.sendOtpToLeadThroughEmail(
+                    email,
+                    otp,
+                );
+                console.log("oTPSendToLeadService", oTPSendServiceRes);
+            }
             const token = generateOtpToken({ email, otp });
 
             return { token, email };

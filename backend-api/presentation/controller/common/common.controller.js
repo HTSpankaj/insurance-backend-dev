@@ -337,6 +337,35 @@ exports.deleteCityController = async (req, res) => {
     }
 };
 
+exports.getBecomeAdvisorController = async (req, res) => {
+    /*
+        #swagger.tags = ['Common']
+        #swagger.description = 'Get become advisor.'
+        #swagger.parameters['page_number'] = { 
+            in: 'query', 
+            type: 'integer', 
+            default: 1, 
+            description: 'Page number' 
+        }
+        #swagger.parameters['limit'] = { 
+            in: 'query', 
+            type: 'integer', 
+            default: 10, 
+            description: 'Number of records per page' 
+        }
+    */
+
+    try {
+        const { page_number, limit } = req.query;
+        const result = await becomeAdvisorService.getBecomeAdvisorService(page_number, limit);
+        return res.status(200).json(result);
+    } catch (error) {
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
+    }
+};
+
 exports.addBecomeAdvisorController = async (req, res) => {
     /*
     #swagger.tags = ['Common']

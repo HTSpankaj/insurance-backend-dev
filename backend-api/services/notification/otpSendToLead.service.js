@@ -3,7 +3,7 @@ const { sendBrevoEmailMessage } = require("../../integration/brevo/email.brevo.i
 const { sendBrevoSmsMessage } = require("../../integration/brevo/sms.brevo.integration");
 const { replaceVariables } = require("./functions");
 
-class OTPSendService {
+class OTPSendToLeadService {
     /**
      * Constructor for initializing the AdvisorAccessService
      * @param {SupabaseClient} supabaseInstance - The Supabase instance
@@ -14,10 +14,10 @@ class OTPSendService {
         );
     }
 
-    async sendOtpToAdvisorThroughEmail(advisorEmail, otp) {
+    async sendOtpToLeadThroughEmail(leadEmail, otp) {
         const getNotificationTriggerMessagesByTitleRes =
             await this.notificationTriggerMessagesDatabase.getNotificationTriggerMessagesByTitle(
-                "Advisor OTP Send",
+                "Lead OTP Send",
             );
         // console.log("getNotificationTriggerMessagesByTitleRes", getNotificationTriggerMessagesByTitleRes);
 
@@ -34,7 +34,7 @@ class OTPSendService {
                 const sendBrevoEmailMessageRes = await sendBrevoEmailMessage(
                     messageData?.email_subject,
                     emailContent,
-                    [{ email: advisorEmail, name: "Advisor" }],
+                    [{ email: leadEmail, name: "Advisor" }],
                     [],
                 );
                 console.log("sendBrevoEmailMessageRes", sendBrevoEmailMessageRes);
@@ -42,10 +42,10 @@ class OTPSendService {
         }
     }
 
-    async sendOtpToAdvisorThroughSms(advisorMobileNumber, otp) {
+    async sendOtpToLeadThroughSms(leadMobileNumber, otp) {
         const getNotificationTriggerMessagesByTitleRes =
             await this.notificationTriggerMessagesDatabase.getNotificationTriggerMessagesByTitle(
-                "Advisor OTP Send",
+                "Lead OTP Send",
             );
         // console.log("getNotificationTriggerMessagesByTitleRes", getNotificationTriggerMessagesByTitleRes);
 
@@ -60,7 +60,7 @@ class OTPSendService {
                 console.log("smsContent", smsContent);
 
                 const sendBrevoSmsMessageRes = await sendBrevoSmsMessage(
-                    advisorMobileNumber,
+                    leadMobileNumber,
                     smsContent,
                 );
                 console.log("sendBrevoSmsMessageRes", sendBrevoSmsMessageRes);
@@ -69,4 +69,4 @@ class OTPSendService {
     }
 }
 
-module.exports = OTPSendService;
+module.exports = OTPSendToLeadService;
