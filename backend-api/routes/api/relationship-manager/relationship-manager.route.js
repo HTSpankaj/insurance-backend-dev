@@ -5,6 +5,8 @@ const {
     relationshipManagerAssignToLeadController,
     updateRelationshipManagerController,
     deleteRelationshipManagerController,
+    sentOtpToRelationshipManagerController,
+    relationshipManagerMobileVerifyController,
 } = require("../../../presentation/controller/relationship-manager/relationship-manager.controller");
 const {
     getRelationshipManagerListByCompanyIdController,
@@ -26,6 +28,9 @@ router.get(
     "/get-relationship-manager-list-by-company-id/:id",
     getRelationshipManagerListByCompanyIdController,
 );
+
+router.post("/relationship-manager-mobile-send-otp", sentOtpToRelationshipManagerController);
+router.post("/relationship-manager-mobile-verify", relationshipManagerMobileVerifyController);
 
 router.delete("/delete-relationship-manager/:rm_id", deleteRelationshipManagerController);
 

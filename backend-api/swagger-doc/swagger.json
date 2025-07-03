@@ -5173,6 +5173,82 @@
         }
       }
     },
+    "/api/relationship-manager/relationship-manager-mobile-send-otp": {
+      "post": {
+        "tags": [
+          "Relationship-managers"
+        ],
+        "description": "Sent OTP to Relationship Manager",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "mobile_number": {
+                  "type": "string",
+                  "example": "1234567890"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/relationship-manager/relationship-manager-mobile-verify": {
+      "post": {
+        "tags": [
+          "Relationship-managers"
+        ],
+        "description": "Relationship Manager Mobile Verify",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                },
+                "otp": {
+                  "type": "number",
+                  "example": 1234
+                },
+                "mobile_number": {
+                  "type": "string",
+                  "example": "1234567890"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/relationship-manager/delete-relationship-manager/{rm_id}": {
       "delete": {
         "tags": [

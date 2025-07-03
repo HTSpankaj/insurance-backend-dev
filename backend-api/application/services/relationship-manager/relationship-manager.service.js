@@ -1,6 +1,9 @@
 const LeadProductRelationDatabase = require("../../../infrastructure/databases/lead_product_relation/lead_product_relation.database");
 const LeadProductRelationshipManagerRelationDatabase = require("../../../infrastructure/databases/relationship-manager/lead_product_relationship_manager_relation.database");
 const RelationshipManagerDatabase = require("../../../infrastructure/databases/relationship-manager/relationship-manager.database");
+const OTPSendServiceToRm = require("../../../services/notification/otpSendToRm.service");
+const { generateOtp } = require("../../../utils/crypto.util");
+const { generateOtpToken, verifyOtpToken } = require("../../../utils/jwt.util");
 
 class RelationshipManagerService {
     constructor(supabaseInstance) {
@@ -8,6 +11,7 @@ class RelationshipManagerService {
         this.leadProductRelationshipManagerRelationDatabase =
             new LeadProductRelationshipManagerRelationDatabase(supabaseInstance);
         this.leadProductRelationDatabase = new LeadProductRelationDatabase(supabaseInstance);
+        this.oTPSendServiceToRm = new OTPSendServiceToRm(supabaseInstance);
     }
 
     async addRelationshipManager(name, contact_number, region, category, company_id) {
@@ -193,6 +197,53 @@ class RelationshipManagerService {
             throw new Error(
                 `Failed to assign relationship manager to lead: ${error.message || JSON.stringify(error)}`,
             );
+        }
+    }
+
+    async sendRmOtp(mobile_number) {
+        try {
+            let otp = generateOtp(4);
+
+            if (process.env.NODE_ENV?.trim() === "development") {
+                otp = 1234;
+            } else {
+                const oTPSendServiceRes = await this.oTPSendServiceToRm.sendOtpToAdvisorThroughSms(
+                    mobile_number,
+                    otp,
+                );
+                console.log("oTPSendServiceRes", oTPSendServiceRes);
+            }
+
+            const token = generateOtpToken({ mobile_number, otp });
+
+            return { token, mobile_number };
+        } catch (error) {
+            throw new Error(`Failed to send OTP: ${error.message}`);
+        }
+    }
+
+        async verifyRmMobile(token, otp, mobile_number) {
+        try {
+            const decoded = await verifyOtpToken(token);
+            if (decoded?.success) {
+                const data = decoded?.data;
+                const tokenOtp = data.otp;
+                const tokenMobile = data.mobile_number;
+                if (tokenMobile !== mobile_number) {
+                    throw new Error("Mobile number does not match token");
+                }
+                if (parseInt(otp) !== parseInt(tokenOtp)) {
+                    throw new Error("Invalid OTP");
+                }
+                return {
+                    message: "Mobile number verified successfully",
+                    mobile_number,
+                };
+            } else {
+                throw new Error(decoded?.message || "Verification failed");
+            }
+        } catch (error) {
+            throw new Error(error.message || "Verification failed");
         }
     }
 
