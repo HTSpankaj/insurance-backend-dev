@@ -12,6 +12,14 @@ class BecomeAdvisorService {
             contact_number,
         );
     }
+    async addHtsContactFormService(name, email, contact_number, message) {
+        return await this.becomeAdvisorDatabase.addHtsContactFormDatabase(
+            name,
+            email,
+            contact_number,
+            message,
+        );
+    }
 
     async getBecomeAdvisorService(page_number, limit) {
         try {

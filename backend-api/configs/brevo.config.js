@@ -2,11 +2,11 @@ exports.brevoConfig = {
     apiKey: " ",
 
     // Email
-    senderName: "",
-    senderEmail: "",
+    senderName: "Atmanirbharfins Admin",
+    senderEmail: "admin@atmanirbharfins.com",
 
     // SMS
-    smsSender: "",
+    smsSender: "AtmanirbharFins",
 
     // WhatsApp
     whatsappSenderNumber: "",

@@ -1,7 +1,9 @@
+const { waboConfig } = require("../../configs/wabo.config");
 const NotificationTriggerMessagesDatabase = require("../../infrastructure/databases/notification/notification_trigger_messages.database");
 const { sendBrevoEmailMessage } = require("../../integration/brevo/email.brevo.integration");
 const { sendBrevoSmsMessage } = require("../../integration/brevo/sms.brevo.integration");
 const { sendBrevoWhatsAppMessage } = require("../../integration/brevo/whatsapp.brevo.integration");
+const { sendWaboWhatsAppMessage } = require("../../integration/wabo/whatsapp.wabo.integration");
 const { replaceVariables } = require("./functions");
 
 class AdvisorAssignNotificationService {
@@ -68,18 +70,37 @@ class AdvisorAssignNotificationService {
 
                 //* -- WhatsApp
                 if (messageData?.is_whatsapp) {
-                    const whatsappContent = replaceVariables(
-                        messageData?.whatsapp_message,
-                        triggerData?.variable_list,
-                        variableValuesObject,
-                    );
-                    console.log("whatsappContent", whatsappContent);
+                    const bodyComponents = [
+                        {
+                            "type": "text",
+                            "text": variableValuesObject?.LeadLocation?.toString(),
+                        },
+                        {
+                            "type": "text",
+                            "text": variableValuesObject?.LeadName?.toString(),
+                        },
+                        {
+                            "type": "text",
+                            "text": variableValuesObject?.LeadId?.toString(),
+                        },
+                        {
+                            "type": "text",
+                            "text": variableValuesObject?.LeadContactNumber?.toString(),
+                        },
+                        {
+                            "type": "text",
+                            "text": variableValuesObject?.ProductName?.toString() || variableValuesObject?.CategoryName?.toString(),
+                        },
+                    ];
+                    const otherComponents = [];
 
-                    const sendBrevoWhatsAppMessageRes = await sendBrevoWhatsAppMessage(
-                        whatsappContent,
-                        relationshipManagerMobileNumber,
+                    const sendWaboWhatsAppMessageRes = await sendWaboWhatsAppMessage(
+                        waboConfig.leadAssignedToRmTemplate,
+                        "+91" + relationshipManagerMobileNumber,
+                        bodyComponents,
+                        otherComponents,
                     );
-                    console.log("sendBrevoWhatsAppMessageRes", sendBrevoWhatsAppMessageRes);
+                    console.log("sendWaboWhatsAppMessageRes", sendWaboWhatsAppMessageRes);
                 }
             }
         }
@@ -137,19 +158,44 @@ class AdvisorAssignNotificationService {
                 }
 
                 //* -- WhatsApp
-                if (messageData?.is_whatsapp) {
-                    const whatsappContent = replaceVariables(
-                        messageData?.whatsapp_message,
-                        triggerData?.variable_list,
-                        variableValuesObject,
-                    );
-                    console.log("whatsappContent", whatsappContent);
+                // if (messageData?.is_whatsapp) {
+                //     const whatsappContent = replaceVariables(
+                //         messageData?.whatsapp_message,
+                //         triggerData?.variable_list,
+                //         variableValuesObject,
+                //     );
+                //     console.log("whatsappContent", whatsappContent);
 
-                    const sendBrevoWhatsAppMessageRes = await sendBrevoWhatsAppMessage(
-                        whatsappContent,
-                        relationshipManagerMobileNumber,
+                //     const sendBrevoWhatsAppMessageRes = await sendBrevoWhatsAppMessage(
+                //         whatsappContent,
+                //         relationshipManagerMobileNumber,
+                //     );
+                //     console.log("sendBrevoWhatsAppMessageRes", sendBrevoWhatsAppMessageRes);
+                // }
+                if (messageData?.is_whatsapp) {
+                    const bodyComponents = [
+                        {
+                            "type": "text",
+                            "text": variableValuesObject?.LeadName?.toString(),
+                        },
+                        {
+                            "type": "text",
+                            "text": variableValuesObject?.CategoryName?.toString(),
+                        },
+                        {
+                            "type": "text",
+                            "text": variableValuesObject?.ProductName?.toString(),
+                        },
+                    ];
+                    const otherComponents = [];
+
+                    const sendWaboWhatsAppMessageRes = await sendWaboWhatsAppMessage(
+                        waboConfig.leadAssignedToRmTemplate,
+                        "+91" + relationshipManagerMobileNumber,
+                        bodyComponents,
+                        otherComponents,
                     );
-                    console.log("sendBrevoWhatsAppMessageRes", sendBrevoWhatsAppMessageRes);
+                    console.log("sendWaboWhatsAppMessageRes", sendWaboWhatsAppMessageRes);
                 }
             }
         }

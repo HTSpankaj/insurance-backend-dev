@@ -400,3 +400,39 @@ exports.addBecomeAdvisorController = async (req, res) => {
             .json({ success: false, error: error?.message || "Something went wrong!" });
     }
 };
+exports.addHtsContactFormController = async (req, res) => {
+    /*
+    #swagger.tags = ['Common']
+
+    #swagger.description = 'Add become advisor.'
+    #swagger.parameters['body'] ={
+        in: 'body',
+        description: 'Add User',
+        schema: {
+          "name": "",
+          "email": "",
+          "contact_number": "",
+          "message": "",
+        }
+    }
+  */
+    try {
+        const { name, email, contact_number, message } = req.body;
+        const result = await becomeAdvisorService.addHtsContactFormService(
+            name,
+            email,
+            contact_number,
+            message,
+        );
+        return res.status(201).json({
+            success: true,
+            message: "Add hts contact form successfully.",
+            data: result,
+        });
+    } catch (error) {
+        console.log(error);
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
+    }
+};

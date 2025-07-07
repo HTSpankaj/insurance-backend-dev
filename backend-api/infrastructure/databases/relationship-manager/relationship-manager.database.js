@@ -265,7 +265,7 @@ class RelationshipManagerDatabase {
                 .from(relationshipManagerTableName)
                 .select("*")
                 .eq("rm_id", rm_id)
-                .eq("is_delete", false);
+                .eq("is_delete", false).maybeSingle();
 
             if (error) {
                 console.error("Supabase error in getRelationshipManagerDetailsById:", error);

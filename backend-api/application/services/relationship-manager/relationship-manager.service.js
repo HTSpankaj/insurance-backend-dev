@@ -222,7 +222,7 @@ class RelationshipManagerService {
         }
     }
 
-        async verifyRmMobile(token, otp, mobile_number) {
+    async verifyRmMobile(token, otp, mobile_number) {
         try {
             const decoded = await verifyOtpToken(token);
             if (decoded?.success) {

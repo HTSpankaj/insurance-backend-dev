@@ -2145,6 +2145,53 @@
         }
       }
     },
+    "/api/common/add-hts-contact-form": {
+      "post": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Add become advisor.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Add User",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": ""
+                },
+                "email": {
+                  "type": "string",
+                  "example": ""
+                },
+                "contact_number": {
+                  "type": "string",
+                  "example": ""
+                },
+                "message": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/common/get-become-advisor": {
       "get": {
         "tags": [

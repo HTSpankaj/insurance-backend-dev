@@ -12,6 +12,7 @@ const {
     updateStateController,
     deleteStateController,
     addBecomeAdvisorController,
+    addHtsContactFormController,
     getBecomeAdvisorController,
 } = require("../../../presentation/controller/common/common.controller");
 const {
@@ -44,6 +45,7 @@ router.get("/get-help-center", getHelpCenterController);
 router.put("/update-help-center", updateHelpCenterController);
 
 router.post("/add-become-advisor", addBecomeAdvisorController);
+router.post("/add-hts-contact-form", addHtsContactFormController);
 router.get("/get-become-advisor", getBecomeAdvisorController);
 
 module.exports = router;

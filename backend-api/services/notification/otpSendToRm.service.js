@@ -34,7 +34,7 @@ class OTPSendServiceToRm {
 
         const sendWaboWhatsAppMessageRes = await sendWaboWhatsAppMessage(
             waboConfig.otpSendToRmTemplate,
-            "+91"+rmMobileNumber,
+            "+91" + rmMobileNumber,
             bodyComponents,
             otherComponents,
         );

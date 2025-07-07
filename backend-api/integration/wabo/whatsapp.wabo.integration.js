@@ -35,6 +35,7 @@ function sendWaboWhatsAppMessage(
                     ],
                 },
             },
+            // "template_category": "MARKETING"
         };
 
         const headers = {
@@ -46,7 +47,6 @@ function sendWaboWhatsAppMessage(
         axios
             .post(url, data, { headers })
             .then(response => {
-                console.log("Wabo WhatsApp API called successfully. Returned data: ", data);
                 resolve(response?.data);
             })
             .catch(error => {

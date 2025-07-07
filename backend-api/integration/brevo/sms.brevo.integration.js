@@ -33,8 +33,8 @@ function sendBrevoSmsMessage(recipient, content) {
                 resolve(data);
             },
             function (error) {
-                console.error("Brevo SMS API call failed.", error);
-                reject(error);
+                console.error("Brevo SMS API call failed.", error?.response?.body || error?.response || error);
+                reject(error?.response?.body || error?.response || error);
             },
         );
     });

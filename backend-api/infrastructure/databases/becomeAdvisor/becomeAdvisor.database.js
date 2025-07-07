@@ -1,4 +1,5 @@
 const tableName = "become_advisor";
+const htsTableName = "hts_contact";
 const { SupabaseClient } = require("@supabase/supabase-js");
 
 class BecomeAdvisorDatabase {
@@ -22,6 +23,20 @@ class BecomeAdvisorDatabase {
             return data;
         } catch (error) {
             throw new Error(`Failed to add become advisor: ${error.message}`);
+        }
+    }
+    async addHtsContactFormDatabase(name, email, contact_number, message) {
+        try {
+            const { data, error } = await this.db
+                .from(htsTableName)
+                .insert({ name, email, contact_number, message }) // Include description
+                .select()
+                .maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to add hts contact form: ${error.message}`);
         }
     }
 

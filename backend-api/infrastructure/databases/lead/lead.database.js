@@ -93,7 +93,7 @@ class LeadDatabase {
                     address,
                     city_id,
                 })
-                .select()
+                .select("*, city_id(title, state_id(title))")
                 .maybeSingle();
 
             if (error) {

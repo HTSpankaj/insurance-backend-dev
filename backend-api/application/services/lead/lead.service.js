@@ -121,6 +121,7 @@ class LeadService {
                 // Todo: Send whatsapp message to Relationship Manager
                 if (leadProductRelationshipManagerRelationDatabaseResponse) {
                     if (process.env.NODE_ENV?.trim() !== "development") {
+                    // if (process.env.NODE_ENV?.trim() === "development") {
                         const rmData =
                             await this.relationshipManagerDatabase.getRelationshipManagerDetailsById(
                                 leadProductRelationshipManagerRelationDatabaseResponse,
@@ -132,6 +133,9 @@ class LeadService {
                             ProductName:
                                 createLeadProductRelationResponse?.product_id?.product_name,
                             LeadName: name,
+                            LeadLocation: `${lead?.city_id?.title}, ${lead?.city_id?.state_id?.title}`,
+                            LeadId: lead?.lead_display_id,
+                            LeadContactNumber: "+91" + contact_number,
                         };
 
                         this.advisorAssignNotificationService.sendAutoAdvisorAssignNotification(
@@ -146,6 +150,7 @@ class LeadService {
 
             return {
                 lead_id: lead.lead_id,
+                lpr_id: lead.lead_display_id,
                 name,
                 email,
                 contact_number: contact_number.toString(),
