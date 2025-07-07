@@ -1,5 +1,5 @@
 exports.brevoConfig = {
-    apiKey: " ",
+    apiKey: "",
 
     // Email
     senderName: "Atmanirbharfins Admin",
