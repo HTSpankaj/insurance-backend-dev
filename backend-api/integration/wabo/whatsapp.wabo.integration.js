@@ -2,7 +2,7 @@ const axios = require("axios");
 const { brevoConfig } = require("../../configs/brevo.config");
 const { waboConfig } = require("../../configs/wabo.config");
 
-const apiKey = brevoConfig.apiKey;
+const apiKey = brevoConfig.mainKey;
 
 const getaHost = waboConfig.getaHost;
 

@@ -5,7 +5,7 @@ const { brevoConfig } = require("../../configs/brevo.config");
 
 const apiInstance = new brevo.TransactionalEmailsApi();
 const apiKey = apiInstance.authentications["apiKey"];
-apiKey.apiKey = brevoConfig.apiKey;
+apiKey.apiKey = brevoConfig.mainKey;
 /**
  * Send email using Brevo SMTP
  * @param {string} subject - Subject of email

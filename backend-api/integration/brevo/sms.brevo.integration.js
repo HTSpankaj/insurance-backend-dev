@@ -5,7 +5,7 @@ const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const { brevoConfig } = require("../../configs/brevo.config");
 
 let apiKey = defaultClient.authentications["api-key"];
-apiKey.apiKey = brevoConfig.apiKey;
+apiKey.apiKey = brevoConfig.mainKey;
 
 /**
  * Send SMS using Brevo SMS
