@@ -5,7 +5,7 @@ const defaultClient = SibApiV3Sdk.ApiClient.instance;
 const { brevoConfig } = require("../../configs/brevo.config");
 
 let apiKey = defaultClient.authentications["api-key"];
-apiKey.apiKey = brevoConfig.mainKey;
+apiKey.apiKey = brevoConfig.apiKey;
 
 /**
  * Send SMS using Brevo SMS
@@ -33,7 +33,10 @@ function sendBrevoSmsMessage(recipient, content) {
                 resolve(data);
             },
             function (error) {
-                console.error("Brevo SMS API call failed.", error?.response?.body || error?.response || error);
+                console.error(
+                    "Brevo SMS API call failed.",
+                    error?.response?.body || error?.response || error,
+                );
                 reject(error?.response?.body || error?.response || error);
             },
         );

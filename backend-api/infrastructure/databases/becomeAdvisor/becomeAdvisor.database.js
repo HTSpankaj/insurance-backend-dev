@@ -40,6 +40,16 @@ class BecomeAdvisorDatabase {
         }
     }
 
+    async getHtsContactDatabase() {
+        try {
+            const { data, error } = await this.db.from(htsTableName).select("*");
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to get hts contact form: ${error.message}`);
+        }
+    }
+
     async getBecomeAdvisorDatabase(page_number, limit) {
         try {
             const offset = (page_number - 1) * limit;

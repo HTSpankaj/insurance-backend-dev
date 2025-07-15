@@ -84,7 +84,7 @@ class UsersDatabase {
             const offset = (pageNumber - 1) * limit;
             const { data, error, count } = await this.db
                 .from(tableName)
-                .select("*", { count: "exact" })
+                .select("*, relationship_managers(*)", { count: "exact" })
                 .order("created_at", { ascending: false })
                 .range(offset, offset + limit - 1);
 

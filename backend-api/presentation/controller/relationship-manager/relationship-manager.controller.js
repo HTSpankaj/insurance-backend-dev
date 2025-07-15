@@ -13,6 +13,7 @@ exports.addRelationshipManagerController = async (req, res) => {
           name: 'John Doe',
           contact_number: 1234567890,
           company_id: '550e8400-e29b-41d4-a716-446655440000',
+          user_id: '550e8400-e29b-41d4-a716-446655440000',
           region: ["39357ef5-e5b7-47d2-98ad-750e202bb49d","e26b14ae-66d0-4ce2-aaa4-fb2b3b82211d"],
           category: ["50f9a13b-d878-454f-a84a-3a1ca0d7a843","7ca19a57-fdbc-4756-bcdb-b8f1623f36a9"]
         }
@@ -21,7 +22,7 @@ exports.addRelationshipManagerController = async (req, res) => {
 
     */
     try {
-        const { name, contact_number, region, category, company_id } = req.body;
+        const { name, contact_number, region, category, company_id, user_id } = req.body;
 
         // Validation
         if (!name || typeof name !== "string" || name.trim().length < 2) {
@@ -30,7 +31,7 @@ exports.addRelationshipManagerController = async (req, res) => {
         if (!contact_number || !/^\d{10}$/.test(contact_number.toString())) {
             throw new Error("Contact number must be a 10-digit number");
         }
-        if (!Array.isArray(region) || region.length === 0) {
+        if (!user_id && (!Array.isArray(region) || region.length === 0)) {
             throw new Error("Region must be a non-empty array of UUIDs");
         }
         if (!Array.isArray(category) || category.length === 0) {
@@ -40,14 +41,16 @@ exports.addRelationshipManagerController = async (req, res) => {
         const uuidRegex =
             /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 
-        if (!uuidRegex.test(company_id)) {
+        if (!user_id && !uuidRegex.test(company_id)) {
             throw new Error(`Company ID is not a valid UUID`);
         }
-        region.forEach((id, index) => {
-            if (!uuidRegex.test(id)) {
-                throw new Error(`Region ID at index ${index} is not a valid UUID`);
-            }
-        });
+        if (!user_id) {
+            region.forEach((id, index) => {
+                if (!uuidRegex.test(id)) {
+                    throw new Error(`Region ID at index ${index} is not a valid UUID`);
+                }
+            });
+        }
         category.forEach((id, index) => {
             if (!uuidRegex.test(id)) {
                 throw new Error(`Category ID at index ${index} is not a valid UUID`);
@@ -60,6 +63,7 @@ exports.addRelationshipManagerController = async (req, res) => {
             region,
             category,
             company_id,
+            user_id,
         );
 
         return res.status(200).json({
@@ -256,16 +260,26 @@ exports.getRelationshipManagerListByCompanyIdController = async (req, res) => {
       description: 'Region ID (UUID)',
       default: null
     }
+      #swagger.parameters['is_admin_rm'] = { 
+        in: 'query', 
+        type: 'boolean', 
+        required: false, 
+        description: 'Filter by is_admin_rm',
+        default: false
+      }
     */
     try {
-        const { id } = req.params;
+        const id = req.params?.id === "null" ? null : req.params.id;
         const { page_number, limit, search, region_id } = req.query;
+        const is_admin_rm = req.query.is_admin_rm === "true";
 
         // Validation
         const uuidRegex =
             /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
-        if (!id || !uuidRegex.test(id)) {
-            throw new Error("Company ID must be a valid UUID");
+        if (id) {
+            if (!uuidRegex.test(id)) {
+                throw new Error("Company ID must be a valid UUID");
+            }
         }
 
         const pageNumber = parseInt(page_number) || 1;
@@ -287,6 +301,7 @@ exports.getRelationshipManagerListByCompanyIdController = async (req, res) => {
             limitPerPage,
             search?.trim(),
             region_id,
+            is_admin_rm,
         );
 
         return res.status(200).json({

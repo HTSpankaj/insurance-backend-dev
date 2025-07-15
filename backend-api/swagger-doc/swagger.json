@@ -2192,6 +2192,25 @@
         }
       }
     },
+    "/api/common/get-hts-contact": {
+      "get": {
+        "tags": [
+          "Common"
+        ],
+        "description": "Get hts contact.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/common/get-become-advisor": {
       "get": {
         "tags": [
@@ -7893,6 +7912,16 @@
           },
           "401": {
             "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/view/get-hts-contact-view": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }

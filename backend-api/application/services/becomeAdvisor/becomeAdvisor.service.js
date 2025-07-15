@@ -20,6 +20,9 @@ class BecomeAdvisorService {
             message,
         );
     }
+    async getHtsContactService() {
+        return await this.becomeAdvisorDatabase.getHtsContactDatabase();
+    }
 
     async getBecomeAdvisorService(page_number, limit) {
         try {

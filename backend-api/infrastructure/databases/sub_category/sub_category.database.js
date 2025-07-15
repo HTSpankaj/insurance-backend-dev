@@ -45,7 +45,7 @@ class SubCategoryDatabase {
 
             let query = this.db
                 .from(tableName)
-                .select("*", { count: "exact" })
+                .select("*, category_id(*)", { count: "exact" })
                 .eq("category_id", id)
                 .eq("is_delete", false)
                 .order("created_at", { ascending: false });

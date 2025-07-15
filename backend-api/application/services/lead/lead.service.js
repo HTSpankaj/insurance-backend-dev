@@ -96,13 +96,15 @@ class LeadService {
                 );
             if (createLeadProductRelationResponse) {
                 const leadProductCompanyId =
-                    createLeadProductRelationResponse?.product_id?.company_id?.company_id;
+                    createLeadProductRelationResponse?.product_id?.company_id?.company_id || null;
                 const leadProductCategoryId =
                     createLeadProductRelationResponse?.product_id?.sub_category_id?.category_id
-                        ?.category_id;
-                const leadCityId = createLeadProductRelationResponse?.lead_id?.city_id?.id;
+                        ?.category_id ||
+                    category_id ||
+                    null;
+                const leadCityId = createLeadProductRelationResponse?.lead_id?.city_id?.id || null;
                 const leadStateId =
-                    createLeadProductRelationResponse?.lead_id?.city_id?.state_id?.id;
+                    createLeadProductRelationResponse?.lead_id?.city_id?.state_id?.id || null;
 
                 const leadProductRelationshipManagerRelationDatabaseResponse =
                     await this.leadProductRelationshipManagerRelationDatabase.autoAssignRelationshipManagerToLead(
@@ -121,7 +123,7 @@ class LeadService {
                 // Todo: Send whatsapp message to Relationship Manager
                 if (leadProductRelationshipManagerRelationDatabaseResponse) {
                     if (process.env.NODE_ENV?.trim() !== "development") {
-                    // if (process.env.NODE_ENV?.trim() === "development") {
+                        // if (process.env.NODE_ENV?.trim() === "development") {
                         const rmData =
                             await this.relationshipManagerDatabase.getRelationshipManagerDetailsById(
                                 leadProductRelationshipManagerRelationDatabaseResponse,
@@ -150,7 +152,7 @@ class LeadService {
 
             return {
                 lead_id: lead.lead_id,
-                lpr_id: lead.lead_display_id,
+                lpr_id: createLeadProductRelationResponse.lead_display_id,
                 name,
                 email,
                 contact_number: contact_number.toString(),

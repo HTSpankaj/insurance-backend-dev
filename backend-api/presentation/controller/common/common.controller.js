@@ -436,3 +436,18 @@ exports.addHtsContactFormController = async (req, res) => {
             .json({ success: false, error: error?.message || "Something went wrong!" });
     }
 };
+
+exports.getHtsContactController = async (req, res) => {
+    /*
+        #swagger.tags = ['Common']
+        #swagger.description = 'Get hts contact.'
+    */
+    try {
+        const result = await becomeAdvisorService.getHtsContactService();
+        return res.status(200).json(result);
+    } catch (error) {
+        return res
+            .status(500)
+            .json({ success: false, error: error?.message || "Something went wrong!" });
+    }
+};

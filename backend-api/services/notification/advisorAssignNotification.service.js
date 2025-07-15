@@ -89,7 +89,9 @@ class AdvisorAssignNotificationService {
                         },
                         {
                             "type": "text",
-                            "text": variableValuesObject?.ProductName?.toString() || variableValuesObject?.CategoryName?.toString(),
+                            "text":
+                                variableValuesObject?.ProductName?.toString() ||
+                                variableValuesObject?.CategoryName?.toString(),
                         },
                     ];
                     const otherComponents = [];

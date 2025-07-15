@@ -14,6 +14,7 @@ const {
     addBecomeAdvisorController,
     addHtsContactFormController,
     getBecomeAdvisorController,
+    getHtsContactController,
 } = require("../../../presentation/controller/common/common.controller");
 const {
     getTermAndConditionController,
@@ -46,6 +47,7 @@ router.put("/update-help-center", updateHelpCenterController);
 
 router.post("/add-become-advisor", addBecomeAdvisorController);
 router.post("/add-hts-contact-form", addHtsContactFormController);
+router.get("/get-hts-contact", getHtsContactController);
 router.get("/get-become-advisor", getBecomeAdvisorController);
 
 module.exports = router;

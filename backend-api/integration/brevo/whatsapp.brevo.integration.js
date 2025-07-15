@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { brevoConfig } = require("../../configs/brevo.config");
 
-const apiKey = brevoConfig.mainKey;
+const apiKey = brevoConfig.apiKey;
 
 function sendBrevoWhatsAppMessage(text, contactNumbers) {
     const url = "https://api.brevo.com/v3/whatsapp/sendMessage";

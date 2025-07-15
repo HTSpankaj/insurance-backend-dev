@@ -12,15 +12,20 @@ class RelationshipManagerDatabase {
         this.db = supabaseInstance;
     }
 
-    async createRelationshipManager(name, contact_number, company_id) {
+    async createRelationshipManager(name, contact_number, company_id, user_id) {
         try {
+            let postBody = {
+                name,
+                contact_number,
+            };
+            if (company_id) {
+                postBody.company_id = company_id;
+            } else {
+                postBody.user_id = user_id;
+            }
             const { data, error } = await this.db
                 .from(relationshipManagerTableName)
-                .insert({
-                    name,
-                    contact_number,
-                    company_id,
-                })
+                .insert(postBody)
                 .select()
                 .maybeSingle();
 
@@ -198,7 +203,14 @@ class RelationshipManagerDatabase {
         }
     }
 
-    async getRelationshipManagersWithPagination(company_id, offset, limit, search, region_id_val) {
+    async getRelationshipManagersWithPagination(
+        company_id,
+        offset,
+        limit,
+        search,
+        region_id_val,
+        is_admin_rm,
+    ) {
         try {
             // Build the query
             let query = this.db.rpc(
@@ -207,6 +219,7 @@ class RelationshipManagerDatabase {
                     search_val: search || null,
                     company_id_val: company_id || null,
                     region_id_val: region_id_val || null,
+                    is_admin_rm: is_admin_rm || null,
                 },
                 {
                     count: "exact",
@@ -265,7 +278,8 @@ class RelationshipManagerDatabase {
                 .from(relationshipManagerTableName)
                 .select("*")
                 .eq("rm_id", rm_id)
-                .eq("is_delete", false).maybeSingle();
+                .eq("is_delete", false)
+                .maybeSingle();
 
             if (error) {
                 console.error("Supabase error in getRelationshipManagerDetailsById:", error);

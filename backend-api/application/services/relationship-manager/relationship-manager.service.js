@@ -14,7 +14,7 @@ class RelationshipManagerService {
         this.oTPSendServiceToRm = new OTPSendServiceToRm(supabaseInstance);
     }
 
-    async addRelationshipManager(name, contact_number, region, category, company_id) {
+    async addRelationshipManager(name, contact_number, region, category, company_id, user_id) {
         try {
             // Insert into relationship_manager table
             const relationshipManager =
@@ -22,6 +22,7 @@ class RelationshipManagerService {
                     name,
                     contact_number,
                     company_id,
+                    user_id,
                 );
 
             // Insert into relationship_manager_region_relations table
@@ -148,7 +149,14 @@ class RelationshipManagerService {
         }
     }
 
-    async getRelationshipManagerListByCompanyId(company_id, pageNumber, limit, search, region_id) {
+    async getRelationshipManagerListByCompanyId(
+        company_id,
+        pageNumber,
+        limit,
+        search,
+        region_id,
+        is_admin_rm,
+    ) {
         try {
             const offset = (pageNumber - 1) * limit;
             const { data, total_count } =
@@ -158,6 +166,7 @@ class RelationshipManagerService {
                     limit,
                     search,
                     region_id,
+                    is_admin_rm,
                 );
             const total_pages = Math.ceil(total_count / limit);
 
