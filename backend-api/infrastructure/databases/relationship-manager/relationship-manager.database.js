@@ -213,14 +213,16 @@ class RelationshipManagerDatabase {
     ) {
         try {
             // Build the query
-            let query = this.db.rpc(
-                "get_relationship_managers",
-                {
+            let passParams = {
                     search_val: search || null,
                     company_id_val: company_id || null,
                     region_id_val: region_id_val || null,
-                    is_admin_rm: is_admin_rm || null,
-                },
+                    is_admin_rm: is_admin_rm || false,
+                }
+                console.log("passParams", passParams);
+                
+            let query = this.db.rpc(
+                "get_relationship_managers", passParams,
                 {
                     count: "exact",
                 },

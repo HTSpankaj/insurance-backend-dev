@@ -270,7 +270,8 @@ exports.getRelationshipManagerListByCompanyIdController = async (req, res) => {
     */
     try {
         const id = req.params?.id === "null" ? null : req.params.id;
-        const { page_number, limit, search, region_id } = req.query;
+        const region_id = req.params?.region_id === "null" ? null : req.params.region_id;
+        const { page_number, limit, search } = req.query;
         const is_admin_rm = req.query.is_admin_rm === "true";
 
         // Validation
