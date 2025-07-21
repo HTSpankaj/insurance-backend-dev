@@ -12,6 +12,9 @@ const { authenticateToken } = require("../../../middleware/auth");
 
 router.post("/login", loginValidateInput, logInUser);
 router.post("/refresh", authenticateToken, refresh);
+
+// router.post("/relationship-manager-login", loginValidateInput, logInUser);
+// router.post("/relationship-manager-refresh", authenticateToken, refresh);
 // router.post("/logout", authenticateToken, logOutUser);
 
 module.exports = router;

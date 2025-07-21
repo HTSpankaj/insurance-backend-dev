@@ -235,6 +235,12 @@ exports.getRelationshipManagerListByCompanyIdController = async (req, res) => {
       required: true, 
       description: 'Company ID (UUID)' 
     }
+    #swagger.parameters['is_all'] = {
+        in: 'query',
+        description: 'Get all sub-categories',
+        required: false,
+        type: 'boolean'
+    }
     #swagger.parameters['page_number'] = { 
       in: 'query', 
       type: 'integer', 
@@ -273,6 +279,7 @@ exports.getRelationshipManagerListByCompanyIdController = async (req, res) => {
         const region_id = req.params?.region_id === "null" ? null : req.params.region_id;
         const { page_number, limit, search } = req.query;
         const is_admin_rm = req.query.is_admin_rm === "true";
+        const is_all = req?.query?.is_all == "true";
 
         // Validation
         const uuidRegex =
@@ -286,10 +293,10 @@ exports.getRelationshipManagerListByCompanyIdController = async (req, res) => {
         const pageNumber = parseInt(page_number) || 1;
         const limitPerPage = parseInt(limit) || 10;
 
-        if (pageNumber < 1) {
+        if (pageNumber && pageNumber < 1) {
             throw new Error("page_number must be a positive integer");
         }
-        if (limitPerPage < 1 || limitPerPage > 100) {
+        if (limitPerPage && (limitPerPage < 1 || limitPerPage > 100)) {
             throw new Error("limit must be between 1 and 100");
         }
         if (search && (typeof search !== "string" || search.trim().length < 1)) {
@@ -303,18 +310,20 @@ exports.getRelationshipManagerListByCompanyIdController = async (req, res) => {
             search?.trim(),
             region_id,
             is_admin_rm,
+            is_all,
         );
 
-        return res.status(200).json({
-            success: true,
-            data: result.data,
-            metadata: {
-                page: pageNumber,
-                per_page: limitPerPage,
-                total_count: result.total_count,
-                total_pages: result.total_pages,
-            },
-        });
+        return res.status(result.success ? 200 : 500).json(result);
+        // return res.status(200).json({
+        //     success: true,
+        //     data: result.data,
+        //     metadata: {
+        //         page: pageNumber,
+        //         per_page: limitPerPage,
+        //         total_count: result.total_count,
+        //         total_pages: result.total_pages,
+        //     },
+        // });
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -468,5 +477,40 @@ exports.deleteRelationshipManagerController = async (req, res) => {
             success: false,
             error: { message: error.message || "Something went wrong!" },
         });
+    }
+};
+
+exports.makeCredentialsRelationshipManager = async (req, res) => {
+    /*
+    #swagger.tags = ['Relationship-managers']
+    #swagger.description = 'Make Credentials Relationship Manager'
+    #swagger.parameters['body'] = {
+        in: 'body',
+        schema: {
+            "relationship_manager_id": "550e8400-e29b-41d4-a716-446655440000",
+            "email": "example@gmail",
+            "password": "password"
+        }
+    }
+    */
+
+    try {
+        const { relationship_manager_id, email, password } = req.body;
+
+        const result = await relationshipManagerService.makeCredentialsRelationshipManagerService(
+            relationship_manager_id,
+            email,
+            password,
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: "User created successfully",
+            data: result,
+        });
+    } catch (error) {
+        return res
+            .status(500)
+            .json({ success: false, error: { message: error.message || "Something went wrong!" } });
     }
 };

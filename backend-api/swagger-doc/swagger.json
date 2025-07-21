@@ -1327,9 +1327,6 @@
           "201": {
             "description": "Created"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
           },
@@ -1410,9 +1407,6 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
           },
@@ -1451,9 +1445,6 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
           },
@@ -1487,9 +1478,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -1540,9 +1528,6 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "401": {
             "description": "Unauthorized"
           },
@@ -1592,9 +1577,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
@@ -4974,6 +4956,10 @@
                   "type": "string",
                   "example": "550e8400-e29b-41d4-a716-446655440000"
                 },
+                "user_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
                 "region": {
                   "type": "array",
                   "example": [
@@ -5197,6 +5183,13 @@
             "description": "Company ID (UUID)"
           },
           {
+            "name": "is_all",
+            "in": "query",
+            "description": "Get all sub-categories",
+            "required": false,
+            "type": "boolean"
+          },
+          {
             "name": "page_number",
             "in": "query",
             "type": "integer",
@@ -5224,6 +5217,14 @@
             "required": false,
             "description": "Region ID (UUID)",
             "default": null
+          },
+          {
+            "name": "is_admin_rm",
+            "in": "query",
+            "type": "boolean",
+            "required": false,
+            "description": "Filter by is_admin_rm",
+            "default": false
           }
         ],
         "responses": {
@@ -5328,6 +5329,48 @@
             "required": true,
             "type": "string",
             "description": "Relationship Manager ID (UUID)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/relationship-manager/make-credentials-relationship-manager": {
+      "post": {
+        "tags": [
+          "Relationship-managers"
+        ],
+        "description": "Make Credentials Relationship Manager",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "relationship_manager_id": {
+                  "type": "string",
+                  "example": "550e8400-e29b-41d4-a716-446655440000"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "example@gmail"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "password"
+                }
+              }
+            }
           }
         ],
         "responses": {

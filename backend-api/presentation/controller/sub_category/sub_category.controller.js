@@ -25,7 +25,7 @@ exports.createSubCategoryController = async (req, res) => {
             created_by_user_id,
             file,
         );
-        return res.status(result.success ? 201 : 400).json(result);
+        return res.status(result.success ? 201 : 500).json(result);
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -71,7 +71,7 @@ exports.getSubCategoriesController = async (req, res) => {
         const is_all = req?.query?.is_all == "true";
 
         const result = await subCategoryService.getSubCategories(id, pageNumber, limit, is_all);
-        return res.status(result.success ? 200 : 400).json(result);
+        return res.status(result.success ? 200 : 500).json(result);
     } catch (error) {
         return res.status(500).json({
             success: false,
@@ -98,7 +98,7 @@ exports.activeInactiveSubCategoryController = async (req, res) => {
             sub_category_id,
             is_active,
         );
-        return res.status(result.success ? 200 : 400).json(result);
+        return res.status(result.success ? 200 : 500).json(result);
     } catch (error) {
         return res
             .status(500)
@@ -147,7 +147,7 @@ exports.getAllSubCategoriesController = async (req, res) => {
             is_all,
             search,
         );
-        return res.status(result.success ? 200 : 400).json(result);
+        return res.status(result.success ? 200 : 500).json(result);
     } catch (error) {
         return res
             .status(500)
@@ -177,7 +177,7 @@ exports.updateSubCategoryController = async (req, res) => {
             description,
             file,
         );
-        return res.status(result.success ? 200 : 400).json(result);
+        return res.status(result.success ? 200 : 500).json(result);
     } catch (error) {
         return res
             .status(500)
@@ -199,7 +199,7 @@ exports.deleteSubCategoryController = async (req, res) => {
     try {
         const { sub_category_id } = req.body;
         const result = await subCategoryService.deleteSubCategoryService(sub_category_id);
-        return res.status(result.success ? 200 : 400).json(result);
+        return res.status(result.success ? 200 : 500).json(result);
     } catch (error) {
         return res
             .status(500)

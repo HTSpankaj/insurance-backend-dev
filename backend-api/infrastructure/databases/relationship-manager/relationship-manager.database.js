@@ -210,30 +210,30 @@ class RelationshipManagerDatabase {
         search,
         region_id_val,
         is_admin_rm,
+        is_all,
     ) {
         try {
             // Build the query
             let passParams = {
-                    search_val: search || null,
-                    company_id_val: company_id || null,
-                    region_id_val: region_id_val || null,
-                    is_admin_rm: is_admin_rm || false,
-                }
-                console.log("passParams", passParams);
-                
-            let query = this.db.rpc(
-                "get_relationship_managers", passParams,
-                {
-                    count: "exact",
-                },
-            );
+                search_val: search || null,
+                company_id_val: company_id || null,
+                region_id_val: region_id_val || null,
+                is_admin_rm: is_admin_rm || false,
+            };
+            console.log("passParams", passParams);
+
+            let query = this.db.rpc("get_relationship_managers", passParams, {
+                count: "exact",
+            });
 
             // Apply pagination
-            query = query
-                .order("created_at", { ascending: false })
-                .range(offset, offset + limit - 1);
+            if (!is_all) {
+                query = query.range(offset, offset + limit - 1);
+            }
 
-            const { data, count, error } = await query.eq("is_delete", false);
+            const { data, count, error } = await query
+                .order("created_at", { ascending: false })
+                .eq("is_delete", false);
 
             if (error) {
                 console.error("Supabase error in getRelationshipManagersWithPagination:", error);
@@ -294,6 +294,25 @@ class RelationshipManagerDatabase {
             throw new Error(
                 `Failed to fetch relationship manager details: ${error.message || JSON.stringify(error)}`,
             );
+        }
+    }
+
+    async makeCredentialsRelationshipManagerDatabase(rm_id, email, password) {
+        try {
+            const { data, error } = await this.db
+                .from(relationshipManagerTableName)
+                .update({
+                    email,
+                    password,
+                })
+                .eq("rm_id", rm_id)
+                .select()
+                .maybeSingle();
+
+            if (error) throw error;
+            return data;
+        } catch (error) {
+            throw new Error(`Failed to create user: ${error.message}`);
         }
     }
 }

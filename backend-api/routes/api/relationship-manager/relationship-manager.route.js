@@ -7,10 +7,10 @@ const {
     deleteRelationshipManagerController,
     sentOtpToRelationshipManagerController,
     relationshipManagerMobileVerifyController,
-} = require("../../../presentation/controller/relationship-manager/relationship-manager.controller");
-const {
     getRelationshipManagerListByCompanyIdController,
+    makeCredentialsRelationshipManager,
 } = require("../../../presentation/controller/relationship-manager/relationship-manager.controller");
+
 const {
     relationshipManagerAssignToLeadControllerValidator,
 } = require("../../../validator/relationship_manager/relationship_manager.validator");
@@ -33,5 +33,7 @@ router.post("/relationship-manager-mobile-send-otp", sentOtpToRelationshipManage
 router.post("/relationship-manager-mobile-verify", relationshipManagerMobileVerifyController);
 
 router.delete("/delete-relationship-manager/:rm_id", deleteRelationshipManagerController);
+
+router.post("/make-credentials-relationship-manager", makeCredentialsRelationshipManager);
 
 module.exports = router;

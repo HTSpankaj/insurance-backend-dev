@@ -2,7 +2,8 @@ const LeadProductRelationDatabase = require("../../../infrastructure/databases/l
 const LeadProductRelationshipManagerRelationDatabase = require("../../../infrastructure/databases/relationship-manager/lead_product_relationship_manager_relation.database");
 const RelationshipManagerDatabase = require("../../../infrastructure/databases/relationship-manager/relationship-manager.database");
 const OTPSendServiceToRm = require("../../../services/notification/otpSendToRm.service");
-const { generateOtp } = require("../../../utils/crypto.util");
+const SendLoginCredentialsToRelationshipManagerNotificationService = require("../../../services/notification/SendCredentialsToRelationshipManagerNotification.service");
+const { generateOtp, encryptPassword } = require("../../../utils/crypto.util");
 const { generateOtpToken, verifyOtpToken } = require("../../../utils/jwt.util");
 
 class RelationshipManagerService {
@@ -12,6 +13,8 @@ class RelationshipManagerService {
             new LeadProductRelationshipManagerRelationDatabase(supabaseInstance);
         this.leadProductRelationDatabase = new LeadProductRelationDatabase(supabaseInstance);
         this.oTPSendServiceToRm = new OTPSendServiceToRm(supabaseInstance);
+        this.sendLoginCredentialsToRelationshipManagerNotificationService =
+            new SendLoginCredentialsToRelationshipManagerNotificationService(supabaseInstance);
     }
 
     async addRelationshipManager(name, contact_number, region, category, company_id, user_id) {
@@ -156,6 +159,7 @@ class RelationshipManagerService {
         search,
         region_id,
         is_admin_rm,
+        is_all,
     ) {
         try {
             const offset = (pageNumber - 1) * limit;
@@ -167,13 +171,28 @@ class RelationshipManagerService {
                     search,
                     region_id,
                     is_admin_rm,
+                    is_all,
                 );
             const total_pages = Math.ceil(total_count / limit);
 
+            // return {
+            //     data,
+            //     total_count,
+            //     total_pages,
+            // };
             return {
+                success: true,
                 data,
-                total_count,
-                total_pages,
+                metadata: {
+                    total_count: total_count,
+                    ...(!is_all
+                        ? {
+                              page: pageNumber,
+                              per_page: limit,
+                              total_pages: total_pages,
+                          }
+                        : {}),
+                },
             };
         } catch (error) {
             console.error("Error in getRelationshipManagerListByCompanyId:", error);
@@ -258,6 +277,49 @@ class RelationshipManagerService {
 
     async deleteRelationshipManagerService(rm_id) {
         return await this.relationshipManagerDatabase.deleteRelationshipManagerDatabase(rm_id);
+    }
+
+    async makeCredentialsRelationshipManagerService(relationship_manager_id, email, password) {
+        try {
+            const encryptedPassword = encryptPassword(password);
+            const user =
+                await this.relationshipManagerDatabase.makeCredentialsRelationshipManagerDatabase(
+                    relationship_manager_id,
+                    email,
+                    encryptedPassword,
+                );
+
+            if (user?.rm_id) {
+                const variableList = [
+                    { "title": "Name", "variable_name": user?.name },
+                    { "title": "Email", "variable_name": email },
+                    { "title": "Password", "variable_name": password },
+                ];
+                this.sendLoginCredentialsToRelationshipManagerNotificationService
+                    .SendLoginCredentialsToRelationshipManager(
+                        email,
+                        user?.contact_number,
+                        user?.name,
+                        variableList,
+                    )
+                    .then(res => {
+                        console.log(
+                            "SendLoginCredentialsToRelationshipManagerNotificationService",
+                            res,
+                        );
+                    })
+                    .catch(err => {
+                        console.log(
+                            "SendLoginCredentialsToRelationshipManagerNotificationService",
+                            err,
+                        );
+                    });
+            }
+            delete user.password;
+            return user;
+        } catch (error) {
+            throw new Error(error.message || "Failed to create user");
+        }
     }
 }
 
