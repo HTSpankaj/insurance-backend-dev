@@ -20,6 +20,7 @@ class ProductDatabase {
         financial_description,
         product_tax,
         cover_amount_tax,
+        commission_percentage,
         is_publish,
     ) {
         try {
@@ -33,6 +34,7 @@ class ProductDatabase {
             };
             if (product_tax) postBody.product_tax = product_tax;
             if (cover_amount_tax) postBody.cover_amount_tax = cover_amount_tax;
+            if (commission_percentage) postBody.commission_percentage = commission_percentage;
 
             if (product_name) {
                 const existingProduct = await this.db
@@ -73,6 +75,7 @@ class ProductDatabase {
         financial_description,
         product_tax,
         cover_amount_tax,
+        commission_percentage,
         is_publish,
     ) {
         try {
@@ -85,6 +88,7 @@ class ProductDatabase {
             if (is_publish === true || is_publish === false) postBody.is_publish = is_publish;
             if (product_tax) postBody.product_tax = product_tax;
             if (cover_amount_tax) postBody.cover_amount_tax = cover_amount_tax;
+            if (commission_percentage) postBody.commission_percentage = commission_percentage;
 
             if (product_name) {
                 const existingProduct = await this.db

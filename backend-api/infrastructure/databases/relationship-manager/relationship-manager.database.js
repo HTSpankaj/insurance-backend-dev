@@ -299,6 +299,19 @@ class RelationshipManagerDatabase {
 
     async makeCredentialsRelationshipManagerDatabase(rm_id, email, password) {
         try {
+            const { data: existingUser, error: userError } = await this.db
+                .from(relationshipManagerTableName)
+                .select("*")
+                .eq("email", email)
+                .eq("is_delete", false)
+                .limit(1);
+
+            if (existingUser.length > 0) {
+                throw new Error("Email already exists.");
+            } else if (userError) {
+                throw userError;
+            }
+
             const { data, error } = await this.db
                 .from(relationshipManagerTableName)
                 .update({

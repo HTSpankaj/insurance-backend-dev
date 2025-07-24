@@ -50,6 +50,12 @@ exports.addProductController = async (req, res) => {
       required: false, 
       description: 'Financial cover amount tax of the product' 
     }
+    #swagger.parameters['commission_percentage'] = { 
+      in: 'formData', 
+      type: 'number', 
+      required: false, 
+      description: 'Commission percentage of the product for advisor' 
+    }
     #swagger.parameters['is_publish'] = { 
       in: 'formData',
       type: 'boolean',
@@ -84,6 +90,7 @@ exports.addProductController = async (req, res) => {
             financial_description,
             product_tax = 0,
             cover_amount_tax = 0,
+            commission_percentage = 0,
             is_publish,
             promotional_video_url = null,
         } = req.body;
@@ -152,6 +159,7 @@ exports.addProductController = async (req, res) => {
             financial_description,
             product_tax,
             cover_amount_tax,
+            commission_percentage,
             is_publish,
             promotional_video_url,
             product_brochure_file,
@@ -226,6 +234,12 @@ exports.updateProductController = async (req, res) => {
       required: false, 
       description: 'Financial cover amount tax of the product' 
     }
+    #swagger.parameters['commission_percentage'] = { 
+      in: 'formData', 
+      type: 'number', 
+      required: false, 
+      description: 'Commission percentage of the product for advisor' 
+    }
     #swagger.parameters['is_publish'] = { 
       in: 'formData',
       type: 'boolean',
@@ -261,6 +275,7 @@ exports.updateProductController = async (req, res) => {
             financial_description,
             product_tax = null,
             cover_amount_tax = null,
+            commission_percentage = null,
             is_publish,
             promotional_video_url = null,
         } = req.body;
@@ -338,6 +353,7 @@ exports.updateProductController = async (req, res) => {
             financial_description,
             product_tax,
             cover_amount_tax,
+            commission_percentage,
             is_publish,
             promotional_video_url,
             product_brochure_file,

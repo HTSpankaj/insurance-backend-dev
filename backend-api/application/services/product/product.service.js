@@ -15,6 +15,7 @@ class ProductService {
         financial_description,
         product_tax,
         cover_amount_tax,
+        commission_percentage,
         is_publish,
         promotional_video_url,
         product_brochure_file,
@@ -31,6 +32,7 @@ class ProductService {
                 financial_description,
                 product_tax,
                 cover_amount_tax,
+                commission_percentage,
                 is_publish,
             );
 
@@ -58,6 +60,7 @@ class ProductService {
         financial_description,
         product_tax,
         cover_amount_tax,
+        commission_percentage,
         is_publish,
         promotional_video_url,
         product_brochure_file,
@@ -75,6 +78,7 @@ class ProductService {
                 financial_description,
                 product_tax,
                 cover_amount_tax,
+                commission_percentage,
                 is_publish,
             );
 
