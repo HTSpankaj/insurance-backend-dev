@@ -106,7 +106,7 @@ class LeadProductRelationDatabase {
                 .from(tableName)
                 .select(
                     `
-                    lead_product_id, priority, additinal_note, lead_status_id(title), lead_product_relation_display_id,
+                    lead_product_id, priority, additinal_note, approximate_commission, amount, lead_status_id(title), lead_product_relation_display_id,
                     lead_id(name, email, contact_number, dob, address, city_id(title, state_id(title)), lead_display_id),
                     product_id(product_id, product_name, description, financial_description, product_display_id, company_id(company_id, company_name, company_display_id, logo_url), sub_category_id(sub_category_id, title, category_id(category_id, title))),
                     advisor_id(advisor_id,name, join_as, mobile_number, email, advisor_display_id, created_at),

@@ -348,6 +348,8 @@ exports.addLeadController = async (req, res) => {
           product_id: '',
           category_id: '',
           sub_category_id: '',
+          approximate_commission: '',
+          amount: '',
         }
       
     }
@@ -365,6 +367,8 @@ exports.addLeadController = async (req, res) => {
             product_id,
             category_id,
             sub_category_id,
+            approximate_commission,
+            amount,
         } = req.body;
 
         const advisor_id = res.locals.tokenData?.advisor_id; // Extract advisor_id from token
@@ -433,6 +437,8 @@ exports.addLeadController = async (req, res) => {
             category_id || null,
             sub_category_id || null,
             advisor_id,
+            approximate_commission || 0,
+            amount || 0,
         );
 
         return res.status(200).json({

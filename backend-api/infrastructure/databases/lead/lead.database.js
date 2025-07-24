@@ -116,6 +116,8 @@ class LeadDatabase {
         advisor_id,
         priority,
         additional_note,
+        approximate_commission,
+        amount,
     ) {
         try {
             console.log("Inserting into lead_product_relation table:", {
@@ -126,6 +128,8 @@ class LeadDatabase {
                 advisor_id,
                 priority,
                 additional_note,
+                approximate_commission,
+                amount,
             });
             const { data, error } = await this.db
                 .from(leadProductRelationTableName)
@@ -138,6 +142,8 @@ class LeadDatabase {
                     priority,
                     additinal_note: additional_note,
                     lead_status_id: 1,
+                    approximate_commission,
+                    amount,
                 })
                 .select(
                     `*, 

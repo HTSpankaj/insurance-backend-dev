@@ -71,6 +71,8 @@ class LeadService {
         category_id,
         sub_category_id,
         advisor_id,
+        approximate_commission,
+        amount,
     ) {
         try {
             // Insert into lead table
@@ -93,6 +95,8 @@ class LeadService {
                     advisor_id,
                     priority,
                     additional_note,
+                    approximate_commission,
+                    amount,
                 );
             if (createLeadProductRelationResponse) {
                 const leadProductCompanyId =
@@ -152,7 +156,7 @@ class LeadService {
 
             return {
                 lead_id: lead.lead_id,
-                lpr_id: createLeadProductRelationResponse.lead_display_id,
+                lpr_id: createLeadProductRelationResponse.lead_product_relation_display_id,
                 name,
                 email,
                 contact_number: contact_number.toString(),
