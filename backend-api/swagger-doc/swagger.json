@@ -3443,6 +3443,139 @@
         }
       }
     },
+    "/api/subscrpition/subscription": {
+      "post": {
+        "tags": [
+          "Subscription"
+        ],
+        "description": "Add a new subscription plan. Admin access required.",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "example": "Premium Plan"
+                },
+                "description": {
+                  "type": "string",
+                  "example": "Full access to all features."
+                },
+                "plan_benefits": {
+                  "type": "string",
+                  "example": "Benefit 1, Benefit 2, Benefit 3"
+                },
+                "duration": {
+                  "type": "string",
+                  "example": "Yearly"
+                },
+                "price": {
+                  "type": "number",
+                  "example": 999
+                },
+                "tax_percentage": {
+                  "type": "number",
+                  "example": 18
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/subscrpition/subscriptions": {
+      "get": {
+        "tags": [
+          "Subscription"
+        ],
+        "description": "Get a paginated list of all subscription plans.",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "integer",
+            "default": 1,
+            "description": "Page number"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "type": "integer",
+            "default": 10,
+            "description": "Number of records per page"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/subscrpition/subscription/{id}": {
+      "get": {
+        "tags": [
+          "Subscription"
+        ],
+        "description": "Get details of a specific subscription plan by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "Subscription UUID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
     "/api/company/create-company": {
       "post": {
         "tags": [

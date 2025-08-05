@@ -4,10 +4,11 @@ module.exports = {
         "https://atmanirbharfins.com",
         "https://atmanirbharfins.com/api/",
         "https://admin.atmanirbharfins.com",
+        "https://partner.atmanirbharfins.com",
 
         // Remove after
         "http://localhost:4200",
         "https://htstechsolutions.com",
-        "https://services.htstechsolutions.com"
+        "https://services.htstechsolutions.com",
     ],
 };

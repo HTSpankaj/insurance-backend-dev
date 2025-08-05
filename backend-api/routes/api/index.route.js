@@ -17,6 +17,7 @@ const companyRouter = require("./company/company.route");
 const leadRouter = require("./lead/lead.route");
 const issuanceRouter = require("./issuance/index.route");
 const remunerationRouter = require("./remuneration/index.route");
+const subscriptionRouter = require("./subscription/subscription.route");
 
 var commonRouter = require("./common/index.route");
 const advisorRoute = require("./advisor/advisor.route"); // New advisor route
@@ -36,6 +37,7 @@ router.use("/user", authenticateToken, userRouter); // Existing user sub-routes
 router.use("/users", authenticateToken, usersRoute); // New POST/GET user APIs
 router.use("/roles", rolesRoute); // No authentication required (as per your existing setup)
 router.use("/region", regionRouter);
+
 // Add the category route definition
 router.use("/category", categoryRouter);
 router.use("/sub-category", subCategoryRouter);
@@ -44,7 +46,8 @@ router.use("/common", commonRouter);
 
 //* Advisor APIs
 router.use("/advisor", advisorRoute); // No authentication required for advisor APIs
-
+//* Subscription API
+router.use("/subscrpition", subscriptionRouter);
 //* Company, Region and Lead APIs
 router.use("/company", companyRouter);
 router.use("/lead", leadRouter);
